@@ -14,16 +14,16 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
       return console.log('Error: unable to connect to database')
   }
 
-  const db = client.db(dbName)
+  // const db = client.db(dbName)
 
-    db.collection('users').findOne({
-      name: "Hector"
-    }, (error, user) => {
-      if (error) {
-          return console.log("Error: Unable to insert user")
-      }
-      console.log(user)
-  })
+  //   db.collection('users').findOne({
+  //     name: "Hector"
+  //   }, (error, user) => {
+  //     if (error) {
+  //         return console.log("Error: Unable to insert user")
+  //     }
+  //     console.log(user)
+  // })
 })
 
 app.get('/')

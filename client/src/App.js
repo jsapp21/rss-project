@@ -1,6 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
 import { useEffect, useState } from 'react';
+import { Typography } from '@material-ui/core';
 
 const App = () => {
 
@@ -16,10 +15,9 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
+    <div className="m-8 bg-red-200">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{data.express}</p>
+        <Typography variant="body1" component="span">{data.express}</Typography>
       </header>
     </div>
   );
