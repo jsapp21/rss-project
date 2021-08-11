@@ -2,17 +2,54 @@ const express = require('express');
 const app = express(); 
 const port = process.env.PORT || 5000;
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient
-const ObjectID = mongodb.ObjectId
-
 const url = 'mongodb://127.0.0.1:27017'
 const dbName = 'point-of-sale'
 
-MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
-  if (err) {
-      return console.log('Error: unable to connect to database')
+const mongoose= require('mongoose')
+// mongoose is playing off the mongodb libary 
+
+// connects to db
+mongoose.connect(`${url}/${dbName}`, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+})
+
+// create first model
+const User = mongoose.model('User', {
+  name: {
+    type: String
+  },
+  age: {
+    type: Number
   }
+})
+
+const me = new User({
+  name: 'James',
+  age: 'mike'
+})
+
+me.save()
+.then(() => {
+  console.log(me)
+})
+.catch((e) => {
+  console.log('Error', e)
+})
+
+
+// const mongodb = require('mongodb');
+// const MongoClient = mongodb.MongoClient
+// const ObjectID = mongodb.ObjectId
+
+
+
+
+
+// MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+//   if (err) {
+//       return console.log('Error: unable to connect to database')
+//   }
 
   // const db = client.db(dbName)
 
@@ -24,7 +61,7 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
   //     }
   //     console.log(user)
   // })
-})
+// })
 
 app.get('/')
 
