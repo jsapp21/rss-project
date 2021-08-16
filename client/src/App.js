@@ -16,7 +16,7 @@ const App = () => {
   const [menu, setMenu] = useState([]);
 
   useEffect(() => {
-    fetch('/menus')
+    fetch('/menus/list')
     .then(res => res.json())
     .then(menu => {
       setMenu(menu);
@@ -36,10 +36,14 @@ const App = () => {
     .then(resp => resp.json())
     .then(item => {
       // TODO: Build in error case 
-      setMenu([...menu, item]);
+      console.log(item)
+      if (item.error) {
+        alert(item.error)
+      } else {
+        setMenu([...menu, item]);
+        setForm({ item: '', price: ''});
+      }
     });
-
-    setForm({ item: '', price: ''});
   }
 
   const handleChange = (e) => {
@@ -58,8 +62,8 @@ const App = () => {
     <form onSubmit={handleSubmit} component="div">
         <Input color="primary" placeholder="Menu Item" inputProps={{ 'aria-label': 'item' }} name="item" value={form.item} onChange={handleChange}/>
         <Input placeholder="$9.99" inputProps={{ 'aria-label': 'price' }} name="price" value={form.price} onChange={handleChange} />
-    </form>
         <Button type="submit" variant="contained" color="primary" className={classes.button}>Save</Button>
+    </form>
 
     <div>
     {menu.map(i => {
