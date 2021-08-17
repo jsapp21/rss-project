@@ -11,6 +11,6 @@ export default makeStyles({
       marginBottom: 12,
     },
     button: {
-      margin: '5px 0 5px 0'
+      margin: '5px 0 10px 5px'
     },
 });

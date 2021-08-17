@@ -3,6 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 const service = {
     client: null,
     db: null,
+    // not sure what these k/v pairs do
   
     async connect(url, dbName) {
           service.client = await MongoClient.connect(url, {

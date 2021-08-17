@@ -2,29 +2,17 @@ const express = require('express');
 const router = express.Router();
 const service = require('../services/menu.service')
 
-router.post("/", (req, res) => {
-    console.log(req.body);
-//   // if (!db.collection.find({ item: req.body.item })) {
-//   // send error item already exists
-//   // }
-//   // else create
-
-//   const newMenuItem = Menu.create(req.body)
-//   // TODO: add express error route
-//   .then(item => {
-//     if (res.status !== 200){
-//       res.send({ error: 'something blew up' })
-//     } else {
-//       res.send(item)
-//     }
-//   })
+router.post("/", async (req, res) => {
+    const verifyItem = await service.getItemCheck(req.body.item)
+    if (verifyItem) {
+        res.send({ error: 'Item already exsits.' })
+    } else {
+        const newItem = await service.postMenuItem(req.body)
+        res.send(newItem)
+    }
 });
 
-router.get("/", (req, res) => {
-    console.log(req.body);
-});
-
-router.get("/list", async (req, res) => {
+router.get("/", async (req, res) => {
     const result = await service.getMenus()
     res.send(result)
 });

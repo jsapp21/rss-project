@@ -16,7 +16,7 @@ const App = () => {
   const [menu, setMenu] = useState([]);
 
   useEffect(() => {
-    fetch('/menus/list')
+    fetch('/menus')
     .then(res => res.json())
     .then(menu => {
       setMenu(menu);
@@ -25,26 +25,34 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    const newItem = {
+      item: form.item,
+      price: parseFloat(form.price)
+    };
 
     const reqObj = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ item: form.item, price: parseFloat(form.price) })
+      body: JSON.stringify(newItem)
     };
 
     fetch('/menus', reqObj)
     .then(resp => resp.json())
     .then(item => {
-      // TODO: Build in error case 
-      console.log(item)
-      if (item.error) {
-        alert(item.error)
+      if (item.acknowledged === false) {
+        // TODO: Finishing building the error case 
+        // Q: Is there a default error message? ex. alert(item.error)
+        // Q: How does item.acknowledged ever become false?
+        alert('Error: Item was not saved. Try again.')
+      } else if (item.error) {
+        alert(`Error: ${item.error}`)
       } else {
-        setMenu([...menu, item]);
+        setMenu([...menu, { ...newItem, _id: item.insertedId }]);
         setForm({ item: '', price: ''});
       }
     });
-  }
+  };
 
   const handleChange = (e) => {
     setForm((form) => ({
