@@ -22,31 +22,36 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (form.item || form.price === ''){
+      alert('Please fill out menu item and price')
+    } else {
+      const newItem = {
+        item: form.item,
+        price: parseFloat(form.price)
+      };
+  
+      const reqObj = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newItem)
+      };
+  
+      fetch('/menus', reqObj)
+      .then(resp => resp.json())
+      .then(item => {
+        if (item.acknowledged === false) {
+          alert('Error: Item was not saved. Try again.')
+        } else if (item.error) {
+          alert(`Error: ${item.error}`)
+        } 
+        else {
+          setMenu([...menu, { ...newItem, _id: item.insertedId }]);
+          setForm({ item: '', price: ''});
+        }
+      });
+    }
     
-    const newItem = {
-      item: form.item,
-      price: parseFloat(form.price)
-    };
-
-    const reqObj = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newItem)
-    };
-
-    fetch('/menus', reqObj)
-    .then(resp => resp.json())
-    .then(item => {
-      if (item.acknowledged === false) {
-        alert('Error: Item was not saved. Try again.')
-      } else if (item.error) {
-        alert(`Error: ${item.error}`)
-      } 
-      else {
-        setMenu([...menu, { ...newItem, _id: item.insertedId }]);
-        setForm({ item: '', price: ''});
-      }
-    });
 
   };
 
