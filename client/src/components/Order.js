@@ -1,22 +1,22 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import useAppStyles from '../styles/order.css';
+import useOrderStyles from '../styles/order.css';
 
 const Order = ({ order, removeItem }) => {
 
-    const classes = useAppStyles();
+    const classes = useOrderStyles();
     let total = 0;
 
     return (
         <>
-            <Typography variant="h5" component="h2" style={{ color: 'black', textAlign: 'center', marginTop: 20}}>🍳 Simple POS</Typography>
-            {/* I want a border here but this is prob not the way to do so */}
-            <Typography variant="h6" component="h6" style={{ color: 'black', textAlign: 'left', marginTop: 20 }}>
-            - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            </Typography>
+            <Box borderBottom={10} borderColor="#000">
+                <Typography variant="h5" style={{ color: 'black', textAlign: 'center', marginTop: 20 }}>🍳 Simple POS</Typography>
+            </Box>
+            {/* TODO: border here */}
+
                         
             {order.map(i => {
                 total += i.price
@@ -30,9 +30,11 @@ const Order = ({ order, removeItem }) => {
             </Card>
             })}
 
-            {/* When would you convert this number? Would a mongo schema help? */}
+            {/* TODO: fix number price */}
             <Typography variant="h5" component="h2" style={{ color: 'black', textAlign: 'center', marginTop: 20}}>Total: ${total}</Typography>
-          </>
+            <Button variant="contained" color="primary">Check Out</Button>
+            {/* TODO: wire up pay button */}
+        </>
     )
 }
 

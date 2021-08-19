@@ -25,7 +25,7 @@ const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (form.item || form.price === ''){
+    if (form.item.length === 0 || form.price.length === 0){
       alert('Please fill out menu item and price')
     } else {
       const newItem = {
@@ -63,12 +63,9 @@ const App = () => {
   };
 
   const removeItem = (i) => {
-    console.log('i was remved', i)
     let updatedOrder = order.filter(item => item._id !== i._id)
     setOrder(updatedOrder)
   };
-
-  console.log(order)
 
   return (
     <>
