@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
-// import MenuItems from './components/MenuItems';
+import MenuItemsContainer from './components/MenuItemsContainer';
 import { Typography } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import useAppStyles from './app.css';
 
 const App = () => {
@@ -41,17 +38,16 @@ const App = () => {
     .then(resp => resp.json())
     .then(item => {
       if (item.acknowledged === false) {
-        // TODO: Finishing building the error case 
-        // Q: Is there a default error message? ex. alert(item.error)
-        // Q: How does item.acknowledged ever become false?
         alert('Error: Item was not saved. Try again.')
       } else if (item.error) {
         alert(`Error: ${item.error}`)
-      } else {
+      } 
+      else {
         setMenu([...menu, { ...newItem, _id: item.insertedId }]);
         setForm({ item: '', price: ''});
       }
     });
+
   };
 
   const handleChange = (e) => {
@@ -72,20 +68,8 @@ const App = () => {
         <Input placeholder="$9.99" inputProps={{ 'aria-label': 'price' }} name="price" value={form.price} onChange={handleChange} />
         <Button type="submit" variant="contained" color="primary" className={classes.button}>Save</Button>
     </form>
-
-    <div>
-    {menu.map(i => {
-          return <Card classes={{root: classes.root}} key={i._id}>
-          <CardContent>
-            <Typography variant="h5" component="h2">{i.item}</Typography>
-            <Typography className={classes.pos} color="textSecondary">${i.price}</Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Order</Button>
-          </CardActions>
-        </Card>
-        })}
-    </div>    
+    
+    <MenuItemsContainer menu={menu}></MenuItemsContainer>
   </div>
   );
 };
