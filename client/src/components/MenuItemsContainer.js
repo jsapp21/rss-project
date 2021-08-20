@@ -9,15 +9,43 @@ const MenuItemsContainer = ({ menu, order, setOrder }) => {
 
     const classes = useAppStyles();
 
+    const handleClick = (i) => {
+        let itemToUpdate = order.find(orderedItem => orderedItem._id === i._id)
+
+        if (!itemToUpdate){
+           return setOrder([...order, { ...i, quanity: 1 }])
+        } else {
+           let updatedItem = {
+               ...itemToUpdate,
+               quanity: itemToUpdate.quanity + 1
+           }
+
+           let updatedOrder = order.map(item => {
+               if (item._id === updatedItem._id){
+                   return updatedItem
+               } else {
+                   return item
+               }
+           })
+           setOrder(updatedOrder)
+        }
+    };
+
     return (
         <div>
             {menu.map(i => {
                 return <Card classes={{root: classes.root}} key={i._id}>
                 <CardContent>
-                <Typography variant="h5" component="h2">{i.item}</Typography>
+                <Typography variant="h5" component="h2">{i.name}</Typography>
                 <Typography className={classes.pos} color="textSecondary">${i.price}</Typography>
                 </CardContent>
-                <Button size="small" className={classes.orderButton}  variant="contained"  color="primary" onClick={() => setOrder([...order, i])}>Order</Button>
+                <Button size="small" 
+                className={classes.orderButton}  
+                variant="contained"  
+                color="primary" 
+                onClick={() => handleClick(i)}
+                // onClick={() => setOrder([...order, { ...i, quanity: 1 }])}
+                >Order</Button>
             </Card>
             })}
           </div>

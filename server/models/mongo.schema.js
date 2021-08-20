@@ -10,17 +10,18 @@ const Item = {
 }
 
 const Order = {
-    userId: User.ObjectID,
+    "userId": User.ObjectID,
     "orderItems": [
         {
           "menuId": Item.ObjectID,
           "price": Number,
-          "quanity": Number
+          "quanity": Number,
         },
         {
             "menuId": Item.ObjectID,
             "price": Number,
             "quanity": Number
         }
-    ]
+    ],
+    "createdOn": new Date()
 }

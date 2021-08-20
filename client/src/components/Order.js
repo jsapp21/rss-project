@@ -16,14 +16,13 @@ const Order = ({ order, removeItem }) => {
                 <Typography variant="h5" style={{ color: 'black', textAlign: 'center', marginTop: 20 }}>🍳 Simple POS</Typography>
             </Box>
             {/* TODO: border here */}
-
-                        
+           
             {order.map(i => {
-                total += i.price
+                // total += i.price
                 return <Card classes={{root: classes.root}} key={i._id}>
-                    {/* ER: need a unique key */}
+                    {/* TODO: quanity here */}
                 <CardContent>
-                <Typography variant="body1" style={{ float: 'left' }}>{i.item}</Typography>
+                <Typography variant="body1" style={{ float: 'left' }}>{i.name}</Typography>
                 <Typography color="textSecondary" style={{ float: 'right' }}>${i.price}</Typography>
                 </CardContent>
                 <Button className={classes.button} size="small" color="secondary" onClick={() => removeItem(i)}>Remove</Button>

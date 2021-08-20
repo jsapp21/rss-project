@@ -14,8 +14,8 @@ app.use(express.json())
 
 // base routes
 router.use(
-  '/menus',
-  require('./routes/menu.routes'),
+  '/items',
+  require('./routes/item.routes'),
 );
 
 app.use(router)

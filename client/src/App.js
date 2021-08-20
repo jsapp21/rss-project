@@ -1,7 +1,8 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import MenuItemsContainer from './components/MenuItemsContainer';
 import Order from './components/Order';
-import { Typography, Container } from '@material-ui/core';
+import { Typography, Container, TextField } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import useAppStyles from './styles/app.css';
@@ -10,12 +11,12 @@ const App = () => {
 
   const classes = useAppStyles();
 
-  const [form, setForm] = useState({ item: '', price: ''});
+  const [form, setForm] = useState({ name: '', price: ''});
   const [menu, setMenu] = useState([]);
   const [order, setOrder] = useState([]);
 
   useEffect(() => {
-    fetch('/menus')
+    fetch('/items')
     .then(res => res.json())
     .then(menu => {
       setMenu(menu);
@@ -25,11 +26,11 @@ const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (form.item.length === 0 || form.price.length === 0){
+    if (form.name.length === 0 || form.price.length === 0){
       alert('Please fill out menu item and price')
     } else {
       const newItem = {
-        item: form.item,
+        name: form.name,
         price: parseFloat(form.price)
       };
   
@@ -39,7 +40,7 @@ const App = () => {
         body: JSON.stringify(newItem)
       };
   
-      fetch('/menus', reqObj)
+      fetch('/items', reqObj)
       .then(resp => resp.json())
       .then(item => {
         if (item.acknowledged === false) {
@@ -49,7 +50,7 @@ const App = () => {
         } 
         else {
           setMenu([...menu, { ...newItem, _id: item.insertedId }]);
-          setForm({ item: '', price: ''});
+          setForm({ name: '', price: ''});
         }
       });
     }
@@ -73,7 +74,7 @@ const App = () => {
         <Typography variant="h5" component="h2">🍳 Simple POS</Typography>
 
       <form onSubmit={handleSubmit} component="div">
-          <Input color="primary" placeholder="Menu Item" inputProps={{ 'aria-label': 'menu item' }} name="item" value={form.item} onChange={handleChange}/>
+          <Input color="primary" placeholder="Menu Item" inputProps={{ 'aria-label': 'menu item' }} name="name" value={form.name} onChange={handleChange}/>
           <Input placeholder="$9.99" inputProps={{ 'aria-label': 'menu item price' }} name="price" value={form.price} onChange={handleChange} />
           <Button type="submit" variant="contained" color="primary" className={classes.button}>Save</Button>
       </form>
