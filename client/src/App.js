@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import MenuItemsContainer from './components/MenuItemsContainer';
 import Order from './components/Order';
-import { Typography, Container, TextField } from '@material-ui/core';
+import { Typography, Container } from '@material-ui/core';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import useAppStyles from './styles/app.css';
@@ -63,10 +63,7 @@ const App = () => {
     }))
   };
 
-  const removeItem = (i) => {
-    let updatedOrder = order.filter(item => item._id !== i._id)
-    setOrder(updatedOrder)
-  };
+
 
   return (
     <>
@@ -83,7 +80,7 @@ const App = () => {
       </Container>
 
       <Container maxWidth="xs" style={{ backgroundColor: "#ffff", height: '75vh', float: 'left' }}>
-        <Order order={order} removeItem={removeItem}></Order>
+        <Order order={order} setOrder={setOrder}></Order>
       </Container>
     </>
   );

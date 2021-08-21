@@ -44,7 +44,6 @@ const MenuItemsContainer = ({ menu, order, setOrder }) => {
                 variant="contained"  
                 color="primary" 
                 onClick={() => handleClick(i)}
-                // onClick={() => setOrder([...order, { ...i, quanity: 1 }])}
                 >Order</Button>
             </Card>
             })}
