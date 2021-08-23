@@ -1,24 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const service = require('../services/checkouts.service')
+const checkouts = require('../services/checkouts.service')
 
-// router.post("/", async (req, res) => {
-//     try {
-//         const verifyItem = await service.getItemCheck(req.body)
-//         if (verifyItem) {
-//             res.send({ error: 'Item already exsits.' })
-//         } else {
-//             const newItem = await service.postMenuItem(req.body)
-//             res.send(newItem)
-//         }
-//     } catch (e) {
-//         console.log(e)
-//     }
-// });
+router.post("/", async (req, res) => {
+    try {
+        const newCheckout = await checkouts.postCheckout(req.body)
+        res.send(newCheckout)
+    } catch (e) {
+        console.log(e)
+        res.send({ error: `You're order still needs to be checked out.` })
+    }
+});
 
 router.get("/", async (req, res) => {
     try {
-        const result = await service.getMenus()
+        const result = await checkouts.getAllCheckouts()
         res.send(result)
     } catch (e){
         console.log(e)

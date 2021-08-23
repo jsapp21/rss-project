@@ -28,6 +28,33 @@ const Order = ({ order, setOrder }) => {
         setOrder(updatedOrder)
     };
 
+    const handleClick = () => {
+
+        // TODO: add user
+        const newItem = {
+            userId: "610dc53368fd6b5bd0a7b699",
+            orderItems: order,
+            createdOn: new Date()
+          };
+
+        const reqObj = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newItem)
+          };
+
+          fetch('/checkouts', reqObj)
+          .then(resp => resp.json())
+          .then(checkout => {
+            if (checkout.acknowledged === false) {
+                alert(`Error: ${checkout.error}`)
+            } else {
+                console.log(checkout)
+                setOrder([])
+            }
+          });
+    };
+
     return (
         <>
             <Box borderBottom={10} borderColor="#000">
@@ -46,10 +73,8 @@ const Order = ({ order, setOrder }) => {
             </Card>
             })}
 
-            {/* TODO: fix float to print correclty */}
             <Typography variant="h5" component="h2" style={{ color: 'black', textAlign: 'center', marginTop: 20}}>Total: ${totalCost}</Typography>
-            <Button variant="contained" color="primary">Check Out</Button>
-            {/* TODO: wire up pay button */}
+            <Button variant="contained" color="primary" onClick={handleClick}>Check Out</Button>
         </>
     )
 }

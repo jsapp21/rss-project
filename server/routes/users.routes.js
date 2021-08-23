@@ -18,7 +18,7 @@ const service = require('../services/users.service')
 
 router.get("/", async (req, res) => {
     try {
-        const result = await service.getMenus()
+        const result = await service.getAllUsers()
         res.send(result)
     } catch (e){
         console.log(e)

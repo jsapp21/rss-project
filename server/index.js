@@ -14,12 +14,18 @@ app.use(express.json())
 
 // base routes
 router.use(
-  '/items',
-  require('./routes/item.routes'),
-  '/checkouts',
-  require('./routes/checkouts.routes'),
   '/users',
-  require('./routes/users.routes'),
+  require('./routes/users.routes')
+);
+
+router.use(
+  '/items',
+  require('./routes/item.routes')
+);
+
+router.use(
+  '/checkouts',
+  require('./routes/checkouts.routes')
 );
 
 app.use(router)

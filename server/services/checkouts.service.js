@@ -1,7 +1,8 @@
 const mongoService = require('./mongo.service')
 
-const service = {
-    getAllCheckouts: () => mongoService.db.collection('checkouts').find().toArray()
+const checkouts = {
+    getAllCheckouts: () => mongoService.db.collection('checkouts').find().toArray(),
+    postCheckout: (req) => mongoService.db.collection('checkouts').insertOne(req)
 }
 
-module.exports = service;
+module.exports = checkouts;
