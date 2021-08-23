@@ -5,11 +5,15 @@ import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useAppStyles from '../styles/app.css';
 
-const MenuItemsContainer = ({ menu, order, setOrder }) => {
+const MenuItemsContainer = ({ menu, order, setOrder, completed, setCompleted }) => {
 
     const classes = useAppStyles();
 
     const handleClick = (i) => {
+        if (order.length === 0){
+            setCompleted(false)
+        }
+
         let itemToUpdate = order.find(orderedItem => orderedItem._id === i._id)
 
         if (!itemToUpdate){

@@ -5,7 +5,7 @@ import { Typography, Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
 
-const Order = ({ order, setOrder }) => {
+const Order = ({ order, setOrder, completed, setCompleted }) => {
 
     const classes = useOrderStyles();
     let totalCost = 0;
@@ -49,6 +49,7 @@ const Order = ({ order, setOrder }) => {
             if (checkout.acknowledged === false) {
                 alert(`Error: ${checkout.error}`)
             } else {
+                setCompleted(true)
                 console.log(checkout)
                 setOrder([])
             }
@@ -75,6 +76,7 @@ const Order = ({ order, setOrder }) => {
 
             <Typography variant="h5" component="h2" style={{ color: 'black', textAlign: 'center', marginTop: 20}}>Total: ${totalCost}</Typography>
             <Button variant="contained" color="primary" onClick={handleClick}>Check Out</Button>
+            { completed ? <Typography variant="h5" style={{ float: 'left', color: 'green' }}>Your order has been placed!</Typography> : null  }
         </>
     )
 }

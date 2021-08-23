@@ -15,6 +15,7 @@ const App = () => {
   const [form, setForm] = useState({ name: '', price: ''});
   const [menu, setMenu] = useState([]);
   const [order, setOrder] = useState([]);
+  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
     fetch('/items')
@@ -64,6 +65,8 @@ const App = () => {
     }))
   };
 
+  console.log(completed)
+
   return (
     <>
       <Container maxWidth="md" style={{ float: 'left', marginTop: 10}}>
@@ -75,11 +78,11 @@ const App = () => {
           <Button type="submit" variant="contained" color="primary" className={classes.button}>Save</Button>
       </form>
       
-      <MenuItemsContainer menu={menu} order={order} setOrder={setOrder}></MenuItemsContainer>
+      <MenuItemsContainer menu={menu} order={order} setOrder={setOrder} completed={completed} setCompleted={setCompleted}></MenuItemsContainer>
       </Container>
 
       <Container maxWidth="xs" style={{ backgroundColor: "#ffff", height: '75vh', float: 'left' }}>
-        <Order order={order} setOrder={setOrder}></Order>
+        <Order order={order} setOrder={setOrder} completed={completed} setCompleted={setCompleted}></Order>
       </Container>
     </>
   );
