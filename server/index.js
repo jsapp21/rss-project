@@ -16,6 +16,10 @@ app.use(express.json())
 router.use(
   '/items',
   require('./routes/item.routes'),
+  '/checkouts',
+  require('./routes/checkouts.routes'),
+  '/users',
+  require('./routes/users.routes'),
 );
 
 app.use(router)
