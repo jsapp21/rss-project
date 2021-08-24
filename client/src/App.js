@@ -9,6 +9,7 @@ const App = () => {
   const classes = useAppStyles();
 
   const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
   const [resturant, setResturant] = useState(''); 
   const [clicked, setClicked] = useState(false);
 
@@ -23,33 +24,31 @@ const App = () => {
   const handleChange = (e) => {
     setResturant(e.target.value)
     const user  = users.filter(user => user._id === e.target.value._id)
-    setUsers({name: user[0].name, _id: user[0]._id})
+    setUser({name: user[0].name, _id: user[0]._id})
     setClicked(!clicked)
   };
 
   return (
     <>
-    {clicked ?  
-                <Dashboard user={users}></Dashboard> 
-                : 
-                <Container maxWidth="md" style={{ float: 'left', marginTop: 10}}>
-                <Typography variant="h2" component="h2">🍳 Simple POS</Typography>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="demo-simple-select-label">Resturant</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={resturant}
-                        onChange={handleChange}
-                      >
-                        {users.map(user => {
-                          return (
-                            <MenuItem key={user._id} value={user}>{user.name}</MenuItem>
-                          )
-                        })} 
-                      </Select>
-                </FormControl>
-              </Container> }
+      <Container maxWidth="lg" style={{ margin: '20px auto'}}>
+      <Typography variant="h2" component="h2" style={{float: 'left' }}>🍳 Simple POS</Typography>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-simple-select-label">Resturant</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={resturant}
+              onChange={handleChange}
+            >
+              {users.map(user => {
+                return (
+                  <MenuItem key={user._id} value={user}>{user.name}</MenuItem>
+                )
+              })} 
+            </Select>
+      </FormControl>
+      { clicked ?  <Dashboard user={user}></Dashboard> : null }
+      </Container> 
     </>
   );
 };

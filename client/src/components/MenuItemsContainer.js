@@ -3,11 +3,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import useAppStyles from '../styles/app.css';
+import useDashboardStyles from '../styles/dashboard.css';
 
 const MenuItemsContainer = ({ menu, order, setOrder, completed, setCompleted }) => {
 
-    const classes = useAppStyles();
+    const classes = useDashboardStyles();
 
     const handleClick = (i) => {
         if (order.length === 0){
