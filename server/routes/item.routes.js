@@ -16,10 +16,15 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
+router.get([
+    "/",
+    "/:id" 
+], async (req, res) => {
     try {
-        const result = await service.getMenus()
-        res.send(result)
+        const user = { userId: req.params.id }
+        
+        const userMenuItems = await service.getMenuItems(user)
+        res.send(userMenuItems)
     } catch (e){
         console.log(e)
     }

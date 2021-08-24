@@ -5,7 +5,7 @@ import { Typography, Box } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
 
-const Order = ({ order, setOrder, completed, setCompleted }) => {
+const Order = ({ order, setOrder, completed, setCompleted, user }) => {
 
     const classes = useOrderStyles();
     let totalCost = 0;
@@ -30,9 +30,8 @@ const Order = ({ order, setOrder, completed, setCompleted }) => {
 
     const handleClick = () => {
 
-        // TODO: add user
         const newItem = {
-            userId: "610dc53368fd6b5bd0a7b699",
+            userId: user._id,
             orderItems: order,
             createdOn: new Date()
           };

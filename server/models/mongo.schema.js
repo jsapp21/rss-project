@@ -5,11 +5,13 @@ const User = {
 
 const Item = {
    "_id": ObjectID,
+   "userId": User.ObjectID,
    "name": String,
    "price": Number
 }
 
 const Order = {
+    "_id": ObjectID,
     "userId": User.ObjectID,
     "orderItems": [
         {

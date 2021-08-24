@@ -1,7 +1,7 @@
 const mongoService = require('./mongo.service')
 
 const service = {
-    getMenus: () => mongoService.db.collection('items').find().toArray(),
+    getMenuItems: (user) => mongoService.db.collection('items').find(user).toArray(),
     getItemCheck: (req) => mongoService.db.collection('items').findOne(req),
     postMenuItem: (req) => mongoService.db.collection('items').insertOne(req)
 }
