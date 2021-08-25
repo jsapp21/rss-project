@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./server.js"
+    "dev": "nodemon ./server.js",
+    "debug": "nodemon --inspect ./index.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -13,6 +14,57 @@
     "mongodb": "^4.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "eslint": "7.25.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-prettier": "3.4.0",
+    "prettier": "2.3.1"
+  },
+  "eslintConfig": {
+    "env": {
+      "jest": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
+    "ignorePatterns": [
+      "**/scripts"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "class-methods-use-this": [
+        "error",
+        {
+          "exceptMethods": [
+            "schema"
+          ]
+        }
+      ],
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allow": [
+            "_id"
+          ]
+        }
+      ],
+      "prettier/prettier": [
+        "error"
+      ]
+    }
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }
