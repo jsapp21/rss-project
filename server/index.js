@@ -1,33 +1,24 @@
-require('dotenv').config()
+/* eslint-disable no-console */
+require('dotenv').config();
 const express = require('express');
-const app = express(); 
+
+const app = express();
 const router = require('express').Router();
-const mongoService = require('./services/mongo.service')
-const cors = require('cors')
+const cors = require('cors');
+const mongoService = require('./services/mongo.service');
 
-mongoService.connect(process.env.URL, process.env.DB_NAME)
-  .then()
-  .catch(console.error)
+mongoService.connect(process.env.URL, process.env.DB_NAME).then().catch(console.error);
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 // base routes
-router.use(
-  '/users',
-  require('./routes/users.routes')
-);
+router.use('/menus', require('./routes/menus.routes'));
 
-router.use(
-  '/items',
-  require('./routes/item.routes')
-);
+router.use('/items', require('./routes/items.routes'));
 
-router.use(
-  '/checkouts',
-  require('./routes/checkouts.routes')
-);
+router.use('/orders', require('./routes/orders.routes'));
 
-app.use(router)
+app.use(router);
 
-app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`)); 
+app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`));

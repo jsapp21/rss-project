@@ -16,4 +16,15 @@ export default makeStyles({
     position: 'absolute',
     bottom: 0,
   },
+  deleteButton: {
+    margin: '5px 0 10px 5px',
+    // position: 'absolute',
+    // float: 'left',
+    bottom: 0,
+  },
+  updateButton: {
+    margin: '5px 0 10px 5px',
+    // position: 'absolute',
+    bottom: 0,
+  },
 });

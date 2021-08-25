@@ -1,41 +1,53 @@
+/* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Button, Menu, MenuItem } from '@material-ui/core';
-import MenuItemsContainer from './MenuItemsContainer';
-import Order from './Order';
+import { Button, Menu, MenuItem } from '@material-ui/core';
+import ReportsContainer from './ReportsContainer';
+import OrderMenuItems from './OrderMenuItems';
 import ItemForm from './ItemForm';
 
-const Dashboard = ({ user }) => {
-  const [menu, setMenu] = useState([]);
+const Dashboard = ({ menu }) => {
+  const [menuItems, setMenuItems] = useState([]);
   const [order, setOrder] = useState([]);
   const [completed, setCompleted] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [orderPage, setOrderPage] = useState(false);
+  const [orderPage, setOrderPage] = useState(true);
+  const [addMenuItemPage, setAddMenuItemPage] = useState(false);
+  const [reportPage, setReportPage] = useState(false);
 
   useEffect(() => {
-    fetch(`/items/${user._id}`)
+    fetch(`/items/${menu._id}`)
       .then((res) => res.json())
-      .then((menu) => {
-        setMenu(menu);
+      .then((menuItems) => {
+        setMenuItems(menuItems);
       });
-  }, [user._id]);
+  }, [menu._id]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = (e) => {
-    if (e.currentTarget.id === 'Add Menu Item') {
-      setOrderPage(!orderPage);
+    if (e.currentTarget.id === 'Order') {
+      setAddMenuItemPage(false);
+      setOrderPage(true);
+      setReportPage(false);
+    } else if (e.currentTarget.id === 'Add Menu Item') {
+      setAddMenuItemPage(true);
+      setOrderPage(false);
+      setReportPage(false);
+    } else if (e.currentTarget.id === 'Reports') {
+      setAddMenuItemPage(false);
+      setOrderPage(false);
+      setReportPage(true);
     }
     setAnchorEl(null);
   };
 
   return (
     <div className="">
-      {/* TODO: Wire up the menu */}
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
         Options
       </Button>
@@ -52,21 +64,21 @@ const Dashboard = ({ user }) => {
       </Menu>
 
       {orderPage ? (
-        <ItemForm menu={menu} setMenu={setMenu} user={user} />
-      ) : (
-        <Container maxWidth="xl" style={{ float: 'left' }}>
-          <div className="grid gap-1 grid-cols-2">
-            <MenuItemsContainer
-              menu={menu}
-              order={order}
-              setOrder={setOrder}
-              completed={completed}
-              setCompleted={setCompleted}
-            />
-            <Order order={order} setOrder={setOrder} completed={completed} setCompleted={setCompleted} user={user} />
-          </div>
-        </Container>
-      )}
+        <OrderMenuItems
+          menu={menu}
+          menuItems={menuItems}
+          order={order}
+          setOrder={setOrder}
+          completed={completed}
+          setCompleted={setCompleted}
+        />
+      ) : null}
+
+      {addMenuItemPage ? (
+        <ItemForm menuItems={menuItems} setMenuItems={setMenuItems} menu={menu} addMenuItemPage={addMenuItemPage} />
+      ) : null}
+
+      {reportPage ? <ReportsContainer /> : null}
     </div>
   );
 };
@@ -74,5 +86,5 @@ const Dashboard = ({ user }) => {
 export default Dashboard;
 
 Dashboard.propTypes = {
-  user: PropTypes.string.isRequired,
+  menu: PropTypes.shape({ name: PropTypes.string, _id: PropTypes.string }).isRequired,
 };

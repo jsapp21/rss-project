@@ -1,29 +1,31 @@
-const User = {
-    "_id": ObjectID,
-    "name": String
-}
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+const Menu = {
+  _id: ObjectID,
+  name: String,
+};
 
 const Item = {
-   "_id": ObjectID,
-   "userId": User.ObjectID,
-   "name": String,
-   "price": Number
-}
+  _id: ObjectID,
+  menuId: Menu.ObjectID,
+  name: String,
+  price: Number,
+};
 
 const Order = {
-    "_id": ObjectID,
-    "userId": User.ObjectID,
-    "orderItems": [
-        {
-          "menuId": Item.ObjectID,
-          "price": Number,
-          "quanity": Number,
-        },
-        {
-            "menuId": Item.ObjectID,
-            "price": Number,
-            "quanity": Number
-        }
-    ],
-    "createdOn": new Date()
-}
+  _id: ObjectID,
+  menuId: Menu.ObjectID,
+  orderItems: [
+    {
+      itemId: Item.ObjectID,
+      price: Number,
+      quanity: Number,
+    },
+    {
+      itemId: Item.ObjectID,
+      price: Number,
+      quanity: Number,
+    },
+  ],
+  createdOn: new Date(),
+};

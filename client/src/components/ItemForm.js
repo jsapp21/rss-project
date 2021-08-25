@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Input, Button } from '@material-ui/core';
 import useDashboardStyles from '../styles/dashboard.css';
+import MenuItems from './MenuItems';
 
-const ItemForm = ({ menu, setMenu, user }) => {
+const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
   const classes = useDashboardStyles();
 
   const [form, setForm] = useState({ name: '', price: '' });
@@ -17,7 +18,7 @@ const ItemForm = ({ menu, setMenu, user }) => {
       alert('Please fill out menu item and price');
     } else {
       const newItem = {
-        userId: user._id,
+        menuId: menu._id,
         name: form.name,
         price: parseFloat(form.price),
       };
@@ -30,13 +31,13 @@ const ItemForm = ({ menu, setMenu, user }) => {
 
       fetch('/items', reqObj)
         .then((resp) => resp.json())
-        .then((item) => {
-          if (item.acknowledged === false) {
+        .then((menuItem) => {
+          if (menuItem.acknowledged === false) {
             alert('Error: Item was not saved. Try again.');
-          } else if (item.error) {
-            alert(`Error: ${item.error}`);
+          } else if (menuItem.error) {
+            alert(`Error: ${menuItem.error}`);
           } else {
-            setMenu([...menu, { ...newItem, _id: item.insertedId }]);
+            setMenuItems([...menuItems, { ...newItem, _id: menuItem.insertedId }]);
             setForm({ name: '', price: '' });
           }
         });
@@ -51,7 +52,7 @@ const ItemForm = ({ menu, setMenu, user }) => {
   };
 
   return (
-    <div className="clear-both">
+    <div className="clear-both text-center">
       <Typography variant="h5" component="h2">
         Add New Menu Item:
       </Typography>
@@ -75,15 +76,17 @@ const ItemForm = ({ menu, setMenu, user }) => {
           Save
         </Button>
       </form>
+
+      <MenuItems menuItems={menuItems} addMenuItemPage={addMenuItemPage} />
     </div>
-    // TODO: display menu items as able to update
   );
 };
 
 export default ItemForm;
 
 ItemForm.propTypes = {
-  menu: PropTypes.arrayOf.isRequired,
-  setMenu: PropTypes.arrayOf.isRequired,
-  user: PropTypes.shape.isRequired,
+  menuItems: PropTypes.arrayOf().isRequired,
+  setMenuItems: PropTypes.arrayOf.isRequired,
+  menu: PropTypes.shape({ name: PropTypes.string, _id: PropTypes.string }).isRequired,
+  addMenuItemPage: PropTypes.bool.isRequired,
 };
