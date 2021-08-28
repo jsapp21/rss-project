@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -7,7 +8,7 @@ import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useDashboardStyles from '../styles/dashboard.css';
 
-const MenuItems = ({ menuItems, order, setOrder, completed, setCompleted, addMenuItemPage }) => {
+const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCompleted, addMenuItemPage }) => {
   const classes = useDashboardStyles();
 
   const handleClick = (i) => {
@@ -34,6 +35,20 @@ const MenuItems = ({ menuItems, order, setOrder, completed, setCompleted, addMen
     return undefined;
   };
 
+  const handleOutOfStock = (menuItem) => {
+    console.log('i am out of stock', menuItem);
+  };
+
+  const handleDelete = (menuItem) => {
+    const updatedMenuItems = menuItems.filter((item) => item._id !== menuItem._id);
+    fetch(`/items/delete/${menuItem._id}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        alert(data.message);
+        setMenuItems(updatedMenuItems);
+      });
+  };
+
   return (
     <div className="grid gap-1 grid-cols-3">
       {menuItems.map((menuItem) => {
@@ -49,22 +64,20 @@ const MenuItems = ({ menuItems, order, setOrder, completed, setCompleted, addMen
             </CardContent>
             {addMenuItemPage ? (
               <div className="clear-both grid gap-10 grid-cols-2">
-                {/* TODO: Wire up remove and update button */}
+                {/* TODO: Wire up out of stock button */}
                 <Button
                   size="small"
                   className={classes.deleteButton}
                   color="secondary"
-                  // onClick={() => handleClick(menuItem)}
-                >
-                  Remove
+                  onClick={() => handleDelete(menuItem)}>
+                  Delete
                 </Button>
                 <Button
                   size="small"
                   className={classes.orderButton}
                   color="primary"
-                  // onClick={() => handleClick(menuItem)}
-                >
-                  Update
+                  onClick={() => handleOutOfStock(menuItem)}>
+                  Out of Stock
                 </Button>
               </div>
             ) : (
@@ -106,5 +119,6 @@ MenuItems.propTypes = {
   completed: PropTypes.bool.isRequired,
   setCompleted: PropTypes.bool.isRequired,
   menuItems: PropTypes.arrayOf.isRequired,
+  setMenuItems: PropTypes.arrayOf.isRequired,
   addMenuItemPage: PropTypes.bool.isRequired,
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-shadow */
 /* eslint-disable no-alert */
 import React, { useState } from 'react';
@@ -77,7 +78,7 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
         </Button>
       </form>
 
-      <MenuItems menuItems={menuItems} addMenuItemPage={addMenuItemPage} />
+      <MenuItems menuItems={menuItems} setMenuItems={setMenuItems} addMenuItemPage={addMenuItemPage} />
     </div>
   );
 };
