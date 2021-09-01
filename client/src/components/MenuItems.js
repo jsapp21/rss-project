@@ -37,6 +37,9 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
 
   const handleOutOfStock = (menuItem) => {
     console.log('i am out of stock', menuItem);
+    fetch(`items/outofstock/${menuItem._id}`)
+      .then((resp) => resp.json())
+      .then((data) => console.log(data));
   };
 
   const handleDelete = (menuItem) => {
@@ -44,8 +47,12 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
     fetch(`/items/delete/${menuItem._id}`)
       .then((resp) => resp.json())
       .then((data) => {
-        alert(data.message);
-        setMenuItems(updatedMenuItems);
+        if (data.error) {
+          alert(data.error);
+        } else {
+          alert(data.message);
+          setMenuItems(updatedMenuItems);
+        }
       });
   };
 
@@ -64,7 +71,6 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
             </CardContent>
             {addMenuItemPage ? (
               <div className="clear-both grid gap-10 grid-cols-2">
-                {/* TODO: Wire up out of stock button */}
                 <Button
                   size="small"
                   className={classes.deleteButton}

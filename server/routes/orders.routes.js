@@ -2,12 +2,12 @@
 const express = require('express');
 
 const router = express.Router();
-const checkouts = require('../services/orders.service');
+const orders = require('../services/orders.service');
 
 router.post('/', async (req, res) => {
   try {
-    const newCheckout = await checkouts.postOrder(req.body);
-    res.send(newCheckout);
+    const newOrder = await orders.postOrder(req.body);
+    res.send(newOrder);
   } catch (e) {
     console.log(e);
     res.send({ error: `You're order still needs to be checked out.` });
@@ -16,8 +16,8 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const result = await checkouts.getAllOrders();
-    res.send(result);
+    const allOrders = await orders.getAllOrders();
+    res.send(allOrders);
   } catch (e) {
     console.log(e);
   }

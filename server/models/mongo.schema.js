@@ -10,6 +10,7 @@ const Item = {
   menuId: Menu.ObjectID,
   name: String,
   price: Number,
+  outOfStock: false,
 };
 
 const Order = {
@@ -29,3 +30,8 @@ const Order = {
   ],
   createdOn: new Date(),
 };
+
+// findAndModify({ query: {"orderItems.itemId": "61268fd994e188d819d9ec03" }, update: [{ $set: { "orderItems.outOfStock": true } }], new: true })
+// updates all items both
+
+// .findAndModify({ query: {"orderItems.itemId": "61268fd994e188d819d9ec03" }, update: [{ $set: { "orderItems.$[elem].outOfStock": true } }], arrayFilters: [{ "elem.itemId": { $eq: "61268fd994e188d819d9ec03" } }] }) 

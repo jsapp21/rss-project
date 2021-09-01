@@ -1,6 +1,6 @@
 const mongoService = require('./mongo.service');
 
-const checkouts = {
+const orders = {
   getAllOrders: () => mongoService.db.collection('orders').find().toArray(),
   postOrder: async (req) => {
     const response = await mongoService.db.collection('orders').insertOne(req);
@@ -8,4 +8,5 @@ const checkouts = {
   },
 };
 
-module.exports = checkouts;
+module.exports = orders;
+// db.getCollection('orders').find({"orderItems": { "itemId": "61268fed94e188d819d9ec04" }})
