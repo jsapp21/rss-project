@@ -48,7 +48,7 @@ router.get('/delete/:id', async (req, res, next) => {
   try {
     const validId = ObjectId.isValid(req.params.id);
     if (!validId) {
-      throw new NotFound('bad request');
+      throw new NotFound('not found');
     }
     const response = await service.deleteMenuItem(req.params.id);
     if (!response || response.deletedCount === 0) {

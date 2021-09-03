@@ -46,14 +46,15 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
     const updatedMenuItems = menuItems.filter((item) => item._id !== menuItem._id);
     fetch(`/items/delete/${menuItem._id}`)
       .then((resp) => resp.json())
-      .then((data) => {
-        if (data.error) {
-          alert(data.error);
-        } else {
-          alert(data.message);
-          setMenuItems(updatedMenuItems);
-        }
-      });
+      .then((data) => console.log(data));
+    // .then((data) => {
+    //   if (data.error) {
+    //     alert(data.error);
+    //   } else {
+    //     alert(data.message);
+    //     setMenuItems(updatedMenuItems);
+    //   }
+    // });
   };
 
   return (

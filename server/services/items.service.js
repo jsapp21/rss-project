@@ -9,7 +9,7 @@ const service = {
   postMenuItem: (item) => mongoService.db.collection('items').insertOne(item),
   deleteMenuItem: (id) => {
     const result = mongoService.db.collection('items').deleteOne({ _id: ObjectId(id) });
-    debugger;
+    return result;
   },
   updateOutOfStock: (item) => {
     const outOfStockItem = mongoService.db

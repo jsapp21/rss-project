@@ -4,14 +4,12 @@
 /* eslint-disable max-classes-per-file */
 class ServerError extends Error {
   getCode() {
-    debugger;
     return 500;
   }
 }
 
 class NotFound extends Error {
   getCode() {
-    debugger;
     return 404;
   }
 }

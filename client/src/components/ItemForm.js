@@ -22,6 +22,7 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
         menuId: menu._id,
         name: form.name,
         price: parseFloat(form.price),
+        outOfStock: false,
       };
 
       const reqObj = {
