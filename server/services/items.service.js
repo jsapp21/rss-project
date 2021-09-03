@@ -7,7 +7,10 @@ const service = {
   getMenuItems: (menu) => mongoService.db.collection('items').find(menu).toArray(),
   getItemCheck: (item) => mongoService.db.collection('items').findOne({ name: { $eq: item.name } }),
   postMenuItem: (item) => mongoService.db.collection('items').insertOne(item),
-  deleteMenuItem: (item) => mongoService.db.collection('items').deleteOne({ _id: ObjectId(item._id) }),
+  deleteMenuItem: (id) => {
+    const result = mongoService.db.collection('items').deleteOne({ _id: ObjectId(id) });
+    debugger;
+  },
   updateOutOfStock: (item) => {
     const outOfStockItem = mongoService.db
       .collection('items')
