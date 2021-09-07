@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
 
 const service = {
@@ -8,20 +8,18 @@ const service = {
   getItemCheck: (item) => mongoService.db.collection('items').findOne({ name: { $eq: item.name } }),
   postMenuItem: (item) => mongoService.db.collection('items').insertOne(item),
   deleteMenuItem: (id) => {
-    const result = mongoService.db.collection('items').deleteOne({ _id: ObjectId(id) });
+    const result = mongoService.db.collection('items').deleteOne({ _id: new ObjectId(id) });
     return result;
   },
   updateOutOfStock: (item) => {
-    const outOfStockItem = mongoService.db
+    const result = mongoService.db
       .collection('items')
-      .updateOne({ _id: ObjectId(item._id) }, { $set: { outOfStock: true } });
-    if (outOfStockItem) {
-      const response = mongoService.db
-        .collection('orders')
-        .find({ 'orderItems.itemId': { $eq: item._id } })
-        .toArray();
-      console.log(response);
-    }
+      .findOneAndUpdate(
+        { _id: new ObjectId(item._id) },
+        { $set: { outOfStock: item.outOfStock } },
+        { returnDocument: 'after' },
+      );
+    return result;
   },
 };
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-else-return */
+/* eslint-disable no-debugger */
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 import React from 'react';
@@ -36,25 +38,45 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
   };
 
   const handleOutOfStock = (menuItem) => {
-    console.log('i am out of stock', menuItem);
-    fetch(`items/outofstock/${menuItem._id}`)
+    const updatedItem = {
+      ...menuItem,
+      outOfStock: !menuItem.outOfStock,
+    };
+
+    const reqObj = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedItem),
+    };
+
+    fetch(`items/outofstock/`, reqObj)
       .then((resp) => resp.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        const updatedMenuItems = menuItems.map((item) => {
+          if (item._id === data._id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+        setMenuItems(updatedMenuItems);
+      });
   };
+
+  console.log(menuItems);
 
   const handleDelete = (menuItem) => {
     const updatedMenuItems = menuItems.filter((item) => item._id !== menuItem._id);
     fetch(`/items/delete/${menuItem._id}`)
       .then((resp) => resp.json())
-      .then((data) => console.log(data));
-    // .then((data) => {
-    //   if (data.error) {
-    //     alert(data.error);
-    //   } else {
-    //     alert(data.message);
-    //     setMenuItems(updatedMenuItems);
-    //   }
-    // });
+      .then((data) => {
+        if (data.status !== 200) {
+          alert(data.message);
+        } else {
+          alert(data.message);
+          setMenuItems(updatedMenuItems);
+        }
+      });
   };
 
   return (
@@ -84,11 +106,12 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
                   className={classes.orderButton}
                   color="primary"
                   onClick={() => handleOutOfStock(menuItem)}>
-                  Out of Stock
+                  {menuItem.outOfStock ? 'Out of Stock' : 'Instock'}
                 </Button>
               </div>
             ) : (
               <Button
+                disabled={menuItem.outOfStock}
                 size="small"
                 className={classes.orderButton}
                 variant="contained"
