@@ -78,7 +78,7 @@ const Dashboard = ({ menu }) => {
         <ItemForm menuItems={menuItems} setMenuItems={setMenuItems} menu={menu} addMenuItemPage={addMenuItemPage} />
       ) : null}
 
-      {reportPage ? <ReportsContainer /> : null}
+      {reportPage ? <ReportsContainer menuItems={menuItems} /> : null}
     </div>
   );
 };

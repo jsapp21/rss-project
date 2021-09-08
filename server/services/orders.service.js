@@ -6,6 +6,7 @@ const orders = {
     const response = await mongoService.db.collection('orders').insertOne(req);
     return mongoService.db.collection('orders').findOne({ _id: response.insertedId });
   },
+  lookUpOrders: () => mongoService.db.collection('orders').find().toArray(),
 };
 
 module.exports = orders;
