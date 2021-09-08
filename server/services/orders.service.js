@@ -10,4 +10,9 @@ const orders = {
 };
 
 module.exports = orders;
-// db.getCollection('orders').find({"orderItems": { "itemId": "61268fed94e188d819d9ec04" }})
+
+// works
+// db.getCollection('items').aggregate([{ $lookup: { from: "orders", localField: "price", foreignField: "orderItems.price", as: "orders_per_item" }}])
+
+// does not work
+// db.getCollection('items').aggregate([{ $lookup: { from: "orders", localField: "_id", foreignField: "orderItems.itemId", as: "orders_per_item" }}])

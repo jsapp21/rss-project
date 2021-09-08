@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import ReportsContainer from './ReportsContainer';
-import OrderMenuItems from './OrderMenuItems';
+import MenuItems from './MenuItems';
+import Order from './Order';
 import ItemForm from './ItemForm';
+import { menuPropTypes } from '../propTypes/schema';
 
 const Dashboard = ({ menu }) => {
   const [menuItems, setMenuItems] = useState([]);
@@ -64,14 +65,16 @@ const Dashboard = ({ menu }) => {
       </Menu>
 
       {orderPage ? (
-        <OrderMenuItems
-          menu={menu}
-          menuItems={menuItems}
-          order={order}
-          setOrder={setOrder}
-          completed={completed}
-          setCompleted={setCompleted}
-        />
+        <div className="clear-both grid gap-10 grid-cols-2">
+          <MenuItems
+            menuItems={menuItems}
+            order={order}
+            setOrder={setOrder}
+            completed={completed}
+            setCompleted={setCompleted}
+          />
+          <Order order={order} setOrder={setOrder} completed={completed} setCompleted={setCompleted} menu={menu} />
+        </div>
       ) : null}
 
       {addMenuItemPage ? (
@@ -83,8 +86,8 @@ const Dashboard = ({ menu }) => {
   );
 };
 
-export default Dashboard;
-
 Dashboard.propTypes = {
-  menu: PropTypes.shape({ name: PropTypes.string, _id: PropTypes.string }).isRequired,
+  menu: menuPropTypes.isRequired,
 };
+
+export default Dashboard;

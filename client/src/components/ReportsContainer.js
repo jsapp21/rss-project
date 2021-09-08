@@ -17,14 +17,12 @@ const ReportsContainer = ({ menuItems }) => {
       .then((data) => console.log(data));
   };
 
-  console.log(menuItems);
-
   return (
     <div className="clear-both">
       <p>Display Orders:</p>
       {menuItems.map((item) => {
         return (
-          <Button variant="contained" onClick={() => handleClick(item)}>
+          <Button variant="contained" key={item._id} onClick={() => handleClick(item)}>
             {item.name}
           </Button>
         );
@@ -33,8 +31,16 @@ const ReportsContainer = ({ menuItems }) => {
   );
 };
 
-export default ReportsContainer;
-
 ReportsContainer.propTypes = {
-  menuItems: PropTypes.arrayOf.isRequired,
+  menuItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      menuId: PropTypes.string,
+      name: PropTypes.string,
+      price: PropTypes.number,
+      outOfStock: PropTypes.bool,
+    }),
+  ).isRequired,
 };
+
+export default ReportsContainer;

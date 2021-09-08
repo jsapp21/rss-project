@@ -9,8 +9,9 @@ import CardContent from '@material-ui/core/CardContent';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useDashboardStyles from '../styles/dashboard.css';
+import { itemPropTypes } from '../propTypes/schema';
 
-const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCompleted, addMenuItemPage }) => {
+const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, addMenuItemPage }) => {
   const classes = useDashboardStyles();
 
   const handleClick = (i) => {
@@ -63,8 +64,6 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
       });
   };
 
-  console.log(menuItems);
-
   const handleDelete = (menuItem) => {
     const updatedMenuItems = menuItems.filter((item) => item._id !== menuItem._id);
     fetch(`/items/delete/${menuItem._id}`)
@@ -78,6 +77,8 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
         }
       });
   };
+
+  console.log(menuItems);
 
   return (
     <div className="grid gap-1 grid-cols-3">
@@ -127,28 +128,21 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, completed, setCom
   );
 };
 
-export default MenuItems;
-
 MenuItems.propTypes = {
-  order: PropTypes.arrayOf(
-    PropTypes.shape({
-      menuId: PropTypes.string,
-      price: PropTypes.number,
-      quanity: PropTypes.number,
-      _id: PropTypes.string,
-    }),
-  ).isRequired,
-  setOrder: PropTypes.arrayOf(
-    PropTypes.shape({
-      menuId: PropTypes.string,
-      price: PropTypes.number,
-      quanity: PropTypes.number,
-      _id: PropTypes.string,
-    }),
-  ).isRequired,
-  completed: PropTypes.bool.isRequired,
-  setCompleted: PropTypes.bool.isRequired,
-  menuItems: PropTypes.arrayOf.isRequired,
-  setMenuItems: PropTypes.arrayOf.isRequired,
-  addMenuItemPage: PropTypes.bool.isRequired,
+  order: PropTypes.arrayOf(itemPropTypes),
+  setOrder: PropTypes.func,
+  setCompleted: PropTypes.func,
+  menuItems: PropTypes.arrayOf(itemPropTypes).isRequired,
+  setMenuItems: PropTypes.func,
+  addMenuItemPage: PropTypes.bool,
 };
+
+MenuItems.defaultProps = {
+  order: [],
+  setOrder: null,
+  setCompleted: null,
+  setMenuItems: null,
+  addMenuItemPage: false,
+};
+
+export default MenuItems;

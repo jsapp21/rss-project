@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { Typography, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
+import { itemPropTypes, menuPropTypes } from '../propTypes/schema';
 
 const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
   const classes = useOrderStyles();
@@ -107,12 +108,12 @@ const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
   );
 };
 
-export default Order;
-
 Order.propTypes = {
-  order: PropTypes.arrayOf.isRequired,
-  setOrder: PropTypes.arrayOf.isRequired,
+  order: PropTypes.arrayOf(itemPropTypes).isRequired,
+  setOrder: PropTypes.func.isRequired,
   completed: PropTypes.bool.isRequired,
-  setCompleted: PropTypes.bool.isRequired,
-  menu: PropTypes.shape.isRequired,
+  setCompleted: PropTypes.func.isRequired,
+  menu: menuPropTypes.isRequired,
 };
+
+export default Order;

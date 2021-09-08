@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Typography, Input, Button } from '@material-ui/core';
 import useDashboardStyles from '../styles/dashboard.css';
 import MenuItems from './MenuItems';
+import { itemPropTypes, menuPropTypes } from '../propTypes/schema';
 
 const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
   const classes = useDashboardStyles();
@@ -84,11 +85,11 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
   );
 };
 
-export default ItemForm;
-
 ItemForm.propTypes = {
-  menuItems: PropTypes.arrayOf().isRequired,
-  setMenuItems: PropTypes.arrayOf.isRequired,
-  menu: PropTypes.shape({ name: PropTypes.string, _id: PropTypes.string }).isRequired,
+  menuItems: PropTypes.arrayOf(itemPropTypes).isRequired,
+  setMenuItems: PropTypes.func.isRequired,
+  menu: menuPropTypes.isRequired,
   addMenuItemPage: PropTypes.bool.isRequired,
 };
+
+export default ItemForm;
