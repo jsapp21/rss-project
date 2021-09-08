@@ -3,7 +3,7 @@
 const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
 
-const service = {
+const items = {
   getMenuItems: (menu) => mongoService.db.collection('items').find(menu).toArray(),
   getItemCheck: (item) => mongoService.db.collection('items').findOne({ name: { $eq: item.name } }),
   postMenuItem: (item) => mongoService.db.collection('items').insertOne(item),
@@ -21,6 +21,18 @@ const service = {
       );
     return result;
   },
+  lookUpOrders: () =>
+    mongoService.db
+      .collection('items')
+      .aggregate([
+        { $lookup: { from: 'orders', localField: '_id', foreignField: 'orderItems.itemId', as: 'item_orders' } },
+      ]),
 };
 
-module.exports = service;
+module.exports = items;
+
+// works
+// db.getCollection('items').aggregate([{ $lookup: { from: "orders", localField: "price", foreignField: "orderItems.price", as: "orders_per_item" }}])
+
+// does not work
+// db.getCollection('items').aggregate([{ $lookup: { from: "orders", localField: "_id", foreignField: "orderItems.itemId", as: "orders_per_item" }}])

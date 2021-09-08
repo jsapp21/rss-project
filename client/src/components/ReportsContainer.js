@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
+import { itemPropTypes } from '../propTypes/schema';
 
 const ReportsContainer = ({ menuItems }) => {
   useEffect(() => {
@@ -32,15 +33,7 @@ const ReportsContainer = ({ menuItems }) => {
 };
 
 ReportsContainer.propTypes = {
-  menuItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string,
-      menuId: PropTypes.string,
-      name: PropTypes.string,
-      price: PropTypes.number,
-      outOfStock: PropTypes.bool,
-    }),
-  ).isRequired,
+  menuItems: PropTypes.arrayOf(itemPropTypes).isRequired,
 };
 
 export default ReportsContainer;
