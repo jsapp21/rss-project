@@ -31,14 +31,9 @@ const items = {
       .aggregate([
         { $match: { _id: new ObjectId(id) } },
         { $lookup: { from: 'orders', localField: '_id', foreignField: 'orderItems.itemId', as: 'orders_per_item' } },
+        { $addFields: { orderCount: { $size: '$orders_per_item' } } },
       ])
       .toArray(),
 };
 
 module.exports = items;
-
-// works
-// db.getCollection('items').aggregate([{ $lookup: { from: "orders", localField: "price", foreignField: "orderItems.price", as: "orders_per_item" }}])
-
-// does not work
-// db.getCollection('items').aggregate([{ $lookup: { from: "orders", localField: "_id", foreignField: "orderItems.itemId", as: "orders_per_item" }}])

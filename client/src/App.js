@@ -35,7 +35,7 @@ const App = () => {
           🍳 Simple POS
         </Typography>
         <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Resturant</InputLabel>
+          <InputLabel id="demo-simple-select-label">Menu</InputLabel>
           <Select labelId="demo-simple-select-label" id="demo-simple-select" value={resturant} onChange={handleChange}>
             {menus.map((menu) => {
               return (

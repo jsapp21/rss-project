@@ -2,12 +2,6 @@
 
 Reporting Page
 
-$lookup - agg pipeline
-- pull from two different collections
-- how many times a item has been ordered
-
-- display which orders have a "burrito" on the order
-
 - update out of stock: 
     - update already ordered items to be out of stock
     - do a transations for updatedOutOfStock and updatedOrdersOutOfStocks
@@ -20,3 +14,4 @@ React
 - useMemo
 - useContext
 
+- fix: menu switches

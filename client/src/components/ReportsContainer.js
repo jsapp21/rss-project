@@ -5,7 +5,7 @@ import { Button } from '@material-ui/core';
 import { itemPropTypes } from '../propTypes/schema';
 
 const ReportsContainer = ({ menuItems }) => {
-  const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState(null);
 
   // useEffect(() => {
   //   fetch('/orders/')
@@ -16,14 +16,13 @@ const ReportsContainer = ({ menuItems }) => {
   const handleClick = (item) => {
     fetch(`/items/${item._id}/orders/`)
       .then((resp) => resp.json())
-      .then((orders) => setReports(orders[0].orders_per_item));
+      .then((orders) => setReports(orders[0]));
   };
 
   console.log(reports, 'reports');
 
   return (
     <div className="clear-both">
-      <p>Display Orders:</p>
       {menuItems.map((item) => {
         return (
           <Button variant="contained" key={item._id} onClick={() => handleClick(item)}>
@@ -31,6 +30,11 @@ const ReportsContainer = ({ menuItems }) => {
           </Button>
         );
       })}
+      {reports ? (
+        <p>
+          {reports.name} appears on {reports.orderCount} orders.
+        </p>
+      ) : null}
     </div>
   );
 };
