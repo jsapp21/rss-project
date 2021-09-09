@@ -7,9 +7,6 @@ $lookup - agg pipeline
 - how many times a item has been ordered
 
 - display which orders have a "burrito" on the order
-- PropTypes
-
-- fix: itemId to ObjectId()
 
 - update out of stock: 
     - update already ordered items to be out of stock

@@ -4,7 +4,11 @@ const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
 
 const items = {
-  getMenuItems: (menu) => mongoService.db.collection('items').find(menu).toArray(),
+  getMenuItems: (id) =>
+    mongoService.db
+      .collection('items')
+      .find({ menuId: new ObjectId(id) })
+      .toArray(),
   getItemCheck: (item) => mongoService.db.collection('items').findOne({ name: { $eq: item.name } }),
   postMenuItem: (item) => mongoService.db.collection('items').insertOne(item),
   deleteMenuItem: (id) => {
@@ -21,12 +25,14 @@ const items = {
       );
     return result;
   },
-  lookUpOrders: () =>
+  lookUpOrders: (id) =>
     mongoService.db
       .collection('items')
       .aggregate([
-        { $lookup: { from: 'orders', localField: '_id', foreignField: 'orderItems.itemId', as: 'item_orders' } },
-      ]),
+        { $match: { _id: new ObjectId(id) } },
+        { $lookup: { from: 'orders', localField: '_id', foreignField: 'orderItems.itemId', as: 'orders_per_item' } },
+      ])
+      .toArray(),
 };
 
 module.exports = items;

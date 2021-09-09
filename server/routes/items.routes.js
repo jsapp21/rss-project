@@ -14,7 +14,13 @@ router.post('/', async (req, res, next) => {
     if (verifyItem) {
       res.send({ error: 'Item already exsits.' });
     } else {
-      const newItem = await items.postMenuItem(req.body);
+      const request = {
+        menuId: new ObjectId(req.body.menuId),
+        name: req.body.name,
+        price: req.body.price,
+        outOfStock: req.body.outOfStock,
+      };
+      const newItem = await items.postMenuItem(request);
       res.send(newItem);
     }
   } catch (err) {
@@ -24,8 +30,7 @@ router.post('/', async (req, res, next) => {
 
 router.get(['/', '/:id'], async (req, res, next) => {
   try {
-    const menu = { menuId: req.params.id };
-    const menuItems = await items.getMenuItems(menu);
+    const menuItems = await items.getMenuItems(req.params.id);
     res.send(menuItems);
   } catch (err) {
     next(err);
@@ -61,10 +66,13 @@ router.get('/delete/:id', async (req, res, next) => {
   }
 });
 
-router.get('/:id/orders', async (req, res) => {
-  debugger;
+router.get('/:id/orders/', async (req, res) => {
   try {
-    const lookUpOrders = await items.lookUpOrders();
+    const validId = ObjectId.isValid(req.params.id);
+    if (!validId) {
+      throw new NotFound('not found');
+    }
+    const lookUpOrders = await items.lookUpOrders(req.params.id);
     res.send(lookUpOrders);
   } catch (e) {
     console.log(e);

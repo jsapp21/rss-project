@@ -1,22 +1,25 @@
 /* eslint-disable no-console */
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import { itemPropTypes } from '../propTypes/schema';
 
 const ReportsContainer = ({ menuItems }) => {
-  useEffect(() => {
-    fetch('/orders/')
-      .then((resp) => resp.json())
-      .then((orders) => console.log(orders, 'orders'));
-  }, []);
+  const [reports, setReports] = useState([]);
+
+  // useEffect(() => {
+  //   fetch('/orders/')
+  //     .then((resp) => resp.json())
+  //     .then((orders) => console.log(orders, 'orders'));
+  // }, []);
 
   const handleClick = (item) => {
-    console.log('i am clicked', item);
-    fetch(`/orders/${item._id}`)
+    fetch(`/items/${item._id}/orders/`)
       .then((resp) => resp.json())
-      .then((data) => console.log(data));
+      .then((orders) => setReports(orders[0].orders_per_item));
   };
+
+  console.log(reports, 'reports');
 
   return (
     <div className="clear-both">

@@ -43,7 +43,6 @@ const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
     const newOrder = {
       menuId: menu._id,
       orderItems: updatedOrderItemIds,
-      createdOn: new Date(),
     };
 
     const reqObj = {

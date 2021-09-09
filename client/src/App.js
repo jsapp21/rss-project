@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React, { useEffect, useState } from 'react';
 import { Typography, Container, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
@@ -22,8 +23,8 @@ const App = () => {
 
   const handleChange = (e) => {
     setResturant(e.target.value);
-    const menu = menus.filter((user) => user._id === e.target.value._id);
-    setMenu({ name: menu[0].name, _id: menu[0]._id });
+    const selectedMenu = menus.filter((menu) => menu._id === e.target.value._id);
+    setMenu({ name: selectedMenu[0].name, _id: selectedMenu[0]._id });
     setClicked(!clicked);
   };
 
