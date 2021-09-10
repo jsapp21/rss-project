@@ -37,28 +37,16 @@ router.get(['/', '/:id'], async (req, res, next) => {
   }
 });
 
-// router.post('/outofstock/', async (req, res, next) => {
-//   try {
-//     const validId = ObjectId.isValid(req.body._id);
-//     if (!validId) {
-//       throw new NotFound('not found');
-//     }
-//     const response = await items.updateOutOfStock(req.body);
-//     res.send(response.value);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
 router.post('/outofstock/', async (req, res, next) => {
   try {
-    debugger;
     const validId = ObjectId.isValid(req.body._id);
     if (!validId) {
       throw new NotFound('not found');
     }
     const response = await items.updateOutOfStock(req.body);
-    debugger;
+    if (!response) {
+      throw new ServerError('The transaction was aborted due to an server error.');
+    }
     res.send(response.value);
   } catch (err) {
     next(err);

@@ -53,15 +53,14 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
     fetch(`items/outofstock/`, reqObj)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
-        // const updatedMenuItems = menuItems.map((item) => {
-        //   if (item._id === data._id) {
-        //     return data;
-        //   } else {
-        //     return item;
-        //   }
-        // });
-        // setMenuItems(updatedMenuItems);
+        const updatedMenuItems = menuItems.map((item) => {
+          if (item._id === data._id) {
+            return data;
+          } else {
+            return item;
+          }
+        });
+        setMenuItems(updatedMenuItems);
       });
   };
 

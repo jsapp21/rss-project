@@ -3,18 +3,17 @@ const { MongoClient } = require('mongodb');
 const service = {
   client: null,
   db: null,
-  // not sure what these k/v pairs do
 
   async connect(url, dbName) {
-    service.client = await MongoClient.connect(url, {
+    this.client = await MongoClient.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    service.db = service.client.db(dbName);
+    this.db = this.client.db(dbName);
   },
 
   async close() {
-    return service.client.close();
+    return this.client.close();
   },
 };
 

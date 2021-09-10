@@ -1,7 +1,6 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
 const { ObjectId } = require('bson');
-const { MongoClient } = require('mongodb');
 const mongoService = require('./mongo.service');
 
 const items = {
@@ -17,49 +16,48 @@ const items = {
     return result;
   },
   updateOutOfStock: async (item) => {
-    const client = new MongoClient(process.env.URL);
-    await client.connect();
     const itemsCollection = mongoService.db.collection('items');
     const ordersCollection = mongoService.db.collection('orders');
-    const session = client.startSession();
+    const session = mongoService.client.startSession();
+    let itemsResults;
+    let ordersResults;
+
     try {
       const transactionResults = await session.withTransaction(async () => {
-        const itemsResults = await itemsCollection.findOneAndUpdate(
+        itemsResults = await itemsCollection.findOneAndUpdate(
           { _id: new ObjectId(item._id) },
           { $set: { outOfStock: item.outOfStock } },
           { returnDocument: 'after' },
           { session },
         );
-        console.log(itemsResults, 'itemsResults');
-        const ordersResults = await ordersCollection.updateMany(
+        if (!itemsResults) {
+          await session.abortTransaction();
+          console.error('Transaction rolled back when updating the item.');
+        }
+        ordersResults = await ordersCollection.updateMany(
           { 'orderItems.itemId': ObjectId(item._id) },
           { $set: { 'orderItems.$.outOfStock': true } },
-          { fullResponse: true, session },
+          { upsert: false, session },
         );
-        console.log(ordersResults, 'orderResults');
+        if (!ordersResults || ordersResults.modifiedCount === 0) {
+          await session.abortTransaction();
+          console.error('Transaction rolled back when updating orders.');
+        }
       });
-      if (transactionResults) {
-        console.log('The transaction was successfully created.');
-      } else {
+
+      if (!transactionResults) {
         console.log('The transaction was intentionally aborted.');
+      } else {
+        console.log('The transaction was successfully created.');
+        debugger;
+        return itemsResults;
       }
     } catch (e) {
       console.log(`The transaction was aborted due to an unexpected error: ${e}`);
     } finally {
       await session.endSession();
-      // await client.close();
     }
   },
-  // updateOutOfStock: (item) => {
-  //   const result = mongoService.db
-  //     .collection('items')
-  //     .findOneAndUpdate(
-  //       { _id: new ObjectId(item._id) },
-  //       { $set: { outOfStock: item.outOfStock } },
-  //       { returnDocument: 'after' },
-  //     );
-  //   return result;
-  // },
   lookUpOrders: (id) =>
     mongoService.db
       .collection('items')
