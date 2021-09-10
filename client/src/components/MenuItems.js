@@ -53,14 +53,15 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
     fetch(`items/outofstock/`, reqObj)
       .then((resp) => resp.json())
       .then((data) => {
-        const updatedMenuItems = menuItems.map((item) => {
-          if (item._id === data._id) {
-            return data;
-          } else {
-            return item;
-          }
-        });
-        setMenuItems(updatedMenuItems);
+        console.log(data);
+        // const updatedMenuItems = menuItems.map((item) => {
+        //   if (item._id === data._id) {
+        //     return data;
+        //   } else {
+        //     return item;
+        //   }
+        // });
+        // setMenuItems(updatedMenuItems);
       });
   };
 
@@ -77,8 +78,6 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
         }
       });
   };
-
-  console.log(menuItems);
 
   return (
     <div className="grid gap-1 grid-cols-3">
@@ -146,3 +145,4 @@ MenuItems.defaultProps = {
 };
 
 export default MenuItems;
+// grid gap-1 grid-cols-3

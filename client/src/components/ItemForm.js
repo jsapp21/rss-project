@@ -55,32 +55,33 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
   };
 
   return (
-    <div className="clear-both text-center">
-      <Typography variant="h5" component="h2">
-        Add New Menu Item:
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Input
-          color="primary"
-          placeholder="Menu Item"
-          inputProps={{ 'aria-label': 'menu item' }}
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-        />
-        <Input
-          placeholder="$9.99"
-          inputProps={{ 'aria-label': 'menu item price' }}
-          name="price"
-          value={form.price}
-          onChange={handleChange}
-        />
-        <Button type="submit" variant="contained" color="primary" className={classes.button}>
-          Save
-        </Button>
-      </form>
-
+    <div className="clear-both grid gap-10 grid-cols-2">
       <MenuItems menuItems={menuItems} setMenuItems={setMenuItems} addMenuItemPage={addMenuItemPage} />
+      <div>
+        <Typography variant="h5" component="h2">
+          New Menu Item:
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Input
+            color="primary"
+            placeholder="Item Name"
+            inputProps={{ 'aria-label': 'menu item' }}
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+          />
+          <Input
+            placeholder="$9.50"
+            inputProps={{ 'aria-label': 'menu item price' }}
+            name="price"
+            value={form.price}
+            onChange={handleChange}
+          />
+          <Button type="submit" variant="contained" color="primary" className={classes.button}>
+            Save
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

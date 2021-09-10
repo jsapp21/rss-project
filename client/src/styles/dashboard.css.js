@@ -4,8 +4,7 @@ export default makeStyles({
   root: {
     width: 200,
     height: 180,
-    // margin: '10px 20px 10px 0',
-    // float: 'left',
+    margin: '5px 0 5px 10px',
     position: 'relative',
   },
   button: {
@@ -18,13 +17,10 @@ export default makeStyles({
   },
   deleteButton: {
     margin: '5px 0 10px 5px',
-    // position: 'absolute',
-    // float: 'left',
     bottom: 0,
   },
   updateButton: {
     margin: '5px 0 10px 5px',
-    // position: 'absolute',
     bottom: 0,
   },
 });

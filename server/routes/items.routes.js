@@ -37,13 +37,28 @@ router.get(['/', '/:id'], async (req, res, next) => {
   }
 });
 
+// router.post('/outofstock/', async (req, res, next) => {
+//   try {
+//     const validId = ObjectId.isValid(req.body._id);
+//     if (!validId) {
+//       throw new NotFound('not found');
+//     }
+//     const response = await items.updateOutOfStock(req.body);
+//     res.send(response.value);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+
 router.post('/outofstock/', async (req, res, next) => {
   try {
+    debugger;
     const validId = ObjectId.isValid(req.body._id);
     if (!validId) {
       throw new NotFound('not found');
     }
     const response = await items.updateOutOfStock(req.body);
+    debugger;
     res.send(response.value);
   } catch (err) {
     next(err);
@@ -73,6 +88,7 @@ router.get('/:id/orders/', async (req, res) => {
       throw new NotFound('not found');
     }
     const lookUpOrders = await items.lookUpOrders(req.params.id);
+    debugger;
     res.send(lookUpOrders);
   } catch (e) {
     console.log(e);

@@ -47,10 +47,8 @@ const Dashboard = ({ menu }) => {
     setAnchorEl(null);
   };
 
-  console.log(menu, 'dashboard');
-
   return (
-    <div className="">
+    <div>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
         Options
       </Button>

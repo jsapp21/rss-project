@@ -23,9 +23,10 @@ const App = () => {
 
   const handleChange = (e) => {
     setResturant(e.target.value);
+    setClicked(false);
     const selectedMenu = menus.filter((menu) => menu._id === e.target.value._id);
     setMenu({ name: selectedMenu[0].name, _id: selectedMenu[0]._id });
-    setClicked(!clicked);
+    setClicked(true);
   };
 
   return (
