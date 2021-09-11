@@ -2,8 +2,10 @@
 
 Reporting Page
 
-create a custom middleware in front of all the /items post, delete and outofstock routes that looks up the id being edited and throws a access denied error if the item name = “Cheeseburger”. Catch this error in errorHandler and return 403
-(edited)
+create a custom middleware for:
+ - /items post, delete and outofstock routes 
+ - the middleware looks up the id being edited and throws access denied error if the item name = “Cheeseburger” 
+ - Catch this error in errorHandler and return 403
 
 
 React

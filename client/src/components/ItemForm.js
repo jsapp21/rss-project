@@ -35,9 +35,8 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
       fetch('/items', reqObj)
         .then((resp) => resp.json())
         .then((menuItem) => {
-          if (menuItem.acknowledged === false) {
-            alert('Error: Item was not saved. Try again.');
-          } else if (menuItem.error) {
+          if (menuItem.error) {
+            console.log(menuItem.error);
             alert(`Error: ${menuItem.error}`);
           } else {
             setMenuItems([...menuItems, { ...newItem, _id: menuItem.insertedId }]);

@@ -9,6 +9,7 @@ const items = require('../services/items.service');
 const { NotFound, ServerError } = require('../utils/errors');
 
 router.post('/', async (req, res, next) => {
+  debugger;
   try {
     const verifyItem = await items.getItemCheck(req.body);
     if (verifyItem) {
@@ -53,7 +54,8 @@ router.post('/outofstock/', async (req, res, next) => {
   }
 });
 
-router.get('/delete/:id', async (req, res, next) => {
+router.delete('/delete/:id', async (req, res, next) => {
+  debugger;
   try {
     const validId = ObjectId.isValid(req.params.id);
     if (!validId) {

@@ -14,7 +14,14 @@ class NotFound extends Error {
   }
 }
 
+class AccessDenied extends Error {
+  getCode() {
+    return 403;
+  }
+}
+
 module.exports = {
   ServerError,
   NotFound,
+  AccessDenied,
 };

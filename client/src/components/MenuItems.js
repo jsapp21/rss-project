@@ -65,14 +65,14 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
   };
 
   const handleDelete = (menuItem) => {
-    const updatedMenuItems = menuItems.filter((item) => item._id !== menuItem._id);
-    fetch(`/items/delete/${menuItem._id}`)
+    fetch(`/items/delete/${menuItem._id}`, { method: 'DELETE' })
       .then((resp) => resp.json())
       .then((data) => {
         if (data.status !== 200) {
           alert(data.message);
         } else {
           alert(data.message);
+          const updatedMenuItems = menuItems.filter((item) => item._id !== menuItem._id);
           setMenuItems(updatedMenuItems);
         }
       });
