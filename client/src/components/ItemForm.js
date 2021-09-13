@@ -35,9 +35,9 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
       fetch('/items', reqObj)
         .then((resp) => resp.json())
         .then((menuItem) => {
-          if (menuItem.error) {
-            console.log(menuItem.error);
-            alert(`Error: ${menuItem.error}`);
+          console.log(menuItem);
+          if (menuItem.message) {
+            alert(`${menuItem.message}`);
           } else {
             setMenuItems([...menuItems, { ...newItem, _id: menuItem.insertedId }]);
             setForm({ name: '', price: '' });

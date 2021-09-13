@@ -3,14 +3,16 @@
 const { AccessDenied } = require('../utils/errors');
 
 const customRoutes = (req, res, next) => {
-  debugger;
-  const auth = 'Cheeseburger';
-  req.auth = auth;
-  if (req.body.name !== auth) {
+  // '/items/ POST
+  // '/items/delete/:id 'DELETE'
+  // '/items/outofstock/ 'POST'
+  if (req.originalUrl === '/items' || (req.originalUrl === '/items/outofstock/' && req.method === 'POST')) {
     throw new AccessDenied('Error: You do not have permissons.');
+  } else if (req.method === 'DELETE') {
+    throw new AccessDenied('Error: You do not have permissons.');
+  } else {
+    next();
   }
-  debugger;
-  next();
 };
 
 module.exports = customRoutes;

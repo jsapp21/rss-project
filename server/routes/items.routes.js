@@ -9,11 +9,10 @@ const items = require('../services/items.service');
 const { NotFound, ServerError } = require('../utils/errors');
 
 router.post('/', async (req, res, next) => {
-  debugger;
   try {
     const verifyItem = await items.getItemCheck(req.body);
     if (verifyItem) {
-      res.send({ error: 'Item already exsits.' });
+      res.send({ message: 'Item already exsits.' });
     } else {
       const request = {
         menuId: new ObjectId(req.body.menuId),
@@ -55,7 +54,6 @@ router.post('/outofstock/', async (req, res, next) => {
 });
 
 router.delete('/delete/:id', async (req, res, next) => {
-  debugger;
   try {
     const validId = ObjectId.isValid(req.params.id);
     if (!validId) {
@@ -78,7 +76,6 @@ router.get('/:id/orders/', async (req, res) => {
       throw new NotFound('not found');
     }
     const lookUpOrders = await items.lookUpOrders(req.params.id);
-    debugger;
     res.send(lookUpOrders);
   } catch (e) {
     console.log(e);

@@ -53,14 +53,19 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
     fetch(`items/outofstock/`, reqObj)
       .then((resp) => resp.json())
       .then((data) => {
-        const updatedMenuItems = menuItems.map((item) => {
-          if (item._id === data._id) {
-            return data;
-          } else {
-            return item;
-          }
-        });
-        setMenuItems(updatedMenuItems);
+        console.log(data);
+        if (data.message) {
+          alert(data.message);
+        } else {
+          const updatedMenuItems = menuItems.map((item) => {
+            if (item._id === data._id) {
+              return data;
+            } else {
+              return item;
+            }
+          });
+          setMenuItems(updatedMenuItems);
+        }
       });
   };
 
@@ -68,6 +73,7 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
     fetch(`/items/delete/${menuItem._id}`, { method: 'DELETE' })
       .then((resp) => resp.json())
       .then((data) => {
+        console.log(data);
         if (data.status !== 200) {
           alert(data.message);
         } else {
