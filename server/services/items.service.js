@@ -49,7 +49,6 @@ const items = {
         console.log('The transaction was intentionally aborted.');
       } else {
         console.log('The transaction was successfully created.');
-        debugger;
         return itemsResults;
       }
     } catch (e) {

@@ -7,7 +7,11 @@ class ServerError extends Error {
     return 500;
   }
 }
-
+class BadRequest extends Error {
+  getCode() {
+    return 400;
+  }
+}
 class NotFound extends Error {
   getCode() {
     return 404;
@@ -24,4 +28,5 @@ module.exports = {
   ServerError,
   NotFound,
   AccessDenied,
+  BadRequest,
 };

@@ -8,6 +8,11 @@ create a custom middleware for:
  - Catch this error in errorHandler and return 403
 
 
+Yup validation to the server:
+- prevent users from padding in invalid item or order objects 
+- (ie only accept allowed fields and those fields must match data types and ranges)
+
+
 React
 - custom Hook 
     - resuable function w/ logic to return the same thing, must useThisStyle 
