@@ -1,11 +1,7 @@
 # rss-project
 
-Rework customRoutes express middleware:
--  to not check for method/url and instead put it infront of the item post/delete routes
-
-- Fix errorHandler to deal with Error that doesn’t have getCode
-
 - custom hook or some Jest tests
+
 
 React
 - custom Hook 

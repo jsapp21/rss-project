@@ -21,10 +21,10 @@ const Menu = yup.array().of(
   }),
 );
 
-Menu.isValid(menu1).then((isValid) => console.log(`menu1 is valid? ${isValid}`));
+// Menu.isValid(menu1).then((isValid) => console.log(`menu1 is valid? ${isValid}`));
 
 const Item = yup.object({
-  _id: yup.string().required(),
+  _id: yup.string(),
   menuId: yup.string().required(),
   name: yup.string().required(),
   price: yup.number().positive().required(),
@@ -33,7 +33,7 @@ const Item = yup.object({
 
 const MenuItem = yup.array().of(Item);
 
-Item.isValid(item1).then((isValid) => console.log(`item1 is valid? ${isValid}`));
+// Item.isValid(item1).then((isValid) => console.log(`item1 is valid? ${isValid}`));
 
 const orderedItems = yup.object({
   itemId: yup.string().required(),
@@ -49,7 +49,7 @@ const Order = yup.object({
   createdOn: yup.date().required(),
 });
 
-Order.isValid(order1).then((isValid) => console.log(`order1 is valid? ${isValid}`));
+// Order.isValid(order1).then((isValid) => console.log(`order1 is valid? ${isValid}`));
 
 module.exports = {
   Menu,

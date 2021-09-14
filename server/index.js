@@ -8,7 +8,7 @@ const router = require('express').Router();
 const cors = require('cors');
 const mongoService = require('./services/mongo.service');
 const handleErrors = require('./middleware/handleErrors');
-const customRoutes = require('./middleware/customRoutes');
+// const customRoutes = require('./middleware/customRoutes');
 
 mongoService.connect(process.env.URL, process.env.DB_NAME).then().catch(console.error);
 

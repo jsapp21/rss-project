@@ -31,10 +31,7 @@ const items = {
           { session },
         );
         if (!itemsResults) {
-          debugger;
           throw Error('Transaction rolled back when updating the item.');
-          // await session.abortTransaction();
-          // console.error('Transaction rolled back when updating the item.');
         }
         ordersResults = await ordersCollection.updateMany(
           { 'orderItems.itemId': ObjectId(item._id) },
@@ -42,27 +39,19 @@ const items = {
           { upsert: false, session },
         );
         if (!ordersResults || ordersResults.modifiedCount === 0) {
-          debugger;
           throw Error('Transaction rolled back when updating orders.');
-          // await session.abortTransaction();
-          // console.error('Transaction rolled back when updating orders.');
         }
       });
-      console.log(transactionResults);
 
       if (!transactionResults) {
         console.log('The transaction was intentionally aborted.');
       } else {
         console.log('The transaction was successfully created.');
-        console.log(itemsResults);
         return itemsResults;
       }
     } finally {
       await session.endSession();
     }
-    // catch (e) {
-    //   console.log(`The transaction was aborted due to an unexpected error: ${e}`);
-    // }
   },
   lookUpOrders: (id) =>
     mongoService.db

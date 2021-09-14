@@ -6,14 +6,14 @@ const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
 const items = require('../services/items.service');
+const customRoutes = require('../middleware/customRoutes');
 const { BadRequest, NotFound, ServerError } = require('../utils/errors');
 const { Item, MenuItem } = require('../models/validation.schema');
 
-router.post('/', async (req, res, next) => {
+router.post('/', customRoutes, async (req, res, next) => {
   try {
     const validCheck = await Item.isValid(req.body);
     if (!validCheck) {
-      debugger;
       throw new BadRequest('Bad Request');
     }
     const verifyItem = await items.getItemCheck(req.body);
@@ -44,23 +44,20 @@ router.get(['/', '/:id'], async (req, res, next) => {
   }
 });
 
-router.post('/outofstock/', async (req, res, next) => {
+router.post('/outofstock/', customRoutes, async (req, res, next) => {
   try {
     const validCheck = await Item.isValid(req.body);
     if (!validCheck) {
       throw new BadRequest('Bad Request');
     }
     const response = await items.updateOutOfStock(req.body);
-    // if (!response) {
-    //   throw new ServerError('The transaction was aborted due to an server error.');
-    // }
     res.send(response.value);
   } catch (err) {
     next(err);
   }
 });
 
-router.delete('/delete/:id', async (req, res, next) => {
+router.delete('/delete/:id', customRoutes, async (req, res, next) => {
   try {
     const validId = ObjectId.isValid(req.params.id);
     if (!validId) {
