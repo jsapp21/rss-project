@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const yup = require('yup');
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require('bson');
 
 const id = new ObjectId();
 const menu1 = [{ _id: id, name: 'Foo Bar' }];
@@ -24,7 +24,7 @@ const Menu = yup.array().of(
 // Menu.isValid(menu1).then((isValid) => console.log(`menu1 is valid? ${isValid}`));
 
 const Item = yup.object({
-  _id: yup.string(),
+  _id: yup.string().required(),
   menuId: yup.string().required(),
   name: yup.string().required(),
   price: yup.number().positive().required(),
@@ -43,7 +43,7 @@ const orderedItems = yup.object({
 });
 
 const Order = yup.object({
-  _id: yup.string().required(),
+  _id: yup.string().transform((value) => new ObjectId(value)),
   menuId: yup.string().required(),
   orderItems: yup.array().of(orderedItems).required(),
   createdOn: yup.date().required(),

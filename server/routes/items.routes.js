@@ -12,7 +12,8 @@ const { Item, MenuItem } = require('../models/validation.schema');
 
 router.post('/', customRoutes, async (req, res, next) => {
   try {
-    const validCheck = await Item.isValid(req.body);
+    const validCheck = await Item.validate(req.body);
+    debugger;
     if (!validCheck) {
       throw new BadRequest('Bad Request');
     }

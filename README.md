@@ -3,6 +3,13 @@
 - custom hook or some Jest tests
 
 
+testing
+- jest docs
+- react testing library
+- run app.test.js
+
+
+
 React
 - custom Hook 
     - resuable function w/ logic to return the same thing, must useThisStyle 
