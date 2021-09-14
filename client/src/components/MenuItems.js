@@ -54,18 +54,18 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
-        if (data.message) {
-          alert(data.message);
-        } else {
-          const updatedMenuItems = menuItems.map((item) => {
-            if (item._id === data._id) {
-              return data;
-            } else {
-              return item;
-            }
-          });
-          setMenuItems(updatedMenuItems);
-        }
+        // if (data.message) {
+        //   alert(data.message);
+        // } else {
+        //   const updatedMenuItems = menuItems.map((item) => {
+        //     if (item._id === data._id) {
+        //       return data;
+        //     } else {
+        //       return item;
+        //     }
+        //   });
+        //   setMenuItems(updatedMenuItems);
+        // }
       });
   };
 

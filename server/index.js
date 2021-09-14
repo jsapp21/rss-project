@@ -22,7 +22,7 @@ router.use('/items', require('./routes/items.routes'));
 
 router.use('/orders', require('./routes/orders.routes'));
 
-app.use(customRoutes);
+// app.use(customRoutes);
 app.use(router);
 app.use(handleErrors);
 

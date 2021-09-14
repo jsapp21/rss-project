@@ -1,6 +1,7 @@
 /* eslint-disable no-debugger */
 const handleErrors = (err, req, res, next) => {
-  res.status(err.getCode()).json({
+  debugger;
+  res.status(err.getCode ? err.getCode() : res.statusCode).json({
     status: res.statusCode,
     message: err.message,
   });

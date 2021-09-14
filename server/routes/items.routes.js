@@ -51,9 +51,9 @@ router.post('/outofstock/', async (req, res, next) => {
       throw new BadRequest('Bad Request');
     }
     const response = await items.updateOutOfStock(req.body);
-    if (!response) {
-      throw new ServerError('The transaction was aborted due to an server error.');
-    }
+    // if (!response) {
+    //   throw new ServerError('The transaction was aborted due to an server error.');
+    // }
     res.send(response.value);
   } catch (err) {
     next(err);

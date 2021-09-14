@@ -9,8 +9,8 @@ const { Menu } = require('../models/validation.schema');
 router.get('/', async (req, res) => {
   try {
     const result = await service.getAllMenus();
-    const validationCheck = await Menu.validate(result);
-    res.send(validationCheck);
+    const verfiedMenuData = await Menu.validate(result);
+    res.send(verfiedMenuData);
   } catch (e) {
     console.log(e);
   }
