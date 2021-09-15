@@ -36,11 +36,11 @@ const App = () => {
           🍳 Simple POS
         </Typography>
         <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Menu</InputLabel>
-          <Select labelId="demo-simple-select-label" id="demo-simple-select" value={resturant} onChange={handleChange}>
+          <InputLabel id="Menu">Menu</InputLabel>
+          <Select labelId="Menu" id="select" value={resturant} onChange={handleChange}>
             {menus.map((menu) => {
               return (
-                <MenuItem key={menu._id} value={menu}>
+                <MenuItem key={menu._id} value={menu} aria-label={menu.name} aria-required="true">
                   {menu.name}
                 </MenuItem>
               );

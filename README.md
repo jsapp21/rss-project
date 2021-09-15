@@ -3,11 +3,6 @@
 - custom hook or some Jest tests
 
 
-testing
-- jest docs
-- react testing library
-- run app.test.js
-
 
 
 React
