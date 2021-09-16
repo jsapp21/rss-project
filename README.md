@@ -20,3 +20,5 @@ React
 - useContext
     - accepts a context object and returns the current context value determined by the vlaue prop of the nearest provider.
 
+- optional chaining
+Only use ?. in situations where the thing on the left might not exist.
