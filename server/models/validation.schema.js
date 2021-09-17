@@ -24,7 +24,7 @@ const Menu = yup.array().of(
 // Menu.isValid(menu1).then((isValid) => console.log(`menu1 is valid? ${isValid}`));
 
 const Item = yup.object({
-  _id: yup.string().required(),
+  _id: yup.string(),
   menuId: yup.string().required(),
   name: yup.string().required(),
   price: yup.number().positive().required(),

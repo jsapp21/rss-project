@@ -6,14 +6,13 @@ const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
 const items = require('../services/items.service');
-const customRoutes = require('../middleware/customRoutes');
+const userPermissions = require('../middleware/userPermissions');
 const { BadRequest, NotFound, ServerError } = require('../utils/errors');
 const { Item, MenuItem } = require('../models/validation.schema');
 
-router.post('/', customRoutes, async (req, res, next) => {
+router.post('/', userPermissions, async (req, res, next) => {
   try {
     const validCheck = await Item.validate(req.body);
-    debugger;
     if (!validCheck) {
       throw new BadRequest('Bad Request');
     }
@@ -45,7 +44,7 @@ router.get(['/', '/:id'], async (req, res, next) => {
   }
 });
 
-router.post('/outofstock/', customRoutes, async (req, res, next) => {
+router.post('/outofstock/', userPermissions, async (req, res, next) => {
   try {
     const validCheck = await Item.isValid(req.body);
     if (!validCheck) {
@@ -58,7 +57,7 @@ router.post('/outofstock/', customRoutes, async (req, res, next) => {
   }
 });
 
-router.delete('/delete/:id', customRoutes, async (req, res, next) => {
+router.delete('/delete/:id', userPermissions, async (req, res, next) => {
   try {
     const validId = ObjectId.isValid(req.params.id);
     if (!validId) {

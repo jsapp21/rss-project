@@ -57,9 +57,49 @@ const items = {
     mongoService.db
       .collection('items')
       .aggregate([
-        { $match: { _id: new ObjectId(id) } },
-        { $lookup: { from: 'orders', localField: '_id', foreignField: 'orderItems.itemId', as: 'orders_per_item' } },
-        { $addFields: { orderCount: { $size: '$orders_per_item' } } },
+        {
+          $match: {
+            'orderItems.itemId': new ObjectId(id),
+          },
+        },
+        {
+          $unwind: {
+            path: '$orderItems',
+          },
+        },
+        {
+          $lookup: {
+            from: 'items',
+            localField: 'orderItems.itemId',
+            foreignField: '_id',
+            as: 'items_per_order',
+          },
+        },
+        {
+          $unwind: {
+            path: '$items_per_order',
+          },
+        },
+        {
+          $group: {
+            _id: '$_id',
+            menuId: {
+              $first: '$menuId',
+            },
+            items: {
+              $push: {
+                _id: '$orderItems.itemId',
+                name: '$items_per_order.name',
+                price: '$orderItems.price',
+                quantity: '$orderItems.quanity',
+                outOfStock: '$items_per_order.outOfStock',
+              },
+            },
+            createdOn: {
+              $first: '$createdOn',
+            },
+          },
+        },
       ])
       .toArray(),
 };
