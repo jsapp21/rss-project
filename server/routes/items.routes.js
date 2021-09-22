@@ -12,23 +12,33 @@ const { Item, MenuItem } = require('../models/validation.schema');
 
 router.post('/', userPermissions, async (req, res, next) => {
   try {
+    debugger;
     const validCheck = await Item.validate(req.body);
     if (!validCheck) {
       throw new BadRequest('Bad Request');
     }
+    debugger;
     const verifyItem = await items.getItemCheck(req.body);
-    if (verifyItem) {
-      res.send({ message: 'Item already exsits.' });
+    console.log(verifyItem);
+    if (verifyItem.matchedCount > 0) {
+      throw new BadRequest('Item already exsits.');
     } else {
-      const request = {
-        menuId: new ObjectId(req.body.menuId),
-        name: req.body.name,
-        price: req.body.price,
-        outOfStock: req.body.outOfStock,
-      };
-      const newItem = await items.postMenuItem(request);
-      res.send(newItem);
+      res.send(verifyItem);
     }
+
+    // const verifyItem = await items.getItemCheck(req.body);
+    // if (verifyItem) {
+    //   res.send({ message: 'Item already exsits.' });
+    // } else {
+    //   const request = {
+    //     menuId: new ObjectId(req.body.menuId),
+    //     name: req.body.name,
+    //     price: req.body.price,
+    //     outOfStock: req.body.outOfStock,
+    //   };
+    //   const newItem = await items.postMenuItem(request);
+    //   res.send(newItem);
+    // }
   } catch (err) {
     next(err);
   }

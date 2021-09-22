@@ -2,7 +2,7 @@
 const { AccessDenied } = require('../utils/errors');
 
 const userPermissions = (req, res, next) => {
-  if (req.app.locals.role !== 'GUEST') {
+  if (req.app.locals.role !== 'ADMIN') {
     throw new AccessDenied('Error: You do not have permissons.');
   } else {
     next();

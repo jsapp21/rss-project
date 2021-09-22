@@ -9,8 +9,16 @@ const items = {
       .collection('items')
       .find({ menuId: new ObjectId(id) })
       .toArray(),
-  getItemCheck: (item) => mongoService.db.collection('items').findOne({ name: { $eq: item.name } }),
-  postMenuItem: (item) => mongoService.db.collection('items').insertOne(item),
+  getItemCheck: (item) =>
+    mongoService.db
+      .collection('items')
+      .updateOne(
+        { name: { $eq: item.name } },
+        { $set: { price: item.price, menuId: new ObjectId(item.menuId), outOfStock: false } },
+        { upsert: true },
+      ),
+  // getItemCheck: (item) => mongoService.db.collection('items').findOne({ name: { $eq: item.name } }),
+  // postMenuItem: (item) => mongoService.db.collection('items').insertOne(item),
   deleteMenuItem: (id) => {
     const result = mongoService.db.collection('items').deleteOne({ _id: new ObjectId(id) });
     return result;
