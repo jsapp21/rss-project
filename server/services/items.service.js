@@ -17,8 +17,6 @@ const items = {
         { $set: { price: item.price, menuId: new ObjectId(item.menuId), outOfStock: false } },
         { upsert: true },
       ),
-  // getItemCheck: (item) => mongoService.db.collection('items').findOne({ name: { $eq: item.name } }),
-  // postMenuItem: (item) => mongoService.db.collection('items').insertOne(item),
   deleteMenuItem: (id) => {
     const result = mongoService.db.collection('items').deleteOne({ _id: new ObjectId(id) });
     return result;
@@ -61,55 +59,6 @@ const items = {
       await session.endSession();
     }
   },
-  lookUpOrders: (id) =>
-    mongoService.db
-      .collection('items')
-      .aggregate([
-        {
-          $match: {
-            'orderItems.itemId': new ObjectId(id),
-          },
-        },
-        {
-          $unwind: {
-            path: '$orderItems',
-          },
-        },
-        {
-          $lookup: {
-            from: 'items',
-            localField: 'orderItems.itemId',
-            foreignField: '_id',
-            as: 'items_per_order',
-          },
-        },
-        {
-          $unwind: {
-            path: '$items_per_order',
-          },
-        },
-        {
-          $group: {
-            _id: '$_id',
-            menuId: {
-              $first: '$menuId',
-            },
-            items: {
-              $push: {
-                _id: '$orderItems.itemId',
-                name: '$items_per_order.name',
-                price: '$orderItems.price',
-                quantity: '$orderItems.quanity',
-                outOfStock: '$items_per_order.outOfStock',
-              },
-            },
-            createdOn: {
-              $first: '$createdOn',
-            },
-          },
-        },
-      ])
-      .toArray(),
 };
 
 module.exports = items;

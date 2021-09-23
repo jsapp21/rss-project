@@ -11,7 +11,6 @@ router.get('/', async (req, res, next) => {
     req.app.locals.role = user[0].role;
     res.send(user);
   } catch (e) {
-    console.log(e);
     next(e);
   }
 });

@@ -5,8 +5,9 @@ const express = require('express');
 const router = express.Router();
 const { ObjectId } = require('mongodb');
 const orders = require('../services/orders.service');
+const { NotFound } = require('../utils/errors');
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const updatedOrderItems = req.body.orderItems.map((order) => ({
       ...order,
@@ -19,17 +20,31 @@ router.post('/', async (req, res) => {
     };
     const newOrder = await orders.postOrder(request);
     res.send(newOrder);
-  } catch (e) {
-    res.send({ error: `You're order still needs to be checked out.` });
+  } catch (err) {
+    next(err);
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const allOrders = await orders.getAllOrders();
     res.send(allOrders);
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/items/:id', async (req, res, next) => {
+  try {
+    debugger;
+    const validId = ObjectId.isValid(req.params.id);
+    if (!validId) {
+      throw new NotFound('Item not found.');
+    }
+    const lookUpOrders = await orders.lookUpOrders(req.params.id);
+    res.send(lookUpOrders);
+  } catch (err) {
+    next(err);
   }
 });
 

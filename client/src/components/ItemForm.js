@@ -20,7 +20,7 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
       alert('Please fill out menu item and price');
     } else {
       const newItem = {
-        menuId: menu._id,
+        menu: menu._id,
         name: form.name,
         price: parseFloat(form.price),
         outOfStock: false,
@@ -39,7 +39,7 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
           if (menuItem.message) {
             alert(`${menuItem.message}`);
           } else {
-            setMenuItems([...menuItems, { ...newItem, _id: menuItem.insertedId }]);
+            setMenuItems([...menuItems, { ...newItem, _id: menuItem.upsertedId }]);
             setForm({ name: '', price: '' });
           }
         });

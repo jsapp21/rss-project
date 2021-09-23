@@ -8,7 +8,7 @@ import Dashboard from './components/Dashboard';
 const App = () => {
   const classes = useAppStyles();
 
-  const [user, setUser] = useState(false);
+  // const [user, setUser] = useState(false);
   const [menu, setMenu] = useState({});
   const [menus, setMenus] = useState([]);
   const [resturant, setResturant] = useState('');
@@ -20,7 +20,7 @@ const App = () => {
       .then((user) => {
         if (user) {
           localStorage.setItem('userRole', JSON.stringify(user));
-          setUser(true);
+          // setUser(true);
         }
       })
       .catch((e) => console.log(e));

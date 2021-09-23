@@ -14,7 +14,7 @@ import { itemPropTypes } from '../propTypes/schema';
 const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, addMenuItemPage }) => {
   const classes = useDashboardStyles();
 
-  const handleClick = (i) => {
+  const handleOrder = (i) => {
     if (order.length === 0) {
       setCompleted(false);
     }
@@ -54,7 +54,7 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
-        if (data.message) {
+        if (data.status !== 200) {
           alert(data.message);
         } else {
           const updatedMenuItems = menuItems.map((item) => {
@@ -121,7 +121,7 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
                 className={classes.orderButton}
                 variant="contained"
                 color="primary"
-                onClick={() => handleClick(menuItem)}>
+                onClick={() => handleOrder(menuItem)}>
                 Order
               </Button>
             )}
