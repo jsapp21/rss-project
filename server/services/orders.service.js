@@ -7,6 +7,7 @@ const orders = {
   postOrder: async (req) => {
     const response = await mongoService.db.collection('orders').insertOne(req);
     return mongoService.db.collection('orders').findOne({ _id: response.insertedId });
+    // look into how to re-write this one
   },
   lookUpOrders: (id) =>
     mongoService.db

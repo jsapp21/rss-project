@@ -45,11 +45,6 @@ const ReportsContainer = ({ menuItems }) => {
           </MenuItem>
         ))}
       </Select>
-      {/* return (
-      <Button variant="contained" key={item._id} onClick={() => handleClick(item)} style={{ margin: 8 }}>
-        {item.name}
-      </Button>
-      ); */}
       {reports
         ? reports.map((report) => {
             return (

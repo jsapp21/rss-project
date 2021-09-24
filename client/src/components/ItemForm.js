@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 /* eslint-disable no-alert */
@@ -16,14 +17,17 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const user = JSON.parse(localStorage.getItem('userRole'));
+
     if (form.name.length === 0 || form.price.length === 0) {
       alert('Please fill out menu item and price');
     } else {
       const newItem = {
-        menu: menu._id,
+        menuId: menu._id,
         name: form.name,
         price: parseFloat(form.price),
         outOfStock: false,
+        userId: user._id,
       };
 
       const reqObj = {

@@ -9,14 +9,13 @@ const items = {
       .collection('items')
       .find({ menuId: new ObjectId(id) })
       .toArray(),
-  getItemCheck: (item) =>
-    mongoService.db
-      .collection('items')
-      .updateOne(
-        { name: { $eq: item.name } },
-        { $set: { price: item.price, menuId: new ObjectId(item.menuId), outOfStock: false } },
-        { upsert: true },
-      ),
+  postItem: (item) =>
+    mongoService.db.collection('items').updateOne(
+      { name: { $eq: item.name } },
+      { $set: { price: item.price, menuId: new ObjectId(item.menuId), outOfStock: false } },
+      { upsert: true },
+      // look into upsert for this method,
+    ),
   deleteMenuItem: (id) => {
     const result = mongoService.db.collection('items').deleteOne({ _id: new ObjectId(id) });
     return result;

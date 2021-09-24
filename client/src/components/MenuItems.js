@@ -39,9 +39,12 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
   };
 
   const handleOutOfStock = (menuItem) => {
+    const user = JSON.parse(localStorage.getItem('userRole'));
+
     const updatedItem = {
       ...menuItem,
       outOfStock: !menuItem.outOfStock,
+      userId: user._id,
     };
 
     const reqObj = {
@@ -70,7 +73,13 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
   };
 
   const handleDelete = (menuItem) => {
-    fetch(`/items/delete/${menuItem._id}`, { method: 'DELETE' })
+    const reqObj = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: localStorage.getItem('userRole'),
+    };
+
+    fetch(`/items/delete/${menuItem._id}`, reqObj)
       .then((resp) => resp.json())
       .then((data) => {
         console.log(data);
