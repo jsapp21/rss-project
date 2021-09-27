@@ -12,13 +12,12 @@ const { Item, MenuItem } = require('../models/validation.schema');
 
 router.post('/', userPermissions, async (req, res, next) => {
   try {
-    await Item.validate(req.body);
-    const verifyItem = await items.postItem(req.body);
-    if (verifyItem.matchedCount > 0) {
-      throw new BadRequest('Item already exsits.');
-    } else {
-      res.send(verifyItem);
-    }
+    debugger;
+    const newItem = req.body;
+    await Item.validate(newItem);
+    const insertedItem = await items.postItem(newItem);
+    debugger;
+    res.send(insertedItem);
   } catch (err) {
     next(err);
   }

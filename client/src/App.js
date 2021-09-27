@@ -15,10 +15,11 @@ const App = () => {
   const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
-    fetch('/users')
+    fetch('/user/6144dfc0a0d2d20e59b0ee03')
       .then((res) => res.json())
       .then((user) => {
         if (user) {
+          console.log(user);
           localStorage.setItem('userRole', JSON.stringify(user));
           // setUser(true);
         }

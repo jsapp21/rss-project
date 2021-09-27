@@ -17,8 +17,6 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const user = JSON.parse(localStorage.getItem('userRole'));
-
     if (form.name.length === 0 || form.price.length === 0) {
       alert('Please fill out menu item and price');
     } else {
@@ -27,7 +25,6 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
         name: form.name,
         price: parseFloat(form.price),
         outOfStock: false,
-        userId: user._id,
       };
 
       const reqObj = {
@@ -43,7 +40,7 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
           if (menuItem.message) {
             alert(`${menuItem.message}`);
           } else {
-            setMenuItems([...menuItems, { ...newItem, _id: menuItem.upsertedId }]);
+            setMenuItems([...menuItems, menuItem]);
             setForm({ name: '', price: '' });
           }
         });
