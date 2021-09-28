@@ -6,11 +6,10 @@ const setUser = require('../middleware/setUser');
 const router = express.Router();
 const users = require('../services/users.service');
 
-router.get('/:id', setUser, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    const userId = req.params.id;
-    const user = await users.getUser(userId);
-    res.send(user);
+    const allUsers = await users.getUsers();
+    res.send(allUsers);
   } catch (e) {
     next(e);
   }

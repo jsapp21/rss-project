@@ -7,7 +7,7 @@ const app = express();
 const router = require('express').Router();
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const mongoService = require('./services/mongo.service');
 const handleErrors = require('./middleware/handleErrors');
@@ -16,21 +16,22 @@ mongoService.connect(process.env.URL, process.env.DB_NAME).then().catch(console.
 
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(
   session({
     secret: 'my secret',
-    resave: true,
+    resave: false, // don't save session if unmodified
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: `${process.env.URL}`,
       dbName: `${process.env.DB_NAME}`,
+      touchAfter: 24 * 3600, // time period in seconds
     }),
   }),
 );
 
 // base routes
-router.use('/user', require('./routes/users.routes'));
+router.use('/users', require('./routes/users.routes'));
 
 router.use('/menus', require('./routes/menus.routes'));
 

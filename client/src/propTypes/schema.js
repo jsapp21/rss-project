@@ -12,3 +12,9 @@ export const itemPropTypes = PropTypes.shape({
   price: PropTypes.number.isRequired,
   outOfStock: PropTypes.bool.isRequired,
 });
+
+export const userPropTypes = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
+});
