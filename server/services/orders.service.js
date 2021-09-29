@@ -2,10 +2,10 @@
 const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
 const { Order } = require('../models/validation.schema');
-const { BadRequest } = require('../utils/errors');
+const { BadRequest, ServerError } = require('../utils/errors');
 
 const orders = {
-  getAllOrders: (id) =>
+  getAllOrdersByUser: (id) =>
     mongoService.db
       .collection('orders')
       .find({ userId: new ObjectId(id) })
@@ -21,9 +21,19 @@ const orders = {
     };
     const result = await mongoService.db.collection('orders').insertOne(request);
     if (!result.acknowledged) {
-      throw new BadRequest('Your order can not be placed due to an server errror.');
+      throw new BadRequest('Your order can not be placed due to an server error.');
     }
     return result;
+  },
+  cancelOrder: (id) => {
+    const request = mongoService.db
+      .collection('orders')
+      .findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { canceled: true } }, { returnDocument: 'after' });
+    if (!request) {
+      throw new ServerError('Order did not cancel due to a server error.');
+    } else {
+      return request;
+    }
   },
   lookUpOrders: () => {},
 };

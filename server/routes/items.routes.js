@@ -12,7 +12,6 @@ const { Item, MenuItem } = require('../models/validation.schema');
 
 router.post('/', userPermissions, async (req, res, next) => {
   try {
-    debugger;
     const newItem = req.body;
     await Item.validate(newItem);
     const insertedItem = await items.postItem(newItem);

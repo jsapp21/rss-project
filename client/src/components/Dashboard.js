@@ -34,7 +34,7 @@ const Dashboard = ({ menu, user }) => {
       setAddMenuItemPage(false);
       setOrderPage(true);
       setReportPage(false);
-    } else if (e.currentTarget.id === 'Add Menu Item') {
+    } else if (e.currentTarget.id === 'Menu Options') {
       setAddMenuItemPage(true);
       setOrderPage(false);
       setReportPage(false);
@@ -46,8 +46,6 @@ const Dashboard = ({ menu, user }) => {
     setAnchorEl(null);
   };
 
-  console.log(user);
-
   return (
     <div>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
@@ -57,7 +55,7 @@ const Dashboard = ({ menu, user }) => {
         <MenuItem onClick={handleClose} id="Order">
           Order
         </MenuItem>
-        <MenuItem onClick={handleClose} id="Add Menu Item">
+        <MenuItem onClick={handleClose} id="Menu Options">
           Add Menu Item
         </MenuItem>
         <MenuItem onClick={handleClose} id="Reports">

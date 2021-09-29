@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
@@ -10,37 +11,47 @@ import useOrderStyles from '../styles/order.css';
 
 const ReportsContainer = ({ menuItems, user }) => {
   const [reports, setReports] = useState(null);
-  const [selectedItem, setSelectedItem] = useState('');
+  // const [selectedItem, setSelectedItem] = useState('');
   const classes = useOrderStyles();
 
   useEffect(() => {
-    fetch(`/${user[0]._id}/orders`)
+    fetch(`/orders/${user[0]._id}`)
       .then((resp) => resp.json())
       .then((orders) => {
-        console.log(orders);
         setReports(orders);
       });
   }, [user]);
 
-  const handleChange = (event) => {
-    setSelectedItem(event.target.value);
-    fetch(`/orders/items/${event.target.value}/`)
-      .then((resp) => resp.json())
-      .then((orders) => {
-        setReports(orders);
-      });
-  };
+  // const handleChange = (event) => {
+  //   setSelectedItem(event.target.value);
+  //   fetch(`/orders/items/${event.target.value}/`)
+  //     .then((resp) => resp.json())
+  //     .then((orders) => {
+  //       setReports(orders);
+  //     });
+  // };
 
   const handleCancel = (report) => {
-    console.log('i am clicked', report);
-    fetch(`/order/${report._id}`)
+    fetch(`/orders/${report._id}`, { method: 'PATCH' })
       .then((resp) => resp.json())
-      .then((data) => console.log(data));
+      .then((updatedReport) => {
+        if (updatedReport.status !== 200) {
+          alert(updatedReport.message);
+        } else {
+          const updatedOrders = reports.map((reportObj) => {
+            if (reportObj._id === report._id) {
+              return updatedReport;
+            }
+            return reportObj;
+          });
+          setReports(updatedOrders);
+        }
+      });
   };
 
   return (
     <div className="clear-both m-8">
-      <InputLabel id="demo-simple-select-standard-label">Select Orders by Item:</InputLabel>
+      {/* <InputLabel id="demo-simple-select-standard-label">Select Orders by Item:</InputLabel>
       <Select
         labelId="demo-simple-select-standard-label"
         id="demo-simple-select-standard"
@@ -51,14 +62,12 @@ const ReportsContainer = ({ menuItems, user }) => {
             {item.name}
           </MenuItem>
         ))}
-      </Select>
+      </Select> */}
       {reports
         ? reports.map((report) => {
             return (
               <Container maxWidth="xs" style={{ backgroundColor: '#ffff', marginBottom: 20 }} key={report._id}>
-                <Typography
-                  variant="body1"
-                  style={{ color: 'black', textAlign: 'center', marginTop: 20, marginBottom: 10 }}>
+                <Typography variant="body1" style={{ color: 'black', marginTop: 20, marginBottom: 10 }}>
                   Order #{report.createdOn.slice(-4)}
                 </Typography>
                 <Card classes={{ root: classes.root }}>
@@ -73,13 +82,19 @@ const ReportsContainer = ({ menuItems, user }) => {
                     })}
                   </CardContent>
                   <div className="clear-both">
-                    <Button
-                      className={classes.button}
-                      size="small"
-                      color="secondary"
-                      onClick={() => handleCancel(report)}>
-                      Cancel Order
-                    </Button>
+                    {report.canceled ? (
+                      <Typography variant="subtitle2" style={{ color: 'red', textAlign: 'center' }}>
+                        Your order has been canceled.
+                      </Typography>
+                    ) : (
+                      <Button
+                        className={classes.button}
+                        size="small"
+                        color="secondary"
+                        onClick={() => handleCancel(report)}>
+                        Cancel Order
+                      </Button>
+                    )}
                   </div>
                 </Card>
                 <Typography variant="body1" style={{ color: 'black', textAlign: 'left', marginBottom: 5 }}>

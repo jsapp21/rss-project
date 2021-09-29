@@ -38,12 +38,12 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
         .then((resp) => resp.json())
         .then((menuItem) => {
           console.log(menuItem);
-          // if (menuItem.message) {
-          //   alert(`${menuItem.message}`);
-          // } else {
-          //   setMenuItems([...menuItems, menuItem]);
-          //   setForm({ name: '', price: '' });
-          // }
+          if (menuItem.message) {
+            alert(`${menuItem.message}`);
+          } else {
+            setMenuItems([...menuItems, menuItem]);
+            setForm({ name: '', price: '' });
+          }
         });
     }
   };

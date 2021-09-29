@@ -10,11 +10,6 @@ const users = {
       .collection('users')
       .find({ _id: new ObjectId(id) })
       .toArray(),
-  getAllUsersOrders: (id) =>
-    mongoService.db
-      .collection('orders')
-      .find({ userId: new ObjectId(id) })
-      .toArray(),
 };
 
 module.exports = users;

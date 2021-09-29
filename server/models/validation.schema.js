@@ -52,6 +52,7 @@ const Order = yup.object({
   orderItems: yup.array().of(orderedItems).required(),
   orderTotal: yup.number().required(),
   userId: yup.string().required(),
+  canceled: yup.boolean(),
   createdOn: yup.date(),
 });
 
