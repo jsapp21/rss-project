@@ -11,21 +11,18 @@ import Button from '@material-ui/core/Button';
 import useDashboardStyles from '../styles/dashboard.css';
 import { itemPropTypes } from '../propTypes/schema';
 
-const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, addMenuItemPage }) => {
+const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }) => {
   const classes = useDashboardStyles();
 
   const handleOrder = (i) => {
-    if (order.length === 0) {
-      setCompleted(false);
-    }
     const itemToUpdate = order.find((orderedItem) => orderedItem._id === i._id);
 
     if (!itemToUpdate) {
-      return setOrder([...order, { ...i, quanity: 1 }]);
+      return setOrder([...order, { ...i, quantity: 1 }]);
     }
     const updatedItem = {
       ...itemToUpdate,
-      quanity: itemToUpdate.quanity + 1,
+      quantity: itemToUpdate.quantity + 1,
     };
 
     const updatedOrder = order.map((item) => {
@@ -144,7 +141,6 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, setCompleted, add
 MenuItems.propTypes = {
   order: PropTypes.arrayOf(itemPropTypes),
   setOrder: PropTypes.func,
-  setCompleted: PropTypes.func,
   menuItems: PropTypes.arrayOf(itemPropTypes).isRequired,
   setMenuItems: PropTypes.func,
   addMenuItemPage: PropTypes.bool,
@@ -153,7 +149,6 @@ MenuItems.propTypes = {
 MenuItems.defaultProps = {
   order: [],
   setOrder: null,
-  setCompleted: null,
   setMenuItems: null,
   addMenuItemPage: false,
 };

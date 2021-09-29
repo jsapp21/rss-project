@@ -7,20 +7,20 @@ import CardContent from '@material-ui/core/CardContent';
 import { Typography, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
-import { itemPropTypes, menuPropTypes } from '../propTypes/schema';
+import { itemPropTypes, menuPropTypes, userPropTypes } from '../propTypes/schema';
 
-const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
+const Order = ({ order, setOrder, menu, user }) => {
   const classes = useOrderStyles();
   let totalCost = 0;
 
   const subtractTotal = (i) => {
-    const totalItemPrice = i.quanity * i.price;
+    const totalItemPrice = i.quantity * i.price;
     totalCost -= totalItemPrice;
     return totalCost;
   };
 
   const addTotal = (i) => {
-    const totalItemPrice = i.quanity * i.price;
+    const totalItemPrice = i.quantity * i.price;
     totalCost += totalItemPrice;
     return totalCost;
   };
@@ -34,15 +34,19 @@ const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
   const handleClick = () => {
     const updatedOrderItemIds = order.map((item) => {
       return {
-        itemId: item._id,
+        name: item.name,
         price: item.price,
-        quanity: item.quanity,
+        quantity: item.quantity,
+        outOfStock: item.outOfStock,
+        tempOutOfStock: item.tempOutOfStock,
       };
     });
 
     const newOrder = {
       menuId: menu._id,
       orderItems: updatedOrderItemIds,
+      orderTotal: totalCost,
+      userId: user[0]._id,
     };
 
     const reqObj = {
@@ -51,14 +55,16 @@ const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
       body: JSON.stringify(newOrder),
     };
 
-    fetch('/orders', reqObj).then((checkout) => {
-      if (checkout.acknowledged === false) {
-        alert(`Error: ${checkout.error}`);
-      } else {
-        setCompleted(true);
-        setOrder([]);
-      }
-    });
+    fetch('/orders', reqObj)
+      .then((resp) => resp.json())
+      .then((orderResponse) => {
+        if (orderResponse.status !== 200) {
+          alert(`Error: ${orderResponse.message}`);
+        } else {
+          alert(`${orderResponse.message}`);
+          setOrder([]);
+        }
+      });
   };
 
   return (
@@ -74,7 +80,7 @@ const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
             <Card classes={{ root: classes.root }} key={i._id}>
               <CardContent>
                 <Typography variant="body1" style={{ float: 'left' }}>
-                  {i.quanity} - {i.name}
+                  {i.quantity} - {i.name}
                 </Typography>
                 <Typography color="textSecondary" style={{ float: 'right' }}>
                   ${i.price}
@@ -96,11 +102,6 @@ const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
           <Button variant="contained" color="primary" onClick={handleClick} style={{ marginBottom: 20 }}>
             Order
           </Button>
-          {completed ? (
-            <Typography variant="h5" style={{ float: 'left', color: 'green' }}>
-              Your order has been placed!
-            </Typography>
-          ) : null}
         </div>
       </Container>
     </>
@@ -110,9 +111,8 @@ const Order = ({ order, setOrder, completed, setCompleted, menu }) => {
 Order.propTypes = {
   order: PropTypes.arrayOf(itemPropTypes).isRequired,
   setOrder: PropTypes.func.isRequired,
-  completed: PropTypes.bool.isRequired,
-  setCompleted: PropTypes.func.isRequired,
   menu: menuPropTypes.isRequired,
+  user: PropTypes.arrayOf(userPropTypes).isRequired,
 };
 
 export default Order;

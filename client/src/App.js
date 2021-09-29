@@ -20,8 +20,6 @@ const App = () => {
       .then((res) => res.json())
       .then((users) => {
         if (users) {
-          console.log(users);
-          // localStorage.setItem('userRole', JSON.stringify(user));
           setUser(users);
         }
       })
@@ -43,13 +41,16 @@ const App = () => {
   };
 
   const pickUser = (e) => {
-    console.log(e.target.value, 'user selected');
     const selectedUser = user.filter((user) => user._id === e.target.value._id);
     setUser(selectedUser);
+    fetch(`/users/${selectedUser[0]._id}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setUser(data);
+        localStorage.setItem('userRole', JSON.stringify(data));
+      });
     setUserSelected(true);
   };
-
-  console.log(user);
 
   return (
     <>
@@ -84,7 +85,7 @@ const App = () => {
           </FormControl>
         ) : null}
       </Container>
-      {clicked ? <Dashboard menu={menu} /> : null}
+      {clicked ? <Dashboard menu={menu} user={user} /> : null}
     </>
   );
 };

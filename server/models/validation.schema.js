@@ -10,7 +10,9 @@ const item1 = { _id: id, menuId: id, name: 'Pizza', price: 3.55, outOfStock: fal
 const order1 = {
   _id: id,
   menuId: id,
-  orderItems: [{ itemId: id, price: 3.55, quanity: 2, outOfStock: false }],
+  userId: id,
+  orderItems: [{ name: 'slice of pizza', price: 3.55, quantity: 2, outOfStock: false, tempOutOfStock: false }],
+  orderTotal: 12.5,
   createdOn: new Date(),
 };
 
@@ -29,6 +31,7 @@ const Item = yup.object({
   name: yup.string().required(),
   price: yup.number().positive().required(),
   outOfStock: yup.boolean().required(),
+  tempOutOfStock: yup.boolean().required(),
 });
 
 const MenuItem = yup.array().of(Item);
@@ -36,17 +39,20 @@ const MenuItem = yup.array().of(Item);
 // Item.isValid(item1).then((isValid) => console.log(`item1 is valid? ${isValid}`));
 
 const orderedItems = yup.object({
-  itemId: yup.string().required(),
+  name: yup.string().required(),
   price: yup.number().positive().required(),
-  quanity: yup.number().positive().required(),
-  outOfStock: yup.boolean(),
+  quantity: yup.number().positive().required(),
+  outOfStock: yup.boolean().required(),
+  tempOutOfStock: yup.boolean().required(),
 });
 
 const Order = yup.object({
-  _id: yup.string().transform((value) => new ObjectId(value)),
+  _id: yup.string(),
   menuId: yup.string().required(),
   orderItems: yup.array().of(orderedItems).required(),
-  createdOn: yup.date().required(),
+  orderTotal: yup.number().required(),
+  userId: yup.string().required(),
+  createdOn: yup.date(),
 });
 
 // Order.isValid(order1).then((isValid) => console.log(`order1 is valid? ${isValid}`));

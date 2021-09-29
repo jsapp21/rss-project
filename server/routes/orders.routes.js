@@ -3,32 +3,25 @@
 const express = require('express');
 
 const router = express.Router();
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require('bson');
 const orders = require('../services/orders.service');
 const { NotFound } = require('../utils/errors');
 
 router.post('/', async (req, res, next) => {
   try {
-    const updatedOrderItems = req.body.orderItems.map((order) => ({
-      ...order,
-      itemId: new ObjectId(order.itemId),
-    }));
-    const request = {
-      menuId: new ObjectId(req.body.menuId),
-      orderItems: updatedOrderItems,
-      createdOn: new Date(),
-    };
-    const newOrder = await orders.postOrder(request);
-    res.send(newOrder);
+    const newOrder = await orders.postOrder(req);
+    res.send({ status: res.statusCode, message: 'Thank you. Your order has been placed.', newOrder });
   } catch (err) {
     next(err);
   }
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/user/:id', async (req, res, next) => {
   try {
-    const allOrders = await orders.getAllOrders();
-    res.send(allOrders);
+    debugger;
+    const { id } = req.params;
+    const allUserOrders = await orders.getAllOrders(id);
+    res.send(allUserOrders);
   } catch (err) {
     next(err);
   }
@@ -36,7 +29,6 @@ router.get('/', async (req, res, next) => {
 
 router.get('/items/:id', async (req, res, next) => {
   try {
-    debugger;
     const validId = ObjectId.isValid(req.params.id);
     if (!validId) {
       throw new NotFound('Item not found.');

@@ -1,18 +1,17 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React, { useEffect, useState } from 'react';
-
+import PropTypes from 'prop-types';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import ReportsContainer from './ReportsContainer';
 import MenuItems from './MenuItems';
 import Order from './Order';
 import ItemForm from './ItemForm';
-import { menuPropTypes } from '../propTypes/schema';
+import { menuPropTypes, userPropTypes } from '../propTypes/schema';
 
-const Dashboard = ({ menu }) => {
+const Dashboard = ({ menu, user }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [order, setOrder] = useState([]);
-  const [completed, setCompleted] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [orderPage, setOrderPage] = useState(true);
   const [addMenuItemPage, setAddMenuItemPage] = useState(false);
@@ -47,6 +46,8 @@ const Dashboard = ({ menu }) => {
     setAnchorEl(null);
   };
 
+  console.log(user);
+
   return (
     <div>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
@@ -66,14 +67,8 @@ const Dashboard = ({ menu }) => {
 
       {orderPage ? (
         <div className="clear-both grid gap-10 grid-cols-2">
-          <MenuItems
-            menuItems={menuItems}
-            order={order}
-            setOrder={setOrder}
-            completed={completed}
-            setCompleted={setCompleted}
-          />
-          <Order order={order} setOrder={setOrder} completed={completed} setCompleted={setCompleted} menu={menu} />
+          <MenuItems menuItems={menuItems} order={order} setOrder={setOrder} />
+          <Order order={order} setOrder={setOrder} menu={menu} user={user} />
         </div>
       ) : null}
 
@@ -81,13 +76,14 @@ const Dashboard = ({ menu }) => {
         <ItemForm menuItems={menuItems} setMenuItems={setMenuItems} menu={menu} addMenuItemPage={addMenuItemPage} />
       ) : null}
 
-      {reportPage ? <ReportsContainer menuItems={menuItems} /> : null}
+      {reportPage ? <ReportsContainer menuItems={menuItems} user={user} /> : null}
     </div>
   );
 };
 
 Dashboard.propTypes = {
   menu: menuPropTypes.isRequired,
+  user: PropTypes.arrayOf(userPropTypes).isRequired,
 };
 
 export default Dashboard;

@@ -1,18 +1,26 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Typography, Container, Select, MenuItem, InputLabel } from '@material-ui/core';
-import { itemPropTypes } from '../propTypes/schema';
+import { Typography, Container, Select, MenuItem, InputLabel, Button } from '@material-ui/core';
+import { itemPropTypes, userPropTypes } from '../propTypes/schema';
 import useOrderStyles from '../styles/order.css';
 
-const ReportsContainer = ({ menuItems }) => {
+const ReportsContainer = ({ menuItems, user }) => {
   const [reports, setReports] = useState(null);
   const [selectedItem, setSelectedItem] = useState('');
   const classes = useOrderStyles();
-  let totalCost = 0;
+
+  useEffect(() => {
+    fetch(`/${user[0]._id}/orders`)
+      .then((resp) => resp.json())
+      .then((orders) => {
+        console.log(orders);
+        setReports(orders);
+      });
+  }, [user]);
 
   const handleChange = (event) => {
     setSelectedItem(event.target.value);
@@ -23,14 +31,13 @@ const ReportsContainer = ({ menuItems }) => {
       });
   };
 
-  const addTotal = (item) => {
-    const totalItemPrice = item.quantity * item.price;
-    totalCost += totalItemPrice;
-    return totalCost;
+  const handleCancel = (report) => {
+    console.log('i am clicked', report);
+    fetch(`/order/${report._id}`)
+      .then((resp) => resp.json())
+      .then((data) => console.log(data));
   };
 
-  console.log(totalCost, 'totalcost');
-  // TODO: total cost for each order
   return (
     <div className="clear-both m-8">
       <InputLabel id="demo-simple-select-standard-label">Select Orders by Item:</InputLabel>
@@ -56,18 +63,27 @@ const ReportsContainer = ({ menuItems }) => {
                 </Typography>
                 <Card classes={{ root: classes.root }}>
                   <CardContent>
-                    {report.items.map((item) => {
-                      addTotal(item);
+                    {report.orderItems.map((item) => {
                       return (
-                        <Typography variant="body1" key={item._id}>
-                          {item.quantity} - {item.name} ${item.price} {item.outOfSock ? 'Out of Stock' : null}
+                        <Typography variant="body1" key={item.name}>
+                          {item.quantity} - {item.name} ${item.price} {item.outOfSock ? 'Temp Out' : null}
+                          {item.tempOutOfStock ? 'Removed Menu Item' : null}
                         </Typography>
                       );
                     })}
                   </CardContent>
+                  <div className="clear-both">
+                    <Button
+                      className={classes.button}
+                      size="small"
+                      color="secondary"
+                      onClick={() => handleCancel(report)}>
+                      Cancel Order
+                    </Button>
+                  </div>
                 </Card>
                 <Typography variant="body1" style={{ color: 'black', textAlign: 'left', marginBottom: 5 }}>
-                  Total: ${totalCost}
+                  Total: ${report.orderTotal}
                 </Typography>
               </Container>
             );
@@ -79,6 +95,7 @@ const ReportsContainer = ({ menuItems }) => {
 
 ReportsContainer.propTypes = {
   menuItems: PropTypes.arrayOf(itemPropTypes).isRequired,
+  user: PropTypes.arrayOf(userPropTypes).isRequired,
 };
 
 export default ReportsContainer;

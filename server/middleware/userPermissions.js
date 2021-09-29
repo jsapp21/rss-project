@@ -3,6 +3,7 @@
 const { AccessDenied } = require('../utils/errors');
 
 const userPermissions = async (req, res, next) => {
+  debugger;
   if (req.session.user.role !== 'ADMIN') {
     throw new AccessDenied('Error: You do not have permissons.');
   } else {

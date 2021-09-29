@@ -1,63 +1,31 @@
 /* eslint-disable no-debugger */
 const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
+const { Order } = require('../models/validation.schema');
+const { BadRequest } = require('../utils/errors');
 
 const orders = {
-  getAllOrders: () => mongoService.db.collection('orders').find().toArray(),
-  postOrder: async (req) => {
-    const response = await mongoService.db.collection('orders').insertOne(req);
-    return mongoService.db.collection('orders').findOne({ _id: response.insertedId });
-    // look into how to re-write this one
-  },
-  lookUpOrders: (id) =>
+  getAllOrders: (id) =>
     mongoService.db
       .collection('orders')
-      .aggregate([
-        {
-          $match: {
-            'orderItems.itemId': new ObjectId(id),
-          },
-        },
-        {
-          $unwind: {
-            path: '$orderItems',
-          },
-        },
-        {
-          $lookup: {
-            from: 'items',
-            localField: 'orderItems.itemId',
-            foreignField: '_id',
-            as: 'items_per_order',
-          },
-        },
-        {
-          $unwind: {
-            path: '$items_per_order',
-          },
-        },
-        {
-          $group: {
-            _id: '$_id',
-            menuId: {
-              $first: '$menuId',
-            },
-            items: {
-              $push: {
-                _id: '$orderItems.itemId',
-                name: '$items_per_order.name',
-                price: '$orderItems.price',
-                quantity: '$orderItems.quanity',
-                outOfStock: '$items_per_order.outOfStock',
-              },
-            },
-            createdOn: {
-              $first: '$createdOn',
-            },
-          },
-        },
-      ])
+      .find({ userId: new ObjectId(id) })
       .toArray(),
+  // want to created an index so you're not searching through each order
+  postOrder: async (req) => {
+    await Order.validate(req.body);
+    const request = {
+      ...req.body,
+      menuId: new ObjectId(req.body.menuId),
+      userId: new ObjectId(req.body.userId),
+      createdOn: new Date(),
+    };
+    const result = await mongoService.db.collection('orders').insertOne(request);
+    if (!result.acknowledged) {
+      throw new BadRequest('Your order can not be placed due to an server errror.');
+    }
+    return result;
+  },
+  lookUpOrders: () => {},
 };
 
 module.exports = orders;

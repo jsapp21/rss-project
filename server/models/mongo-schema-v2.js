@@ -17,7 +17,7 @@ const Item = {
   name: String,
   price: Number,
   outOfStock: Boolean,
-  removed: Boolean,
+  temptOutOfStock: Boolean,
 };
 
 // item on both menus
@@ -26,9 +26,10 @@ const Item = {
 
 const Order = {
   _id: ObjectId,
-  orderNumber: Number,
-  orderedItems: [Item, Item],
-  total: Number,
+  userId: User._id,
+  // orderNumber: Number,
+  orderItems: [Item, Item],
+  orderTotal: Number,
   createdOn: new Date(),
 };
 

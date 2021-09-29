@@ -16,7 +16,6 @@ router.post('/', userPermissions, async (req, res, next) => {
     const newItem = req.body;
     await Item.validate(newItem);
     const insertedItem = await items.postItem(newItem);
-    debugger;
     res.send(insertedItem);
   } catch (err) {
     next(err);
