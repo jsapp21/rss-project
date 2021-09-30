@@ -123,20 +123,6 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
                   <Button onClick={() => handleUpdate(menuItem)}>Update</Button>
                   <Button onClick={() => handleDelete(menuItem)}>Delete</Button>
                 </ButtonGroup>
-                {/* <Button
-                  size="small"
-                  className={classes.deleteButton}
-                  color="secondary"
-                  onClick={() => handleDelete(menuItem)}>
-                  Delete
-                </Button> */}
-                {/* <Button
-                  size="small"
-                  className={classes.orderButton}
-                  color="primary"
-                  onClick={() => handleOutOfStock(menuItem)}>
-                  {menuItem.outOfStock ? 'Out of Stock' : 'Instock'}
-                </Button> */}
               </div>
             ) : (
               <Button

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-debugger */
 const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
@@ -41,7 +42,50 @@ const orders = {
       return request;
     }
   },
-  lookUpOrders: () => {},
+  pmixReport: () => {
+    const result = mongoService.db
+      .collection('orders')
+      .aggregate([
+        {
+          $unwind: {
+            path: '$orderItems',
+          },
+        },
+        {
+          $lookup: {
+            from: 'menus',
+            localField: 'menuId',
+            foreignField: '_id',
+            as: 'menu',
+          },
+        },
+        {
+          $unwind: {
+            path: '$menu',
+          },
+        },
+        {
+          $group: {
+            _id: '$orderItems.name',
+            menu: {
+              $first: '$menu.name',
+            },
+            avgPrice: {
+              $avg: '$orderItems.price',
+            },
+            itemCount: {
+              $sum: '$orderItems.quantity',
+            },
+          },
+        },
+      ])
+      .toArray();
+    if (!result) {
+      throw new ServerError('Errro: PMIX report is unavailable.');
+    } else {
+      return result;
+    }
+  },
 };
 
 module.exports = orders;

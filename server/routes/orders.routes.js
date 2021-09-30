@@ -15,6 +15,15 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+router.get('/pmix', async (req, res, next) => {
+  try {
+    const pmix = await orders.pmixReport();
+    res.send(pmix);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // get all users orders
 router.get('/:id', async (req, res, next) => {
   try {
@@ -36,18 +45,5 @@ router.patch('/:id', userPermissions, async (req, res, next) => {
     next(err);
   }
 });
-
-// router.get('/items/:id', async (req, res, next) => {
-//   try {
-//     const validId = ObjectId.isValid(req.params.id);
-//     if (!validId) {
-//       throw new NotFound('Item not found.');
-//     }
-//     const lookUpOrders = await orders.lookUpOrders(req.params.id);
-//     res.send(lookUpOrders);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 
 module.exports = router;

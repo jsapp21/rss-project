@@ -2,15 +2,12 @@
 
 - custom hook or some Jest tests
 
-
-
-
 React
 - custom Hook 
     - resuable function w/ logic to return the same thing, must useThisStyle 
 
 - useCallback
-    - returns a memoized callback if one of the dpendencies has changed.
+    - returns a memoized callback if one of the dependencies has changed.
     - useCallback(fn, deps) is equivalent to useMemo(() => fn, deps).
 
 - useMemo

@@ -52,7 +52,6 @@ const items = {
             { upsert: false, session },
           );
         if (!ordersResults || ordersResults.modifiedCount === 0) {
-          debugger;
           throw Error('Transaction rolled back when updating orders.');
         }
       });
@@ -74,7 +73,6 @@ const items = {
         { $set: { tempOutOfStock: updateItem.tempOutOfStock } },
         { returnDocument: 'after' },
       );
-    debugger;
     if (!request) {
       throw new ServerError('Order did not cancel due to a server error.');
     } else {
