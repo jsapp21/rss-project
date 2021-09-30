@@ -3,11 +3,10 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+
 import { Typography, Container, Select, MenuItem, InputLabel, Button } from '@material-ui/core';
 import { itemPropTypes, userPropTypes } from '../propTypes/schema';
-import useOrderStyles from '../styles/order.css';
+import useOrderStyles from '../styles/reports.css';
 
 const ReportsContainer = ({ menuItems, user }) => {
   const [reports, setReports] = useState(null);
@@ -35,7 +34,7 @@ const ReportsContainer = ({ menuItems, user }) => {
     fetch(`/orders/${report._id}`, { method: 'PATCH' })
       .then((resp) => resp.json())
       .then((updatedReport) => {
-        if (updatedReport.status !== 200) {
+        if (updatedReport.message) {
           alert(updatedReport.message);
         } else {
           const updatedOrders = reports.map((reportObj) => {
@@ -50,7 +49,7 @@ const ReportsContainer = ({ menuItems, user }) => {
   };
 
   return (
-    <div className="clear-both m-8">
+    <div className="clear-both m-8 h-96 w-96 overflow-auto">
       {/* <InputLabel id="demo-simple-select-standard-label">Select Orders by Item:</InputLabel>
       <Select
         labelId="demo-simple-select-standard-label"
@@ -67,39 +66,44 @@ const ReportsContainer = ({ menuItems, user }) => {
         ? reports.map((report) => {
             return (
               <Container maxWidth="xs" style={{ backgroundColor: '#ffff', marginBottom: 20 }} key={report._id}>
-                <Typography variant="body1" style={{ color: 'black', marginTop: 20, marginBottom: 10 }}>
+                <Typography color="textPrimary" style={{ marginTop: 20, marginBottom: 10 }}>
                   Order #{report.createdOn.slice(-4)}
                 </Typography>
-                <Card classes={{ root: classes.root }}>
-                  <CardContent>
-                    {report.orderItems.map((item) => {
-                      return (
-                        <Typography variant="body1" key={item.name}>
-                          {item.quantity} - {item.name} ${item.price} {item.outOfSock ? 'Temp Out' : null}
-                          {item.tempOutOfStock ? 'Removed Menu Item' : null}
-                        </Typography>
-                      );
-                    })}
-                  </CardContent>
-                  <div className="clear-both">
-                    {report.canceled ? (
-                      <Typography variant="subtitle2" style={{ color: 'red', textAlign: 'center' }}>
-                        Your order has been canceled.
+                {report.orderItems.map((item) => {
+                  return (
+                    <div key={item.name}>
+                      <Typography color="textPrimary">
+                        {item.quantity} - {item.name} ${item.price}
                       </Typography>
-                    ) : (
-                      <Button
-                        className={classes.button}
-                        size="small"
-                        color="secondary"
-                        onClick={() => handleCancel(report)}>
-                        Cancel Order
-                      </Button>
-                    )}
-                  </div>
-                </Card>
-                <Typography variant="body1" style={{ color: 'black', textAlign: 'left', marginBottom: 5 }}>
+                      <Typography color="textSecondary" variant="body2" component="p" style={{ marginBottom: 15 }}>
+                        {item.outOfStock ? 'Out Of Stock' : 'In Stock'}
+                      </Typography>
+                    </div>
+                  );
+                })}
+                <Typography color="textPrimary" style={{ marginBottom: 5 }}>
                   Total: ${report.orderTotal}
                 </Typography>
+                {report.canceled ? (
+                  <Button
+                    disabled
+                    className={classes.cancelOrderBtn}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => handleCancel(report)}>
+                    Your order has been canceled.
+                  </Button>
+                ) : (
+                  <Button
+                    className={classes.cancelOrderBtn}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => handleCancel(report)}>
+                    Cancel Order
+                  </Button>
+                )}
               </Container>
             );
           })

@@ -20,7 +20,6 @@ class NotFound extends Error {
 
 class AccessDenied extends Error {
   getCode() {
-    debugger;
     return 403;
   }
 }

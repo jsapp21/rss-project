@@ -56,7 +56,7 @@ const Dashboard = ({ menu, user }) => {
           Order
         </MenuItem>
         <MenuItem onClick={handleClose} id="Menu Options">
-          Add Menu Item
+          Menu Options
         </MenuItem>
         <MenuItem onClick={handleClose} id="Reports">
           Reports

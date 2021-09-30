@@ -4,11 +4,11 @@
 const express = require('express');
 
 const router = express.Router();
-const { ObjectId } = require('mongodb');
+// const { ObjectId } = require('mongodb');
 const items = require('../services/items.service');
 const userPermissions = require('../middleware/userPermissions');
-const { BadRequest, NotFound, ServerError } = require('../utils/errors');
-const { Item, MenuItem } = require('../models/validation.schema');
+// const { BadRequest, NotFound, ServerError } = require('../utils/errors');
+const { Item } = require('../models/validation.schema');
 
 router.post('/', userPermissions, async (req, res, next) => {
   try {
@@ -24,20 +24,20 @@ router.post('/', userPermissions, async (req, res, next) => {
 router.get(['/', '/:id'], async (req, res, next) => {
   try {
     const menuItems = await items.getMenuItems(req.params.id);
-    const validCheck = await MenuItem.validate(menuItems);
-    res.send(validCheck);
+    res.send(menuItems);
   } catch (err) {
     next(err);
   }
 });
 
-router.post('/outofstock/', userPermissions, async (req, res, next) => {
+router.patch('/tempOut/:id', userPermissions, async (req, res, next) => {
   try {
-    const validCheck = await Item.isValid(req.body);
-    if (!validCheck) {
-      throw new BadRequest('Bad Request');
-    }
-    const response = await items.updateOutOfStock(req.body);
+    const updateItem = {
+      _id: req.params.id,
+      tempOutOfStock: req.body.tempOutOfStock,
+    };
+    const response = await items.tempOutOfStock(updateItem);
+    debugger;
     res.send(response.value);
   } catch (err) {
     next(err);
@@ -46,15 +46,9 @@ router.post('/outofstock/', userPermissions, async (req, res, next) => {
 
 router.delete('/delete/:id', userPermissions, async (req, res, next) => {
   try {
-    const validId = ObjectId.isValid(req.params.id);
-    if (!validId) {
-      throw new NotFound('Item not found.');
-    }
-    const response = await items.deleteMenuItem(req.params.id);
-    if (!response || response.deletedCount === 0) {
-      throw new ServerError('Server error: Item was not found.');
-    }
-    res.send({ status: res.statusCode, message: 'Item has been deleted.' });
+    const item = req.body;
+    await items.deleteItemTransaction(item);
+    res.send({ status: res.statusCode, message: 'Item has been deleted and previous orders updated.' });
   } catch (err) {
     next(err);
   }

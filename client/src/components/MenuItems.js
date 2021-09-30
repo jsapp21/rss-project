@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import useDashboardStyles from '../styles/dashboard.css';
 import { itemPropTypes } from '../propTypes/schema';
 
@@ -35,45 +36,16 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
     return undefined;
   };
 
-  const handleOutOfStock = (menuItem) => {
-    const user = JSON.parse(localStorage.getItem('userRole'));
-
-    const updatedItem = {
-      ...menuItem,
-      outOfStock: !menuItem.outOfStock,
-      userId: user._id,
-    };
-
-    const reqObj = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedItem),
-    };
-
-    fetch(`items/outofstock/`, reqObj)
-      .then((resp) => resp.json())
-      .then((data) => {
-        console.log(data);
-        if (data.status !== 200) {
-          alert(data.message);
-        } else {
-          const updatedMenuItems = menuItems.map((item) => {
-            if (item._id === data._id) {
-              return data;
-            } else {
-              return item;
-            }
-          });
-          setMenuItems(updatedMenuItems);
-        }
-      });
-  };
-
   const handleDelete = (menuItem) => {
+    const updatedItem = {
+      _id: menuItem._id,
+      name: menuItem.name,
+    };
+
     const reqObj = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: localStorage.getItem('userRole'),
+      body: JSON.stringify(updatedItem),
     };
 
     fetch(`/items/delete/${menuItem._id}`, reqObj)
@@ -90,6 +62,40 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
       });
   };
 
+  const handleOutOfStock = (menuItem) => {
+    const updatedItem = {
+      tempOutOfStock: !menuItem.tempOutOfStock,
+    };
+
+    const reqObj = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedItem),
+    };
+
+    fetch(`items/tempOut/${menuItem._id}`, reqObj)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        if (data.message) {
+          alert(data.message);
+        } else {
+          const updatedMenuItems = menuItems.map((item) => {
+            if (item._id === data._id) {
+              return data;
+            } else {
+              return item;
+            }
+          });
+          setMenuItems(updatedMenuItems);
+        }
+      });
+  };
+
+  const handleUpdate = (menuItem) => {
+    console.log('i am update');
+  };
+
   return (
     <div className="grid gap-1 grid-cols-3">
       {menuItems.map((menuItem) => {
@@ -104,25 +110,37 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
               </Typography>
             </CardContent>
             {addMenuItemPage ? (
-              <div className="clear-both grid gap-10 grid-cols-2">
-                <Button
+              <div className="clear-both">
+                <ButtonGroup
+                  className={classes.buttonGrp}
+                  orientation="vertical"
+                  color="primary"
+                  size="small"
+                  aria-label="buttons">
+                  <Button onClick={() => handleOutOfStock(menuItem)}>
+                    {menuItem.tempOutOfStock ? 'Out of Stock' : 'Instock'}
+                  </Button>
+                  <Button onClick={() => handleUpdate(menuItem)}>Update</Button>
+                  <Button onClick={() => handleDelete(menuItem)}>Delete</Button>
+                </ButtonGroup>
+                {/* <Button
                   size="small"
                   className={classes.deleteButton}
                   color="secondary"
                   onClick={() => handleDelete(menuItem)}>
                   Delete
-                </Button>
-                <Button
+                </Button> */}
+                {/* <Button
                   size="small"
                   className={classes.orderButton}
                   color="primary"
                   onClick={() => handleOutOfStock(menuItem)}>
                   {menuItem.outOfStock ? 'Out of Stock' : 'Instock'}
-                </Button>
+                </Button> */}
               </div>
             ) : (
               <Button
-                disabled={menuItem.outOfStock}
+                disabled={menuItem.tempOutOfStock}
                 size="small"
                 className={classes.orderButton}
                 variant="contained"
@@ -154,4 +172,3 @@ MenuItems.defaultProps = {
 };
 
 export default MenuItems;
-// grid gap-1 grid-cols-3

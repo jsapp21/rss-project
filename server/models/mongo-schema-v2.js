@@ -21,8 +21,6 @@ const Item = {
 };
 
 // item on both menus
-// outOfStock: temporay, updates item only, displays on UI but unable to order
-// removed: perminate, transaction (update prev orders & updated item, does not display on UI)
 
 const Order = {
   _id: ObjectId,
@@ -41,5 +39,3 @@ const Order = {
 // search by order number - index orderNumber
 // total sales by each Menu - $sum
 // PMIX: for each menu, number of times & sales for each item
-
-// setTimeout for order confirmation

@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
-const { BadRequest } = require('../utils/errors');
+const { BadRequest, ServerError } = require('../utils/errors');
 
 const items = {
   getMenuItems: (id) =>
@@ -27,11 +27,11 @@ const items = {
       return item;
     }
   },
-  deleteMenuItem: (id) => {
+  updateItem: (id) => {
     const result = mongoService.db.collection('items').deleteOne({ _id: new ObjectId(id) });
     return result;
   },
-  updateOutOfStock: async (item) => {
+  deleteItemTransaction: async (item) => {
     const session = mongoService.client.startSession();
     let itemsResults;
     let ordersResults;
@@ -40,35 +40,45 @@ const items = {
       const transactionResults = await session.withTransaction(async () => {
         itemsResults = await mongoService.db
           .collection('items')
-          .findOneAndUpdate(
-            { _id: new ObjectId(item._id) },
-            { $set: { outOfStock: item.outOfStock } },
-            { returnDocument: 'after' },
-            { session },
-          );
-        if (!itemsResults) {
+          .deleteOne({ _id: new ObjectId(item._id) }, { session });
+        if (!itemsResults || itemsResults.deletedCount > 1) {
           throw Error('Transaction rolled back when updating the item.');
         }
         ordersResults = await mongoService.db
           .collection('orders')
           .updateMany(
-            { 'orderItems.itemId': ObjectId(item._id) },
+            { 'orderItems.name': item.name },
             { $set: { 'orderItems.$.outOfStock': true } },
             { upsert: false, session },
           );
         if (!ordersResults || ordersResults.modifiedCount === 0) {
+          debugger;
           throw Error('Transaction rolled back when updating orders.');
         }
       });
 
       if (!transactionResults) {
-        console.log('The transaction was intentionally aborted.');
+        throw Error('The transaction was intentionally aborted.');
       } else {
-        console.log('The transaction was successfully created.');
         return itemsResults;
       }
     } finally {
       await session.endSession();
+    }
+  },
+  tempOutOfStock: (updateItem) => {
+    const request = mongoService.db
+      .collection('items')
+      .findOneAndUpdate(
+        { _id: new ObjectId(updateItem._id) },
+        { $set: { tempOutOfStock: updateItem.tempOutOfStock } },
+        { returnDocument: 'after' },
+      );
+    debugger;
+    if (!request) {
+      throw new ServerError('Order did not cancel due to a server error.');
+    } else {
+      return request;
     }
   },
 };
