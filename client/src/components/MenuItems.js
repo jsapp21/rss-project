@@ -51,7 +51,6 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
     fetch(`/items/delete/${menuItem._id}`, reqObj)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         if (data.status !== 200) {
           alert(data.message);
         } else {

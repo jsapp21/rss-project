@@ -19,11 +19,13 @@ import {
 import { uuid } from 'uuidv4';
 import { userPropTypes } from '../propTypes/schema';
 import useOrderStyles from '../styles/reports.css';
+import useOrders from '../hooks/useOrders';
 
 const ReportsContainer = ({ user }) => {
   const [reports, setReports] = useState(null);
   const [pmix, setPmix] = useState(null);
   const classes = useOrderStyles();
+  const [isVisible, toggleAllOrders] = useOrders(user);
 
   useEffect(() => {
     fetch(`/orders/${user[0]._id}`)
@@ -55,7 +57,6 @@ const ReportsContainer = ({ user }) => {
     fetch(`/orders/pmix`)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         setPmix(data);
       });
   };
@@ -104,6 +105,11 @@ const ReportsContainer = ({ user }) => {
       </div>
 
       <div className="h-96 mt-8 overflow-auto">
+        <button type="button" onClick={toggleAllOrders}>
+          {isVisible ? 'My Orders' : 'All Orders'}
+        </button>
+        <br />
+        {isVisible && <span>i am diplayed</span>}
         {reports
           ? reports.map((report) => {
               return (

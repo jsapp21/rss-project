@@ -15,6 +15,15 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+router.get('/', async (req, res, next) => {
+  try {
+    const allOrders = await orders.getAllOrders();
+    res.send(allOrders);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get('/pmix', async (req, res, next) => {
   try {
     const pmix = await orders.pmixReport();

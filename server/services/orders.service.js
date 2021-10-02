@@ -6,6 +6,14 @@ const { Order } = require('../models/validation.schema');
 const { BadRequest, ServerError, NotFound } = require('../utils/errors');
 
 const orders = {
+  getAllOrders: () => {
+    const request = mongoService.db.collection('orders').find({}).toArray();
+    if (request.length === 0) {
+      throw new NotFound('You do not have any orders yet.');
+    } else {
+      return request;
+    }
+  },
   getAllOrdersByUser: (id) => {
     const request = mongoService.db
       .collection('orders')
@@ -16,7 +24,6 @@ const orders = {
     } else {
       return request;
     }
-    // create an index? so you're not searching through each order
   },
   postOrder: async (req) => {
     await Order.validate(req.body);

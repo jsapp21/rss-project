@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Container, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import useAppStyles from './styles/app.css';
 import Dashboard from './components/Dashboard';
+import useToggle from './hooks/useToggle';
 
 const App = () => {
   const classes = useAppStyles();
