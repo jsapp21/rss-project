@@ -2,12 +2,10 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React, { useEffect, useState, useContext, createContext } from 'react';
-// import PropTypes from 'prop-types';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import ReportsContainer from './ReportsContainer';
 import OrderContainer from './OrderContainer';
 import ItemForm from './ItemForm';
-// import { menuPropTypes } from '../propTypes/schema';
 import { UserMenuContext } from '../App';
 
 export const MenuItemsContext = createContext();
@@ -17,7 +15,7 @@ const Dashboard = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [orderPage, setOrderPage] = useState(true);
-  const [addMenuItemPage, setAddMenuItemPage] = useState(false);
+  const [menuItemsPage, setMenuItemsPage] = useState(false);
   const [reportPage, setReportPage] = useState(false);
 
   useEffect(() => {
@@ -34,22 +32,22 @@ const Dashboard = () => {
 
   const handleClose = (e) => {
     if (e.currentTarget.id === 'Order') {
-      setAddMenuItemPage(false);
+      setMenuItemsPage(false);
       setOrderPage(true);
       setReportPage(false);
     } else if (e.currentTarget.id === 'Menu Options') {
-      setAddMenuItemPage(true);
+      setMenuItemsPage(true);
       setOrderPage(false);
       setReportPage(false);
     } else if (e.currentTarget.id === 'Reports') {
-      setAddMenuItemPage(false);
+      setMenuItemsPage(false);
       setOrderPage(false);
       setReportPage(true);
     }
     setAnchorEl(null);
   };
 
-  console.log(result);
+  console.log(result, 'Dashboard');
 
   return (
     <div>
@@ -69,23 +67,20 @@ const Dashboard = () => {
       </Menu>
 
       {orderPage ? (
-        <MenuItemsContext.Provider value={{ menuItems }}>
+        <MenuItemsContext.Provider value={{ menuItems, setMenuItems }}>
           <OrderContainer />
         </MenuItemsContext.Provider>
       ) : null}
 
-      {addMenuItemPage ? (
-        <ItemForm menuItems={menuItems} setMenuItems={setMenuItems} addMenuItemPage={addMenuItemPage} />
+      {menuItemsPage ? (
+        <MenuItemsContext.Provider value={{ menuItems, setMenuItems, menuItemsPage }}>
+          <ItemForm />
+        </MenuItemsContext.Provider>
       ) : null}
 
-      {reportPage ? <ReportsContainer menuItems={menuItems} /> : null}
+      {reportPage ? <ReportsContainer /> : null}
     </div>
   );
 };
-
-// Dashboard.propTypes = {
-//   menu: menuPropTypes.isRequired,
-//   // user: PropTypes.arrayOf(userPropTypes).isRequired,
-// };
 
 export default Dashboard;

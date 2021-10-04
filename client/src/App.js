@@ -1,11 +1,11 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React, { useEffect, useState, createContext } from 'react';
 import { Typography, Container, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import useAppStyles from './styles/app.css';
-// eslint-disable-next-line import/no-cycle
 import Dashboard from './components/Dashboard';
-// import useToggle from './hooks/useToggle';
 
 export const UserMenuContext = createContext();
 
@@ -17,7 +17,6 @@ const App = () => {
   const [menus, setMenus] = useState([]);
   const [resturant, setResturant] = useState('');
   const [clicked, setClicked] = useState(false);
-  // const [clicked, toggle] = useReducer((clicked) => !clicked, false);
   const [userSelected, setUserSelected] = useState(false);
 
   useEffect(() => {

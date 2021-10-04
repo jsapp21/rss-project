@@ -1,16 +1,19 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Typography, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
-import { itemPropTypes, menuPropTypes, userPropTypes } from '../propTypes/schema';
+import { itemPropTypes } from '../propTypes/schema';
+import { UserMenuContext } from '../App';
 
-const Order = ({ order, setOrder, menu, user }) => {
+const Order = ({ order, setOrder }) => {
   const classes = useOrderStyles();
+  const result = useContext(UserMenuContext);
   let totalCost = 0;
 
   const subtractTotal = (i) => {
@@ -43,10 +46,10 @@ const Order = ({ order, setOrder, menu, user }) => {
     });
 
     const newOrder = {
-      menuId: menu._id,
+      menuId: result.menu._id,
       orderItems: updatedOrderItemIds,
       orderTotal: totalCost,
-      userId: user[0]._id,
+      userId: result.user[0]._id,
     };
 
     const reqObj = {
@@ -111,8 +114,8 @@ const Order = ({ order, setOrder, menu, user }) => {
 Order.propTypes = {
   order: PropTypes.arrayOf(itemPropTypes).isRequired,
   setOrder: PropTypes.func.isRequired,
-  menu: menuPropTypes.isRequired,
-  user: PropTypes.arrayOf(userPropTypes).isRequired,
+  // menu: menuPropTypes.isRequired,
+  // user: PropTypes.arrayOf(userPropTypes).isRequired,
 };
 
 export default Order;

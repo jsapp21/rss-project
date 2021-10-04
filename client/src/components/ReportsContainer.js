@@ -1,9 +1,8 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-alert */
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Typography,
   Container,
@@ -17,23 +16,24 @@ import {
   Paper,
 } from '@material-ui/core';
 import { uuid } from 'uuidv4';
-import { userPropTypes } from '../propTypes/schema';
 import useOrderStyles from '../styles/reports.css';
 import useOrders from '../hooks/useOrders';
+import { UserMenuContext } from '../App';
 
-const ReportsContainer = ({ user }) => {
+const ReportsContainer = () => {
   const [reports, setReports] = useState(null);
   const [pmix, setPmix] = useState(null);
   const classes = useOrderStyles();
   const [isVisible, toggleAllOrders] = useOrders(false);
+  const appResult = useContext(UserMenuContext);
 
   useEffect(() => {
-    fetch(`/orders/${user[0]._id}`)
+    fetch(`/orders/${appResult.user[0]._id}`)
       .then((resp) => resp.json())
       .then((orders) => {
         setReports(orders);
       });
-  }, [user]);
+  }, [appResult.user]);
 
   const handleCancel = (report) => {
     fetch(`/orders/${report._id}`, { method: 'PATCH' })
@@ -159,10 +159,6 @@ const ReportsContainer = ({ user }) => {
       </div>
     </div>
   );
-};
-
-ReportsContainer.propTypes = {
-  user: PropTypes.arrayOf(userPropTypes).isRequired,
 };
 
 export default ReportsContainer;

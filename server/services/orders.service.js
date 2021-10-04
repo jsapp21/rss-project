@@ -3,17 +3,10 @@
 const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
 const { Order } = require('../models/validation.schema');
-const { BadRequest, ServerError, NotFound } = require('../utils/errors');
+const { ServerError, NotFound } = require('../utils/errors');
 
 const orders = {
-  getAllOrders: () => {
-    const request = mongoService.db.collection('orders').find({}).toArray();
-    if (request.length === 0) {
-      throw new NotFound('You do not have any orders yet.');
-    } else {
-      return request;
-    }
-  },
+  getAllOrders: () => mongoService.db.collection('orders').find({}).toArray(),
   getAllOrdersByUser: (id) => {
     const request = mongoService.db
       .collection('orders')
@@ -35,7 +28,7 @@ const orders = {
     };
     const result = await mongoService.db.collection('orders').insertOne(request);
     if (!result.acknowledged) {
-      throw new BadRequest('Your order can not be placed due to an server error.');
+      throw new ServerError('Your order can not be placed due to an server error.');
     }
     return result;
   },

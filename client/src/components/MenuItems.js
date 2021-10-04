@@ -1,8 +1,11 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable import/named */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-else-return */
 /* eslint-disable no-debugger */
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,29 +14,33 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import useDashboardStyles from '../styles/dashboard.css';
 import { itemPropTypes } from '../propTypes/schema';
+import { MenuItemsContext } from './Dashboard';
 
-const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }) => {
+const MenuItems = ({ order, setOrder }) => {
   const classes = useDashboardStyles();
+  const result = useContext(MenuItemsContext);
 
   const handleOrder = (i) => {
     const itemToUpdate = order.find((orderedItem) => orderedItem._id === i._id);
+    console.log(itemToUpdate);
 
     if (!itemToUpdate) {
       return setOrder([...order, { ...i, quantity: 1 }]);
-    }
-    const updatedItem = {
-      ...itemToUpdate,
-      quantity: itemToUpdate.quantity + 1,
-    };
+    } else {
+      const updatedItem = {
+        ...itemToUpdate,
+        quantity: itemToUpdate.quantity + 1,
+      };
 
-    const updatedOrder = order.map((item) => {
-      if (item._id === updatedItem._id) {
-        return updatedItem;
-      }
-      return item;
-    });
-    setOrder(updatedOrder);
-    return undefined;
+      const updatedOrder = order.map((item) => {
+        if (item._id === updatedItem._id) {
+          return updatedItem;
+        }
+        return item;
+      });
+      setOrder(updatedOrder);
+      return undefined;
+    }
   };
 
   const handleDelete = (menuItem) => {
@@ -55,8 +62,8 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
           alert(data.message);
         } else {
           alert(data.message);
-          const updatedMenuItems = menuItems.filter((item) => item._id !== menuItem._id);
-          setMenuItems(updatedMenuItems);
+          const updatedMenuItems = result.menuItems.filter((item) => item._id !== menuItem._id);
+          result.setMenuItems(updatedMenuItems);
         }
       });
   };
@@ -75,18 +82,17 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
     fetch(`items/tempOut/${menuItem._id}`, reqObj)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
         if (data.message) {
           alert(data.message);
         } else {
-          const updatedMenuItems = menuItems.map((item) => {
+          const updatedMenuItems = result.menuItems.map((item) => {
             if (item._id === data._id) {
               return data;
             } else {
               return item;
             }
           });
-          setMenuItems(updatedMenuItems);
+          result.setMenuItems(updatedMenuItems);
         }
       });
   };
@@ -95,9 +101,11 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
     console.log('i am update');
   };
 
+  console.log(result, 'MenuItems');
+
   return (
     <div className="grid gap-1 grid-cols-3">
-      {menuItems.map((menuItem) => {
+      {result.menuItems?.map((menuItem) => {
         return (
           <Card classes={{ root: classes.root }} key={menuItem._id}>
             <CardContent>
@@ -108,7 +116,7 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
                 ${menuItem.price}
               </Typography>
             </CardContent>
-            {addMenuItemPage ? (
+            {result.menuItemsPage ? (
               <div className="clear-both">
                 <ButtonGroup
                   className={classes.buttonGrp}
@@ -144,16 +152,11 @@ const MenuItems = ({ menuItems, setMenuItems, order, setOrder, addMenuItemPage }
 MenuItems.propTypes = {
   order: PropTypes.arrayOf(itemPropTypes),
   setOrder: PropTypes.func,
-  menuItems: PropTypes.arrayOf(itemPropTypes).isRequired,
-  setMenuItems: PropTypes.func,
-  addMenuItemPage: PropTypes.bool,
 };
 
 MenuItems.defaultProps = {
   order: [],
   setOrder: null,
-  setMenuItems: null,
-  addMenuItemPage: false,
 };
 
 export default MenuItems;

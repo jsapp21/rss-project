@@ -6,8 +6,6 @@ function useOrders(initialValue) {
   const [value, setValue] = useState(initialValue);
 
   const toggleValue = () => setValue(!value);
-  console.log(value, 'value');
-  console.log(toggleValue, 'toggleValue');
 
   return [value, toggleValue];
 }
