@@ -1,29 +1,32 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState, useContext, createContext } from 'react';
+// import PropTypes from 'prop-types';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import ReportsContainer from './ReportsContainer';
-import MenuItems from './MenuItems';
-import Order from './Order';
+import OrderContainer from './OrderContainer';
 import ItemForm from './ItemForm';
-import { menuPropTypes, userPropTypes } from '../propTypes/schema';
+// import { menuPropTypes } from '../propTypes/schema';
+import { UserMenuContext } from '../App';
 
-const Dashboard = ({ menu, user }) => {
+export const MenuItemsContext = createContext();
+
+const Dashboard = () => {
+  const result = useContext(UserMenuContext);
   const [menuItems, setMenuItems] = useState([]);
-  const [order, setOrder] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [orderPage, setOrderPage] = useState(true);
   const [addMenuItemPage, setAddMenuItemPage] = useState(false);
   const [reportPage, setReportPage] = useState(false);
 
   useEffect(() => {
-    fetch(`/items/${menu._id}`)
+    fetch(`/items/${result.menu._id}`)
       .then((res) => res.json())
       .then((menuItems) => {
         setMenuItems(menuItems);
       });
-  }, [menu._id]);
+  }, [result.menu._id]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -46,6 +49,8 @@ const Dashboard = ({ menu, user }) => {
     setAnchorEl(null);
   };
 
+  console.log(result);
+
   return (
     <div>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
@@ -64,24 +69,23 @@ const Dashboard = ({ menu, user }) => {
       </Menu>
 
       {orderPage ? (
-        <div className="clear-both grid gap-10 grid-cols-2">
-          <MenuItems menuItems={menuItems} order={order} setOrder={setOrder} />
-          <Order order={order} setOrder={setOrder} menu={menu} user={user} />
-        </div>
+        <MenuItemsContext.Provider value={{ menuItems }}>
+          <OrderContainer />
+        </MenuItemsContext.Provider>
       ) : null}
 
       {addMenuItemPage ? (
-        <ItemForm menuItems={menuItems} setMenuItems={setMenuItems} menu={menu} addMenuItemPage={addMenuItemPage} />
+        <ItemForm menuItems={menuItems} setMenuItems={setMenuItems} addMenuItemPage={addMenuItemPage} />
       ) : null}
 
-      {reportPage ? <ReportsContainer menuItems={menuItems} user={user} /> : null}
+      {reportPage ? <ReportsContainer menuItems={menuItems} /> : null}
     </div>
   );
 };
 
-Dashboard.propTypes = {
-  menu: menuPropTypes.isRequired,
-  user: PropTypes.arrayOf(userPropTypes).isRequired,
-};
+// Dashboard.propTypes = {
+//   menu: menuPropTypes.isRequired,
+//   // user: PropTypes.arrayOf(userPropTypes).isRequired,
+// };
 
 export default Dashboard;
