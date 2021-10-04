@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { Typography, Container, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import useAppStyles from './styles/app.css';
 import Dashboard from './components/Dashboard';
-import useToggle from './hooks/useToggle';
+// import useToggle from './hooks/useToggle';
 
 const App = () => {
   const classes = useAppStyles();
@@ -14,6 +14,7 @@ const App = () => {
   const [menus, setMenus] = useState([]);
   const [resturant, setResturant] = useState('');
   const [clicked, setClicked] = useState(false);
+  // const [clicked, toggle] = useReducer((clicked) => !clicked, false);
   const [userSelected, setUserSelected] = useState(false);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const App = () => {
     setClicked(false);
     const selectedMenu = menus.filter((menu) => menu._id === e.target.value._id);
     setMenu({ name: selectedMenu[0].name, _id: selectedMenu[0]._id });
-    setClicked(true);
+    setClicked(!clicked);
   };
 
   const pickUser = (e) => {

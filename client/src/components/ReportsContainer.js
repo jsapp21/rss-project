@@ -25,7 +25,7 @@ const ReportsContainer = ({ user }) => {
   const [reports, setReports] = useState(null);
   const [pmix, setPmix] = useState(null);
   const classes = useOrderStyles();
-  const [isVisible, toggleAllOrders] = useOrders(user);
+  const [isVisible, toggleAllOrders] = useOrders(false);
 
   useEffect(() => {
     fetch(`/orders/${user[0]._id}`)

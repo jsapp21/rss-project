@@ -51,7 +51,7 @@ const items = {
             { $set: { 'orderItems.$.outOfStock': true } },
             { upsert: false, session },
           );
-        if (!ordersResults || ordersResults.modifiedCount === 0) {
+        if (!ordersResults) {
           throw Error('Transaction rolled back when updating orders.');
         }
       });

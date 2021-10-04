@@ -2,28 +2,26 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 /* eslint-disable no-alert */
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Input, Button } from '@material-ui/core';
-import useDashboardStyles from '../styles/dashboard.css';
+import { Typography, TextField, Button } from '@material-ui/core';
 import MenuItems from './MenuItems';
 import { itemPropTypes, menuPropTypes } from '../propTypes/schema';
 
 const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
-  const classes = useDashboardStyles();
-
-  const [form, setForm] = useState({ name: '', price: '' });
+  const name = useRef();
+  const price = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (form.name.length === 0 || form.price.length === 0) {
+    if (name.current.value.length === 0 || price.current.value === 0) {
       alert('Please fill out menu item and price');
     } else {
       const newItem = {
         menuId: menu._id,
-        name: form.name,
-        price: parseFloat(form.price),
+        name: name.current.value,
+        price: parseFloat(price.current.value),
         outOfStock: false,
         tempOutOfStock: false,
       };
@@ -37,22 +35,15 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
       fetch('/items', reqObj)
         .then((resp) => resp.json())
         .then((menuItem) => {
-          console.log(menuItem);
           if (menuItem.message) {
             alert(`${menuItem.message}`);
           } else {
             setMenuItems([...menuItems, menuItem]);
-            setForm({ name: '', price: '' });
+            name.current.value = '';
+            price.current.value = '';
           }
         });
     }
-  };
-
-  const handleChange = (e) => {
-    setForm((form) => ({
-      ...form,
-      [e.target.name]: e.target.value,
-    }));
   };
 
   return (
@@ -60,26 +51,14 @@ const ItemForm = ({ menuItems, setMenuItems, menu, addMenuItemPage }) => {
       <MenuItems menuItems={menuItems} setMenuItems={setMenuItems} addMenuItemPage={addMenuItemPage} />
       <div>
         <Typography variant="h5" component="h2">
-          New Menu Item:
+          Menu Item:
         </Typography>
         <form onSubmit={handleSubmit}>
-          <Input
-            color="primary"
-            placeholder="Item Name"
-            inputProps={{ 'aria-label': 'menu item' }}
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-          />
-          <Input
-            placeholder="$9.50"
-            inputProps={{ 'aria-label': 'menu item price' }}
-            name="price"
-            value={form.price}
-            onChange={handleChange}
-          />
-          <Button type="submit" variant="contained" color="primary" className={classes.button}>
-            Save
+          <TextField inputRef={name} placeholder="Item Name" defaultValue="" />
+          <TextField inputRef={price} placeholder="9.50" defaultValue="" />
+          <br />
+          <Button variant="contained" color="primary" style={{ marginTop: 10 }}>
+            Submit
           </Button>
         </form>
       </div>

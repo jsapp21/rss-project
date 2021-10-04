@@ -7,3 +7,7 @@ body {
     background-color:rgb(129, 129, 129);
     color: white;
 }
+
+input {
+    color: black;
+}
