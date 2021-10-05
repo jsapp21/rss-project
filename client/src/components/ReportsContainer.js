@@ -13,6 +13,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
 } from '@material-ui/core';
 import { uuid } from 'uuidv4';
 import useOrderStyles from '../styles/reports.css';
@@ -20,6 +21,7 @@ import { UserMenuContext } from '../App';
 
 const ReportsContainer = () => {
   const [reports, setReports] = useState(null);
+  const [search, setSearch] = useState('');
   const [pmix, setPmix] = useState(null);
   const classes = useOrderStyles();
   const appResult = useContext(UserMenuContext);
@@ -57,6 +59,16 @@ const ReportsContainer = () => {
         setPmix(data);
       });
   };
+
+  const handleSearch = async (e) => {
+    setSearch(e.target.value);
+    const searchedOrders = await reports.filter((report) => report.createdOn.includes(e.target.value.toUpperCase()));
+    setReports(searchedOrders);
+    console.log(searchedOrders, 'searchedOrders');
+  };
+
+  console.log(search, 'search');
+  console.log(reports, 'allreports');
 
   return (
     <div className="clear-both grid gap-8 grid-cols-2">
@@ -102,12 +114,19 @@ const ReportsContainer = () => {
       </div>
 
       <div>
-        <Typography color="textPrimary" style={{ marginTop: 20, marginBottom: 10 }}>
+        {/* <Typography color="textPrimary" style={{ marginTop: 20, marginBottom: 10 }}>
           Your Orders
-        </Typography>
+        </Typography> */}
+        <TextField
+          id="outlined-basic"
+          label="Serach for orders"
+          variant="outlined"
+          value={search}
+          onChange={handleSearch}
+        />
         <div className="w-4/6 h-96 overflow-auto">
           {reports
-            ? reports.map((report) => {
+            ? reports?.map((report) => {
                 return (
                   <div className="bg-white p-4 pl-12 border-b">
                     <Typography color="textPrimary" variant="h6" style={{ marginTop: 20, marginBottom: 10 }}>
