@@ -48,8 +48,6 @@ const ItemForm = () => {
     }
   };
 
-  console.log(result, appResult, 'itemForm');
-
   return (
     <div className="clear-both grid gap-10 grid-cols-2">
       <MenuItems />
