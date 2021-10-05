@@ -1,6 +1,6 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { useFetch } from '../hooks/useFetch';
@@ -9,8 +9,10 @@ import { userPropTypes } from '../propTypes/schema';
 
 const User = ({ setUserSelected, setUser }) => {
   const classes = useAppStyles();
+  const [display, setDisplay] = useState('');
 
   const pickUser = (e) => {
+    setDisplay(e.target.value);
     const selectedUser = data.filter((user) => user._id === e.target.value._id);
     fetch(`/users/${selectedUser[0]._id}`)
       .then((resp) => resp.json())
@@ -26,8 +28,8 @@ const User = ({ setUserSelected, setUser }) => {
 
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel id="User">Select User</InputLabel>
-      <Select labelId="User" id="select" value="" onChange={pickUser}>
+      <InputLabel id="User">User</InputLabel>
+      <Select labelId="User" id="select" value={display} onChange={pickUser}>
         {data?.map((user) => {
           return (
             <MenuItem key={user._id} value={user} aria-label={user.name} aria-required="true">
