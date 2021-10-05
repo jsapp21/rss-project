@@ -1,12 +1,15 @@
+/* eslint-disable import/named */
+/* eslint-disable no-debugger */
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
-import React, { useEffect, useState, useContext, createContext } from 'react';
+import React, { useEffect, useState, useContext, createContext, useReducer } from 'react';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import ReportsContainer from './ReportsContainer';
 import OrderContainer from './OrderContainer';
 import ItemForm from './ItemForm';
 import { UserMenuContext } from '../App';
+import { dashboardReducer, initialState } from '../hooks/dashboardReducer';
 
 export const MenuItemsContext = createContext();
 
@@ -14,9 +17,8 @@ const Dashboard = () => {
   const result = useContext(UserMenuContext);
   const [menuItems, setMenuItems] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [orderPage, setOrderPage] = useState(true);
-  const [menuItemsPage, setMenuItemsPage] = useState(false);
-  const [reportPage, setReportPage] = useState(false);
+  const [state, dispatch] = useReducer(dashboardReducer, initialState);
+  const { menuItemsPage, orderPage, reportPage } = state;
 
   useEffect(() => {
     fetch(`/items/${result.menu._id}`)
@@ -31,37 +33,22 @@ const Dashboard = () => {
   };
 
   const handleClose = (e) => {
-    if (e.currentTarget.id === 'Order') {
-      setMenuItemsPage(false);
-      setOrderPage(true);
-      setReportPage(false);
-    } else if (e.currentTarget.id === 'Menu Options') {
-      setMenuItemsPage(true);
-      setOrderPage(false);
-      setReportPage(false);
-    } else if (e.currentTarget.id === 'Reports') {
-      setMenuItemsPage(false);
-      setOrderPage(false);
-      setReportPage(true);
-    }
     setAnchorEl(null);
   };
 
-  console.log(result, 'Dashboard');
-
   return (
-    <div>
+    <>
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
         Options
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose} id="Order">
+        <MenuItem onClick={() => dispatch({ type: 'ORDER_PAGE' })} id="Order">
           Order
         </MenuItem>
-        <MenuItem onClick={handleClose} id="Menu Options">
+        <MenuItem onClick={() => dispatch({ type: 'MENU_OPTIONS_PAGE' })} id="Menu Options">
           Menu Options
         </MenuItem>
-        <MenuItem onClick={handleClose} id="Reports">
+        <MenuItem onClick={() => dispatch({ type: 'REPORT_PAGE' })} id="Reports">
           Reports
         </MenuItem>
       </Menu>
@@ -79,7 +66,7 @@ const Dashboard = () => {
       ) : null}
 
       {reportPage ? <ReportsContainer /> : null}
-    </div>
+    </>
   );
 };
 

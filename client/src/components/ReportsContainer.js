@@ -5,7 +5,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import {
   Typography,
-  Container,
   Button,
   Table,
   TableBody,
@@ -17,14 +16,12 @@ import {
 } from '@material-ui/core';
 import { uuid } from 'uuidv4';
 import useOrderStyles from '../styles/reports.css';
-import useOrders from '../hooks/useOrders';
 import { UserMenuContext } from '../App';
 
 const ReportsContainer = () => {
   const [reports, setReports] = useState(null);
   const [pmix, setPmix] = useState(null);
   const classes = useOrderStyles();
-  const [isVisible, toggleAllOrders] = useOrders(false);
   const appResult = useContext(UserMenuContext);
 
   useEffect(() => {
@@ -62,7 +59,7 @@ const ReportsContainer = () => {
   };
 
   return (
-    <div className="clear-both grid gap-4 grid-cols-2">
+    <div className="clear-both grid gap-8 grid-cols-2">
       <div className="mt-8">
         <Button size="small" variant="contained" color="primary" onClick={getPmixReport}>
           PMIX Report
@@ -104,58 +101,58 @@ const ReportsContainer = () => {
         <br />
       </div>
 
-      <div className="h-96 mt-8 overflow-auto">
-        <button type="button" onClick={toggleAllOrders}>
-          {isVisible ? 'My Orders' : 'All Orders'}
-        </button>
-        <br />
-        {isVisible && <span>i am diplayed</span>}
-        {reports
-          ? reports.map((report) => {
-              return (
-                <Container maxWidth="xs" style={{ backgroundColor: '#ffff', marginBottom: 20 }} key={report._id}>
-                  <Typography color="textPrimary" style={{ marginTop: 20, marginBottom: 10 }}>
-                    Order #{report.createdOn.slice(-4)}
-                  </Typography>
-                  {report.orderItems.map((item) => {
-                    return (
-                      <div key={item.name}>
-                        <Typography color="textPrimary">
-                          {item.quantity} - {item.name} ${item.price}
-                        </Typography>
-                        <Typography color="textSecondary" variant="body2" component="p" style={{ marginBottom: 15 }}>
-                          {item.outOfStock ? 'Out Of Stock' : 'In Stock'}
-                        </Typography>
-                      </div>
-                    );
-                  })}
-                  <Typography color="textPrimary" style={{ marginBottom: 5 }}>
-                    Total: ${report.orderTotal}
-                  </Typography>
-                  {report.canceled ? (
-                    <Button
-                      disabled
-                      className={classes.cancelOrderBtn}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                      onClick={() => handleCancel(report)}>
-                      Your order has been canceled.
-                    </Button>
-                  ) : (
-                    <Button
-                      className={classes.cancelOrderBtn}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                      onClick={() => handleCancel(report)}>
-                      Cancel Order
-                    </Button>
-                  )}
-                </Container>
-              );
-            })
-          : null}
+      <div>
+        <Typography color="textPrimary" style={{ marginTop: 20, marginBottom: 10 }}>
+          Your Orders
+        </Typography>
+        <div className="w-4/6 h-96 overflow-auto">
+          {reports
+            ? reports.map((report) => {
+                return (
+                  <div className="bg-white p-4 pl-12 border-b">
+                    <Typography color="textPrimary" variant="h6" style={{ marginTop: 20, marginBottom: 10 }}>
+                      Order #{report.createdOn.slice(-4)}
+                    </Typography>
+                    {report.orderItems.map((item) => {
+                      return (
+                        <div key={item.name}>
+                          <Typography color="textPrimary">
+                            {item.quantity} - {item.name} ${item.price}
+                          </Typography>
+                          <Typography color="textSecondary" variant="body2" component="p" style={{ marginBottom: 15 }}>
+                            {item.outOfStock ? 'Out Of Stock' : 'In Stock'}
+                          </Typography>
+                        </div>
+                      );
+                    })}
+                    <Typography color="textPrimary" style={{ marginBottom: 5 }}>
+                      Total: ${report.orderTotal}
+                    </Typography>
+                    {report.canceled ? (
+                      <Button
+                        disabled
+                        className={classes.cancelOrderBtn}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => handleCancel(report)}>
+                        Your order has been canceled.
+                      </Button>
+                    ) : (
+                      <Button
+                        className={classes.cancelOrderBtn}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => handleCancel(report)}>
+                        Cancel Order
+                      </Button>
+                    )}
+                  </div>
+                );
+              })
+            : null}
+        </div>
       </div>
     </div>
   );
