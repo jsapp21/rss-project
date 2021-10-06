@@ -4,7 +4,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React, { useEffect, useState, createContext, useReducer } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory, Link } from 'react-router-dom';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import ReportsContainer from './ReportsContainer';
 import OrderContainer from './OrderContainer';
@@ -20,6 +20,7 @@ const Dashboard = () => {
   const { menuItemsPage, orderPage, reportPage } = state;
   const getId = localStorage.getItem('menuId');
   const menuId = JSON.parse(getId);
+  const history = useHistory();
 
   useEffect(() => {
     fetch(`/items/${menuId}`)
@@ -34,38 +35,30 @@ const Dashboard = () => {
   };
 
   const handleClose = (e) => {
+    if (e.currentTarget.id === 'Order') {
+      history.push('/order');
+    } else if (e.currentTarget.id === 'Add Menu Item') {
+      history.push('/items');
+    } else if (e.currentTarget.id === 'Reports') {
+      history.push('/reports');
+    }
     setAnchorEl(null);
   };
 
   return (
     <>
-      {/* <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
-        Options
-      </Button>
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={() => dispatch({ type: 'ORDER_PAGE' })} id="Order">
-          Order
-        </MenuItem>
-        <MenuItem onClick={() => dispatch({ type: 'MENU_OPTIONS_PAGE' })} id="Menu Options">
-          Menu Options
-        </MenuItem>
-        <MenuItem onClick={() => dispatch({ type: 'REPORT_PAGE' })} id="Reports">
-          Reports
-        </MenuItem>
-      </Menu> */}
-
       <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
         Options
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={() => dispatch({ type: 'ORDER_PAGE' })} id="Order">
-          Order
+        <MenuItem onClick={handleClose} id="Order">
+          <Link to="/order">Order</Link>
         </MenuItem>
-        <MenuItem onClick={() => dispatch({ type: 'MENU_OPTIONS_PAGE' })} id="Menu Options">
-          Menu Options
+        <MenuItem onClick={handleClose} id="Menu Options">
+          <Link to="/items">Menu Options</Link>
         </MenuItem>
-        <MenuItem onClick={() => dispatch({ type: 'REPORT_PAGE' })} id="Reports">
-          Reports
+        <MenuItem onClick={handleClose} id="Reports">
+          <Link to="/reports">Reports</Link>
         </MenuItem>
       </Menu>
 
@@ -84,20 +77,6 @@ const Dashboard = () => {
           <ReportsContainer />
         </Route>
       </Switch>
-
-      {/* {orderPage ? (
-        <MenuItemsContext.Provider value={{ menuItems, setMenuItems }}>
-          <OrderContainer />
-        </MenuItemsContext.Provider>
-      ) : null} */}
-
-      {/* {menuItemsPage ? (
-        <MenuItemsContext.Provider value={{ menuItems, setMenuItems, menuItemsPage }}>
-          <ItemForm />
-        </MenuItemsContext.Provider>
-      ) : null}
-
-      {reportPage ? <ReportsContainer /> : null} */}
     </>
   );
 };
