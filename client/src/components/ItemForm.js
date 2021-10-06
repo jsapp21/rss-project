@@ -7,13 +7,13 @@ import React, { useRef, useContext } from 'react';
 import { Typography, TextField, Button } from '@material-ui/core';
 import MenuItems from './MenuItems';
 import { MenuItemsContext } from './Dashboard';
-import { UserMenuContext } from '../App';
+import { MenuContext } from './Menu';
 
 const ItemForm = () => {
   const name = useRef();
   const price = useRef();
   const result = useContext(MenuItemsContext);
-  const appResult = useContext(UserMenuContext);
+  const appResult = useContext(MenuContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();

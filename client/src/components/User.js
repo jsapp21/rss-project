@@ -1,15 +1,14 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { useFetch } from '../hooks/useFetch';
 import useAppStyles from '../styles/app.css';
-import { userPropTypes } from '../propTypes/schema';
+import Menu from './Menu';
 
-const User = ({ setUserSelected, setUser }) => {
+const User = () => {
   const classes = useAppStyles();
-  const [display, setDisplay] = useState('');
+  const [display, setDisplay] = useState();
 
   const pickUser = (e) => {
     setDisplay(e.target.value);
@@ -17,39 +16,31 @@ const User = ({ setUserSelected, setUser }) => {
     fetch(`/users/${selectedUser[0]._id}`)
       .then((resp) => resp.json())
       .then((data) => {
-        localStorage.setItem('userRole', JSON.stringify(data));
-        setUser(data);
+        localStorage.setItem('userRole', JSON.stringify(data[0].role));
+        localStorage.setItem('userId', JSON.stringify(data[0]._id));
       });
-    setUserSelected(true);
   };
 
   const { data, error } = useFetch('/users');
   if (error) return <h1>{error}</h1>;
 
   return (
-    <FormControl className={classes.formControl}>
-      <InputLabel id="User">User</InputLabel>
-      <Select labelId="User" id="select" value={display} onChange={pickUser}>
-        {data?.map((user) => {
-          return (
-            <MenuItem key={user._id} value={user} aria-label={user.name} aria-required="true">
-              {user.name} -- {user.role}
-            </MenuItem>
-          );
-        })}
-      </Select>
-    </FormControl>
+    <>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="User">User</InputLabel>
+        <Select labelId="User" id="select" value={display} onChange={pickUser}>
+          {data?.map((user) => {
+            return (
+              <MenuItem key={user._id} value={user} aria-label={user.name} aria-required="true">
+                {user.name} -- {user.role}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
+      {display ? <Menu /> : null}
+    </>
   );
 };
 
 export default User;
-
-User.propTypes = {
-  setUserSelected: PropTypes.bool,
-  setUser: PropTypes.arrayOf(userPropTypes),
-};
-
-User.defaultProps = {
-  setUserSelected: false,
-  setUser: null,
-};

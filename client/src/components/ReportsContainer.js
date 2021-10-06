@@ -2,7 +2,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Button,
@@ -17,7 +17,6 @@ import {
 } from '@material-ui/core';
 import { uuid } from 'uuidv4';
 import useOrderStyles from '../styles/reports.css';
-import { UserMenuContext } from '../App';
 
 const ReportsContainer = () => {
   const [reports, setReports] = useState(null);
@@ -25,16 +24,17 @@ const ReportsContainer = () => {
   const [search, setSearch] = useState('');
   const [pmix, setPmix] = useState(null);
   const classes = useOrderStyles();
-  const appResult = useContext(UserMenuContext);
+  const getId = localStorage.getItem('userId');
+  const userId = JSON.parse(getId);
 
   useEffect(() => {
-    fetch(`/orders/${appResult.user[0]._id}`)
+    fetch(`/orders/${userId}`)
       .then((resp) => resp.json())
       .then((orders) => {
         setReports(orders);
         setReportsDefault(orders);
       });
-  }, [appResult.user]);
+  }, [userId]);
 
   const handleCancel = (report) => {
     console.log(report);

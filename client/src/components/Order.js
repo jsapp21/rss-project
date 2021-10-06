@@ -9,11 +9,11 @@ import { Typography, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
 import { itemPropTypes } from '../propTypes/schema';
-import { UserMenuContext } from '../App';
+import { MenuContext } from './Menu';
 
 const Order = ({ order, setOrder }) => {
   const classes = useOrderStyles();
-  const result = useContext(UserMenuContext);
+  const result = useContext(MenuContext);
   let totalCost = 0;
 
   const subtractTotal = (i) => {
