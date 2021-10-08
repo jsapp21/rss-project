@@ -34,7 +34,7 @@ const Users = () => {
               <MenuItem key={user._id} value={user} aria-label={user.name} aria-required="true">
                 <Link
                   to={{
-                    pathname: `${user._id}/menu`,
+                    pathname: `${user._id}`,
                   }}>
                   {user.name} -- {user.role}
                 </Link>
