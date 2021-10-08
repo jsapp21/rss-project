@@ -7,13 +7,12 @@ import React, { useRef, useContext } from 'react';
 import { Typography, TextField, Button } from '@material-ui/core';
 import MenuItems from './MenuItems';
 import { MenuItemsContext } from './Dashboard';
-import { MenuContext } from './Menu';
 
 const ItemForm = () => {
   const name = useRef();
   const price = useRef();
   const result = useContext(MenuItemsContext);
-  const appResult = useContext(MenuContext);
+  // TODO: change to controlled component
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +20,7 @@ const ItemForm = () => {
       alert('Please fill out menu item and price');
     } else {
       const newItem = {
-        menuId: appResult.menu._id,
+        menuId: result.data[0].menuId,
         name: name.current.value,
         price: parseFloat(price.current.value),
         outOfStock: false,
@@ -40,7 +39,7 @@ const ItemForm = () => {
           if (menuItem.message) {
             alert(`${menuItem.message}`);
           } else {
-            result.setMenuItems([...result.menuItems, menuItem]);
+            result.setData([...result.data, menuItem]);
             name.current.value = '';
             price.current.value = '';
           }

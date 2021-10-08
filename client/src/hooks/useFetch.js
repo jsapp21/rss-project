@@ -11,5 +11,5 @@ export const useFetch = (url) => {
       .then((returnedData) => setData(returnedData))
       .catch((err) => setError(err));
   }, [url]);
-  return { data, error };
+  return { data, setData, error };
 };

@@ -9,11 +9,11 @@ import { Typography, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
 import { itemPropTypes } from '../propTypes/schema';
-import { MenuContext } from './Menu';
+import { MenuItemsContext } from './Dashboard';
 
 const Order = ({ order, setOrder }) => {
   const classes = useOrderStyles();
-  const result = useContext(MenuContext);
+  const result = useContext(MenuItemsContext);
   let totalCost = 0;
 
   const subtractTotal = (i) => {
@@ -45,11 +45,13 @@ const Order = ({ order, setOrder }) => {
       };
     });
 
+    const storedUserId = JSON.parse(localStorage.getItem('userId'));
+
     const newOrder = {
-      menuId: result.menu._id,
+      menuId: result.menuItems[0].menuId,
       orderItems: updatedOrderItemIds,
       orderTotal: totalCost,
-      userId: result.user[0]._id,
+      userId: storedUserId,
     };
 
     const reqObj = {
@@ -114,8 +116,6 @@ const Order = ({ order, setOrder }) => {
 Order.propTypes = {
   order: PropTypes.arrayOf(itemPropTypes).isRequired,
   setOrder: PropTypes.func.isRequired,
-  // menu: menuPropTypes.isRequired,
-  // user: PropTypes.arrayOf(userPropTypes).isRequired,
 };
 
 export default Order;

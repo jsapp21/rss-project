@@ -2,8 +2,8 @@
 /* eslint-disable no-console */
 /* eslint-disable import/named */
 import React, { useState } from 'react';
-import MenuItems from './MenuItems';
-import Order from './Order';
+import MenuItems from '../components/MenuItems';
+import Order from '../components/Order';
 
 const OrderContainer = () => {
   const [order, setOrder] = useState([]);

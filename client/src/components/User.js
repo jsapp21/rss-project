@@ -1,12 +1,13 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { useFetch } from '../hooks/useFetch';
 import useAppStyles from '../styles/app.css';
-import Menu from './Menu';
+// import Menu from './Menu';
 
-const User = () => {
+const Users = () => {
   const classes = useAppStyles();
   const [display, setDisplay] = useState();
 
@@ -15,13 +16,12 @@ const User = () => {
     const selectedUser = data.filter((user) => user._id === e.target.value._id);
     fetch(`/users/${selectedUser[0]._id}`)
       .then((resp) => resp.json())
-      .then((data) => {
-        localStorage.setItem('userRole', JSON.stringify(data[0].role));
-        localStorage.setItem('userId', JSON.stringify(data[0]._id));
-      });
+      .then((user) => setData(user));
+    // localStorage.setItem('userRole', JSON.stringify(data[0].role));
+    // localStorage.setItem('userId', JSON.stringify(data[0]._id));
   };
 
-  const { data, error } = useFetch('/users');
+  const { data, setData, error } = useFetch('/users');
   if (error) return <h1>{error}</h1>;
 
   return (
@@ -32,15 +32,21 @@ const User = () => {
           {data?.map((user) => {
             return (
               <MenuItem key={user._id} value={user} aria-label={user.name} aria-required="true">
-                {user.name} -- {user.role}
+                <Link
+                  to={{
+                    pathname: `${user._id}/menu`,
+                  }}>
+                  {user.name} -- {user.role}
+                </Link>
               </MenuItem>
             );
           })}
         </Select>
       </FormControl>
-      {display ? <Menu /> : null}
+      {/* remove this */}
+      {/* {display ? <Menu /> : null} */}
     </>
   );
 };
 
-export default User;
+export default Users;

@@ -6,6 +6,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 import React, { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -19,6 +20,7 @@ import { MenuItemsContext } from './Dashboard';
 const MenuItems = ({ order, setOrder }) => {
   const classes = useDashboardStyles();
   const result = useContext(MenuItemsContext);
+  const location = useLocation();
 
   const handleOrder = (i) => {
     const itemToUpdate = order.find((orderedItem) => orderedItem._id === i._id);
@@ -62,7 +64,7 @@ const MenuItems = ({ order, setOrder }) => {
           alert(data.message);
         } else {
           alert(data.message);
-          const updatedMenuItems = result.menuItems.filter((item) => item._id !== menuItem._id);
+          const updatedMenuItems = result.data.filter((item) => item._id !== menuItem._id);
           result.setMenuItems(updatedMenuItems);
         }
       });
@@ -85,7 +87,7 @@ const MenuItems = ({ order, setOrder }) => {
         if (data.message) {
           alert(data.message);
         } else {
-          const updatedMenuItems = result.menuItems.map((item) => {
+          const updatedMenuItems = result.data.map((item) => {
             if (item._id === data._id) {
               return data;
             } else {
@@ -101,9 +103,11 @@ const MenuItems = ({ order, setOrder }) => {
   //   console.log('i am update');
   // };
 
+  console.log(result);
+
   return (
     <div className="grid gap-1 grid-cols-3">
-      {result.menuItems?.map((menuItem) => {
+      {result.data?.map((menuItem) => {
         return (
           <Card classes={{ root: classes.root }} key={menuItem._id}>
             <CardContent>
@@ -114,7 +118,7 @@ const MenuItems = ({ order, setOrder }) => {
                 ${menuItem.price}
               </Typography>
             </CardContent>
-            {result.menuItemsPage ? (
+            {location.pathname === '/items' ? (
               <div className="clear-both">
                 <ButtonGroup
                   className={classes.buttonGrp}

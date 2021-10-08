@@ -3,47 +3,31 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
-import React, { useEffect, useState, createContext, useReducer } from 'react';
-import { Route, Switch, useHistory, Link } from 'react-router-dom';
+import React, { useState, createContext } from 'react';
+import { Route, Link } from 'react-router-dom';
 import { Button, Menu, MenuItem } from '@material-ui/core';
-import ReportsContainer from './ReportsContainer';
-import OrderContainer from './OrderContainer';
+import ReportsContainer from '../containers/ReportsContainer';
+import OrderContainer from '../containers/OrderContainer';
 import ItemForm from './ItemForm';
-import { dashboardReducer, initialState } from '../hooks/dashboardReducer';
+import { useFetch } from '../hooks/useFetch';
 
 export const MenuItemsContext = createContext();
 
 const Dashboard = () => {
-  const [menuItems, setMenuItems] = useState([]);
+  // const [menuItems, setMenuItems] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [state, dispatch] = useReducer(dashboardReducer, initialState);
-  const { menuItemsPage, orderPage, reportPage } = state;
-  const getId = localStorage.getItem('menuId');
-  const menuId = JSON.parse(getId);
-  const history = useHistory();
-
-  useEffect(() => {
-    fetch(`/items/${menuId}`)
-      .then((res) => res.json())
-      .then((menuItems) => {
-        setMenuItems(menuItems);
-      });
-  }, [menuId]);
+  const menuId = JSON.parse(localStorage.getItem('menuId'));
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = (e) => {
-    if (e.currentTarget.id === 'Order') {
-      history.push('/order');
-    } else if (e.currentTarget.id === 'Add Menu Item') {
-      history.push('/items');
-    } else if (e.currentTarget.id === 'Reports') {
-      history.push('/reports');
-    }
     setAnchorEl(null);
   };
+
+  const { data, setData, error } = useFetch(`/items/${menuId}`);
+  if (error) return <h1>{error}</h1>;
 
   return (
     <>
@@ -55,28 +39,33 @@ const Dashboard = () => {
           <Link to="/order">Order</Link>
         </MenuItem>
         <MenuItem onClick={handleClose} id="Menu Options">
-          <Link to="/items">Menu Options</Link>
+          <Link
+            to={{
+              pathname: '/items',
+            }}>
+            Menu Options
+          </Link>
         </MenuItem>
         <MenuItem onClick={handleClose} id="Reports">
           <Link to="/reports">Reports</Link>
         </MenuItem>
       </Menu>
-
+      {/* 
       <Switch>
         <Route path="/order">
-          <MenuItemsContext.Provider value={{ menuItems, setMenuItems }}>
+          <MenuItemsContext.Provider value={{ data, setData }}>
             <OrderContainer />
           </MenuItemsContext.Provider>
         </Route>
         <Route path="/items">
-          <MenuItemsContext.Provider value={{ menuItems, setMenuItems, menuItemsPage }}>
+          <MenuItemsContext.Provider value={{ data, setData }}>
             <ItemForm />
           </MenuItemsContext.Provider>
         </Route>
         <Route path="/reports">
           <ReportsContainer />
         </Route>
-      </Switch>
+      </Switch> */}
     </>
   );
 };

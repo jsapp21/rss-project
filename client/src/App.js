@@ -3,22 +3,22 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Typography, Container } from '@material-ui/core';
 
-import User from './components/User';
-import Dashboard from './components/Dashboard';
+import AppRoutes from './components/AppRoutes';
 
 const App = () => {
+  // const [user, setUser] = useState();
+
   return (
     <Container maxWidth="lg" style={{ margin: '20px auto' }}>
       <Typography variant="h3" component="h3" style={{ float: 'left' }}>
         🍳 Simple POS
       </Typography>
-      <User />
-      <Switch>
-        <Route path="*" component={Dashboard} />
-      </Switch>
+      <Router>
+        <AppRoutes />
+      </Router>
     </Container>
   );
 };
