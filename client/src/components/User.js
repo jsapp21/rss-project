@@ -9,16 +9,12 @@ import useAppStyles from '../styles/app.css';
 
 const Users = () => {
   const classes = useAppStyles();
-  const [display, setDisplay] = useState();
 
   const pickUser = (e) => {
-    setDisplay(e.target.value);
     const selectedUser = data.filter((user) => user._id === e.target.value._id);
     fetch(`/users/${selectedUser[0]._id}`)
       .then((resp) => resp.json())
       .then((user) => setData(user));
-    // localStorage.setItem('userRole', JSON.stringify(data[0].role));
-    // localStorage.setItem('userId', JSON.stringify(data[0]._id));
   };
 
   const { data, setData, error } = useFetch('/users');
@@ -28,7 +24,7 @@ const Users = () => {
     <>
       <FormControl className={classes.formControl}>
         <InputLabel id="User">User</InputLabel>
-        <Select labelId="User" id="select" value={display} onChange={pickUser}>
+        <Select labelId="User" id="select" value={data} onChange={pickUser}>
           {data?.map((user) => {
             return (
               <MenuItem key={user._id} value={user} aria-label={user.name} aria-required="true">
@@ -43,8 +39,6 @@ const Users = () => {
           })}
         </Select>
       </FormControl>
-      {/* remove this */}
-      {/* {display ? <Menu /> : null} */}
     </>
   );
 };
