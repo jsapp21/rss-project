@@ -3,26 +3,26 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 /* eslint-disable no-alert */
-import React, { useRef, useContext } from 'react';
-import { Typography, TextField, Button } from '@material-ui/core';
+import React, { useState, useContext } from 'react';
+import { Typography, Input, Button } from '@material-ui/core';
 import MenuItems from './MenuItems';
 import { MenuItemsContext } from './Dashboard';
+import useDashboardStyles from '../styles/dashboard.css';
 
 const ItemForm = () => {
-  const name = useRef();
-  const price = useRef();
+  const [form, setForm] = useState({ name: '', price: '' });
   const result = useContext(MenuItemsContext);
-  // TODO: change to controlled component
+  const classes = useDashboardStyles();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.current.value.length === 0 || price.current.value === 0) {
+    if (form.name.current.value.length === 0 || form.price.current.value === 0) {
       alert('Please fill out menu item and price');
     } else {
       const newItem = {
         menuId: result.data[0].menuId,
-        name: name.current.value,
-        price: parseFloat(price.current.value),
+        name: form.name.current.value,
+        price: parseFloat(form.price.current.value),
         outOfStock: false,
         tempOutOfStock: false,
       };
@@ -40,11 +40,18 @@ const ItemForm = () => {
             alert(`${menuItem.message}`);
           } else {
             result.setData([...result.data, menuItem]);
-            name.current.value = '';
-            price.current.value = '';
+            form.name.current.value = '';
+            form.price.current.value = '';
           }
         });
     }
+  };
+
+  const handleChange = (e) => {
+    setForm((form) => ({
+      ...form,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   return (
@@ -54,12 +61,24 @@ const ItemForm = () => {
         <Typography variant="h5" component="h2">
           Menu Item:
         </Typography>
-        <form>
-          <TextField inputRef={name} placeholder="Item Name" defaultValue="" />
-          <TextField inputRef={price} placeholder="9.50" defaultValue="" />
-          <br />
-          <Button variant="contained" color="primary" style={{ marginTop: 10 }} onClick={handleSubmit}>
-            Submit
+        <form onSubmit={handleSubmit}>
+          <Input
+            color="primary"
+            placeholder="Item Name"
+            inputProps={{ 'aria-label': 'menu item' }}
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+          />
+          <Input
+            placeholder="$9.50"
+            inputProps={{ 'aria-label': 'menu item price' }}
+            name="price"
+            value={form.price}
+            onChange={handleChange}
+          />
+          <Button type="submit" variant="contained" color="primary" className={classes.button}>
+            Save
           </Button>
         </form>
       </div>

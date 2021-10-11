@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-cycle */
 import React, { useState, createContext } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { useFetch } from '../hooks/useFetch';
 import useAppStyles from '../styles/app.css';
@@ -11,17 +11,10 @@ export const MenuContext = createContext();
 const Menu = () => {
   const classes = useAppStyles();
   const [selectedMenu, setSelectedMenu] = useState();
-  const location = useLocation();
-  const { userId } = useParams();
 
   const handleChange = (e) => {
     setSelectedMenu(e.target.value);
-    // localStorage.setItem('menuId', JSON.stringify(e.target.value._id));
-    // history.push('/order');
   };
-
-  console.log(location);
-  console.log(userId);
 
   const { data, error } = useFetch('/menus');
   if (error) return <h1>{error}</h1>;

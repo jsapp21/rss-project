@@ -3,7 +3,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-// import Home from './Home';
 import Users from './User';
 import Menu from './Menu';
 import Dashboard from './Dashboard';
@@ -28,14 +27,17 @@ const AppRoutes = () => {
 
 export default AppRoutes;
 
-// user
-// localhost3000/users
+// TIA Route Design Pattern
+// /<type>/<identifer?>/<action?>
 
-// localhost3000/user/:id/menu/:id/order
+// users - <type> plural form
 
-// menu
-// localhost3000/menus/
-// localhost3000/menus/:id
+// user - uniquie id - <identifier>
+// /users/:id
 
-// items
-// localhost3000/items/:id
+// user <action>
+
+
+// Nested Routes - nest entites that are related
+// <Type>/<Identifier?>/<Type>/<Identifier?>/<Action?>
+// /users/:id/menus/:id/order

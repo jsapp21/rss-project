@@ -1,7 +1,7 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { useFetch } from '../hooks/useFetch';
 import useAppStyles from '../styles/app.css';
@@ -9,12 +9,15 @@ import useAppStyles from '../styles/app.css';
 
 const Users = () => {
   const classes = useAppStyles();
+  const { id } = useParams();
 
   const pickUser = (e) => {
     const selectedUser = data.filter((user) => user._id === e.target.value._id);
     fetch(`/users/${selectedUser[0]._id}`)
       .then((resp) => resp.json())
-      .then((user) => setData(user));
+      .then((user) => {
+        setData(user);
+      });
   };
 
   const { data, setData, error } = useFetch('/users');

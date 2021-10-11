@@ -9,8 +9,6 @@ import { Typography, Container } from '@material-ui/core';
 import AppRoutes from './components/AppRoutes';
 
 const App = () => {
-  // const [user, setUser] = useState();
-
   return (
     <Container maxWidth="lg" style={{ margin: '20px auto' }}>
       <Typography variant="h3" component="h3" style={{ float: 'left' }}>

@@ -79,7 +79,7 @@ const Order = ({ order, setOrder }) => {
           🍳 Simple POS
         </Typography>
 
-        {order.map((i) => {
+        {order?.map((i) => {
           addTotal(i);
           return (
             <Card classes={{ root: classes.root }} key={i._id}>

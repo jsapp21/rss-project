@@ -104,6 +104,7 @@ const MenuItems = ({ order, setOrder }) => {
   // };
 
   console.log(result, 'result');
+  console.log(location, 'location');
 
   return (
     <div className="grid gap-1 grid-cols-3">
@@ -118,7 +119,7 @@ const MenuItems = ({ order, setOrder }) => {
                 ${menuItem.price}
               </Typography>
             </CardContent>
-            {location.pathname === '/items' ? (
+            {location.pathname === '' ? (
               <div className="clear-both">
                 <ButtonGroup
                   className={classes.buttonGrp}
