@@ -10,13 +10,14 @@ const SelectedMenu = ({ menus, handleSelection }) => {
   const classes = useAppStyles();
   const { userId, menuId } = useParams();
 
-  console.log(userId, 'selectedMenuParams');
-  console.log(menuId, 'selectedMenuParams');
-  console.log(menus, 'selectedMenu');
+  console.log(userId, 'selectedMenu, userIdParams');
+  console.log(menuId, 'selectedMenu, menuIdParams');
+  console.log(menus, 'selectedMenu, menus');
 
   return (
     <div>
       <h1>MenuId: {menuId}</h1>
+      <h1>UserId: {userId}</h1>
       <FormControl className={classes.formControl}>
         <InputLabel id="User">Menu</InputLabel>
         <Select labelId="User" id="select" value={menus} onChange={handleSelection}>
