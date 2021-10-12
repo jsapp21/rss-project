@@ -10,10 +10,6 @@ const SelectedMenu = ({ menus, handleSelection }) => {
   const classes = useAppStyles();
   const { userId, menuId } = useParams();
 
-  console.log(userId, 'selectedMenu, userIdParams');
-  console.log(menuId, 'selectedMenu, menuIdParams');
-  console.log(menus, 'selectedMenu, menus');
-
   return (
     <div>
       <h1>MenuId: {menuId}</h1>

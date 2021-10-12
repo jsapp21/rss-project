@@ -10,9 +10,6 @@ const SelectedUser = ({ users, handleSelection }) => {
   const classes = useAppStyles();
   const userId = useParams();
 
-  console.log(userId, 'selectedUserParams');
-  console.log(users, 'selectedUser');
-
   return (
     <div>
       <h1>userid: {userId.userId}</h1>
