@@ -3,6 +3,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+import Home from './Home';
 import Users from './Users';
 import Menus from './Menus';
 import Dashboard from './Dashboard';
@@ -25,15 +26,19 @@ const AppRoutes = () => {
     //   </Route>
     // </Routes>
     <Routes>
-      <Route path="users/*" element={<Users />}>
-        <Route path="users/:userId" element={<SelectedUser />} />
+      <Route path="/" element={<Home />}>
+        <Route path="users" element={<Users />} />
+        {/* <Route path="users/:userId" element={<SelectedUser />} /> */}
+          <Route path="users/:userId" element={<Menus />} />
+            <Route path="users/:userId/menus/:menuId" element={<Dashboard />} />
+      </Route>
         {/* <Route path="users/:userId/menus/*" element={<Menus />} />
         <Route path="users/:userId/menus/:menuId" element={<Dashboard />} /> */}
-      </Route>
 
-      <Route path="users/:userId/menus" element={<Menus />}>
+
+      {/* <Route path="users/:userId/menus" element={<Menus />}>
         <Route path="users/:userId/menus/:menuId" element={<Dashboard />} />
-      </Route>
+      </Route> */}
 
       <Route path=":userid/:meunid/" element={<Dashboard />}>
         <Route path="order" element={<OrderContainer />} />

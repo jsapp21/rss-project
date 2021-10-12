@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
+import { useParams, Outlet } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import useAppStyles from '../styles/app.css';
 import { menuPropTypes } from '../propTypes/schema';
@@ -29,6 +29,7 @@ const SelectedMenu = ({ menus, handleSelection }) => {
           })}
         </Select>
       </FormControl>
+      <Outlet />
     </div>
   );
 };

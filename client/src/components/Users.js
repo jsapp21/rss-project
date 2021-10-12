@@ -1,7 +1,7 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Outlet } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import SelectedUser from './SelectedUser';
 
@@ -25,7 +25,13 @@ const Users = () => {
   const { data, setData, error } = useFetch('/users');
   if (error) return <h1>{error}</h1>;
 
-  return <SelectedUser users={data} handleSelection={handleSelection} />;
+  // return <Outlet users={data} handleSelection={handleSelection} />;
+  return (
+    <>
+      <SelectedUser users={data} handleSelection={handleSelection} />
+      {/* <Outlet /> */}
+    </>
+  );
 };
 
 export default Users;

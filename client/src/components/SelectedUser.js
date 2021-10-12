@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
+import { useParams, Outlet } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import useAppStyles from '../styles/app.css';
 import { userPropTypes } from '../propTypes/schema';
@@ -15,7 +15,7 @@ const SelectedUser = ({ users, handleSelection }) => {
 
   return (
     <div>
-      <h1>{userId.userId}</h1>
+      <h1>userid: {userId.userId}</h1>
       <FormControl className={classes.formControl}>
         <InputLabel id="User">User</InputLabel>
         <Select labelId="User" id="select" value={users} onChange={handleSelection}>
@@ -28,6 +28,7 @@ const SelectedUser = ({ users, handleSelection }) => {
           })}
         </Select>
       </FormControl>
+      <Outlet />
     </div>
   );
 };
