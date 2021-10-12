@@ -1,23 +1,21 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useParams, Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import useAppStyles from '../styles/app.css';
 import { userPropTypes } from '../propTypes/schema';
 
 const SelectedUser = ({ users }) => {
   const classes = useAppStyles();
-  const { userId } = useParams();
   const navigate = useNavigate();
 
   const handleSelection = (e) => {
-    navigate(`/users/${e.target.value._id}`);
+    navigate(`${e.target.value._id}/menus`);
   };
 
   return (
     <div>
-      <h1>UserId: {userId}</h1>
       <FormControl className={classes.formControl}>
         <InputLabel id="User">User</InputLabel>
         <Select labelId="User" id="select" value={users} onChange={handleSelection}>

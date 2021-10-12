@@ -1,16 +1,15 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-
-import { Typography, Container } from '@material-ui/core';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
-    <Container maxWidth="lg" style={{ margin: '20px auto' }}>
-      <Typography variant="h3" component="h3" style={{ float: 'left' }}>
-        🍳 Simple POS
-      </Typography>
+    <>
+      <Button onClick={() => navigate('users')}>Login</Button>
       <Outlet />
-    </Container>
+    </>
   );
 };
 

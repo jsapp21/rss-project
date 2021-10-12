@@ -12,7 +12,7 @@ const Users = () => {
   return (
     <>
       <SelectedUser users={data} />
-      <Outlet />
+      {/* <Outlet /> */}
     </>
   );
 };
