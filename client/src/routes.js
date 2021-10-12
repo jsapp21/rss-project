@@ -1,8 +1,8 @@
 import { useRoutes } from 'react-router-dom';
 
 import App from './App';
-import Users from './components/User';
-import Menu from './components/Menu';
+import Users from './components/Users';
+import Menu from './components/Menus';
 import Dashboard from './components/Dashboard';
 import ItemForm from './components/ItemForm';
 import OrderContainer from './containers/OrderContainer';
@@ -12,7 +12,6 @@ const router = useRoutes([
   {
     path: '/',
     element: <App />,
-    childern: [{ path: '/', element: <Users /> }],
   },
   {
     path: 'users',
