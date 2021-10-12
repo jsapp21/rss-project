@@ -4,7 +4,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 import React, { useState, createContext } from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import { useFetch } from '../hooks/useFetch';
 
@@ -12,7 +12,7 @@ export const MenuItemsContext = createContext();
 
 const Dashboard = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const location = useLocation();
+  const { userId, menuId } = useParams();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,10 +22,8 @@ const Dashboard = () => {
     setAnchorEl(null);
   };
 
-  const { data, setData, error } = useFetch(`/items/610dc53368fd6b5bd0a7b699`);
+  const { data, setData, error } = useFetch(`/items/${menuId}`);
   if (error) return <h1>{error}</h1>;
-
-  console.log(location, 'dashboard');
 
   return (
     <>
@@ -48,6 +46,8 @@ const Dashboard = () => {
       </Menu>
 
       <div>
+        <h1>MenuId: {menuId}</h1>
+        <h1>UserId: {userId}</h1>
         <MenuItemsContext.Provider value={{ data, setData }}>
           <Outlet />
         </MenuItemsContext.Provider>

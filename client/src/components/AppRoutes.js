@@ -10,18 +10,18 @@ import Dashboard from './Dashboard';
 import OrderContainer from '../containers/OrderContainer';
 import ReportsContainer from '../containers/ReportsContainer';
 import ItemForm from './ItemForm';
-import SelectedUser from './SelectedUser';
-import SelectedMenu from './SelectedMenu';
+// import SelectedUser from './SelectedUser';
+// import SelectedMenu from './SelectedMenu';
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />}>
         <Route path="users" element={<Users />} />
-        <Route path="users/:userId" element={<SelectedUser />} />
-        <Route path="users/:userId/menus" element={<Menus />} />
-        <Route path="users/:userId/menus/:menuId" element={<SelectedMenu />} />
-        <Route path="users/:userId/menus/:menuId/order" element={<Dashboard />} />
+        {/* <Route path="users/:userId" element={<SelectedUser />} /> */}
+        <Route path="users/:userId" element={<Menus />} />
+        {/* <Route path="users/:userId/menus/:menuId" element={<SelectedMenu />} /> */}
+        <Route path="users/:userId/menus/:menuId" element={<Dashboard />} />
       </Route>
 
 

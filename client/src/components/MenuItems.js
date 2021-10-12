@@ -6,7 +6,7 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -21,10 +21,10 @@ const MenuItems = ({ order, setOrder }) => {
   const classes = useDashboardStyles();
   const result = useContext(MenuItemsContext);
   const location = useLocation();
+  const { userId, menuId } = useParams();
 
   const handleOrder = (i) => {
     const itemToUpdate = order.find((orderedItem) => orderedItem._id === i._id);
-    console.log(itemToUpdate);
 
     if (!itemToUpdate) {
       return setOrder([...order, { ...i, quantity: 1 }]);
@@ -65,7 +65,7 @@ const MenuItems = ({ order, setOrder }) => {
         } else {
           alert(data.message);
           const updatedMenuItems = result.data.filter((item) => item._id !== menuItem._id);
-          result.setMenuItems(updatedMenuItems);
+          result.setData(updatedMenuItems);
         }
       });
   };
@@ -81,7 +81,7 @@ const MenuItems = ({ order, setOrder }) => {
       body: JSON.stringify(updatedItem),
     };
 
-    fetch(`items/tempOut/${menuItem._id}`, reqObj)
+    fetch(`/items/tempOut/${menuItem._id}`, reqObj)
       .then((resp) => resp.json())
       .then((data) => {
         if (data.message) {
@@ -94,7 +94,7 @@ const MenuItems = ({ order, setOrder }) => {
               return item;
             }
           });
-          result.setMenuItems(updatedMenuItems);
+          result.setData(updatedMenuItems);
         }
       });
   };
@@ -119,7 +119,7 @@ const MenuItems = ({ order, setOrder }) => {
                 ${menuItem.price}
               </Typography>
             </CardContent>
-            {location.pathname === '' ? (
+            {location.pathname === `/users/${userId}/menus/${menuId}/items` ? (
               <div className="clear-both">
                 <ButtonGroup
                   className={classes.buttonGrp}

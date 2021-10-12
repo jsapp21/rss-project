@@ -5,6 +5,7 @@
 /* eslint-disable no-alert */
 import React, { useState, useContext } from 'react';
 import { Typography, Input, Button } from '@material-ui/core';
+import { useParams } from 'react-router-dom';
 import MenuItems from './MenuItems';
 import { MenuItemsContext } from './Dashboard';
 import useDashboardStyles from '../styles/dashboard.css';
@@ -13,16 +14,17 @@ const ItemForm = () => {
   const [form, setForm] = useState({ name: '', price: '' });
   const result = useContext(MenuItemsContext);
   const classes = useDashboardStyles();
+  const { userId, menuId } = useParams();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (form.name.current.value.length === 0 || form.price.current.value === 0) {
+    if (form.name === 0 || form.price === 0) {
       alert('Please fill out menu item and price');
     } else {
       const newItem = {
-        menuId: result.data[0].menuId,
-        name: form.name.current.value,
-        price: parseFloat(form.price.current.value),
+        menuId,
+        name: form.name,
+        price: parseFloat(form.price),
         outOfStock: false,
         tempOutOfStock: false,
       };
@@ -40,8 +42,8 @@ const ItemForm = () => {
             alert(`${menuItem.message}`);
           } else {
             result.setData([...result.data, menuItem]);
-            form.name.current.value = '';
-            form.price.current.value = '';
+            form.name = '';
+            form.price = '';
           }
         });
     }
@@ -53,6 +55,9 @@ const ItemForm = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  console.log(menuId, 'menuId');
+  console.log(userId, 'userId');
 
   return (
     <div className="clear-both grid gap-10 grid-cols-2">
