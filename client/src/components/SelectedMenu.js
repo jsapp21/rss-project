@@ -10,15 +10,11 @@ const SelectedMenu = ({ menus }) => {
   const classes = useAppStyles();
   const navigate = useNavigate();
 
-  const handleSelection = (e) => {
-    navigate(`${e.target.value._id}`);
-  };
-
   return (
     <div>
       <FormControl className={classes.formControl}>
         <InputLabel id="User">Menu</InputLabel>
-        <Select labelId="User" id="select" value={menus} onChange={handleSelection}>
+        <Select labelId="User" id="select" value={menus} onChange={(e) => navigate(`${e.target.value._id}`)}>
           {menus?.map((menu) => {
             return (
               <MenuItem key={menu._id} value={menu} aria-label={menu.name} aria-required="true">

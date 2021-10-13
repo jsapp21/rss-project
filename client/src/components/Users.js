@@ -1,7 +1,6 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
 import SelectedUser from './SelectedUser';
 
@@ -12,7 +11,6 @@ const Users = () => {
   return (
     <>
       <SelectedUser users={data} />
-      {/* <Outlet /> */}
     </>
   );
 };

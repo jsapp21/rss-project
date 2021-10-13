@@ -12,46 +12,38 @@ export const MenuItemsContext = createContext();
 
 const Dashboard = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { userId, menuId } = useParams();
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (e) => {
-    setAnchorEl(null);
-  };
+  const { menuId } = useParams();
 
   const { data, setData, error } = useFetch(`/items/${menuId}`);
   if (error) return <h1>{error}</h1>;
 
   return (
     <>
-      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ float: 'left' }}>
+      <Button
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        style={{ float: 'left' }}>
         Options
       </Button>
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose} id="Order">
+      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
+        <MenuItem onClick={() => setAnchorEl(null)} id="Order">
           <Link to="order">Order</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose} id="Menu Options">
+        <MenuItem onClick={() => setAnchorEl(null)} id="Menu Options">
           <Link to="items">Menu Options</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose} id="Reports">
+        <MenuItem onClick={() => setAnchorEl(null)} id="Reports">
           <Link to="reports">Reports</Link>
         </MenuItem>
-        <MenuItem onClick={handleClose} id="Reports">
-          <Link to="/">Switch User</Link>
+        <MenuItem onClick={() => setAnchorEl(null)} id="Log Off">
+          <Link to="/">Log Out</Link>
         </MenuItem>
       </Menu>
 
-      <div>
-        <h1>MenuId: {menuId}</h1>
-        <h1>UserId: {userId}</h1>
-        <MenuItemsContext.Provider value={{ data, setData }}>
-          <Outlet />
-        </MenuItemsContext.Provider>
-      </div>
+      <MenuItemsContext.Provider value={{ data, setData }}>
+        <Outlet />
+      </MenuItemsContext.Provider>
     </>
   );
 };

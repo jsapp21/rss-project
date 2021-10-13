@@ -1,7 +1,8 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
-import React, { useContext } from 'react';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,11 +10,10 @@ import { Typography, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
 import { itemPropTypes } from '../propTypes/schema';
-import { MenuItemsContext } from './Dashboard';
 
 const Order = ({ order, setOrder }) => {
   const classes = useOrderStyles();
-  const result = useContext(MenuItemsContext);
+  const { menuId, userId } = useParams();
   let totalCost = 0;
 
   const subtractTotal = (i) => {
@@ -45,13 +45,11 @@ const Order = ({ order, setOrder }) => {
       };
     });
 
-    const storedUserId = JSON.parse(localStorage.getItem('userId'));
-
     const newOrder = {
-      menuId: result.menuItems[0].menuId,
+      menuId,
       orderItems: updatedOrderItemIds,
       orderTotal: totalCost,
-      userId: storedUserId,
+      userId,
     };
 
     const reqObj = {

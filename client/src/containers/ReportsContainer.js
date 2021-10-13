@@ -2,80 +2,71 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
-import React, { useEffect, useState } from 'react';
-import {
-  Typography,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TextField,
-} from '@material-ui/core';
-import { uuid } from 'uuidv4';
-import useOrderStyles from '../styles/reports.css';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import PmixReport from '../components/PmixReport';
+import UserOrders from '../components/UserOrders';
+import { useFetch } from '../hooks/useFetch';
 
 const ReportsContainer = () => {
-  const [reports, setReports] = useState(null);
-  const [reportsDefault, setReportsDefault] = useState(null);
-  const [search, setSearch] = useState('');
-  const [pmix, setPmix] = useState(null);
-  const classes = useOrderStyles();
-  const getId = localStorage.getItem('userId');
-  const userId = JSON.parse(getId);
+  // const [pmix, setPmix] = useState(null);
+  const { userId } = useParams();
 
-  useEffect(() => {
-    fetch(`/orders/${userId}`)
-      .then((resp) => resp.json())
-      .then((orders) => {
-        setReports(orders);
-        setReportsDefault(orders);
-      });
-  }, [userId]);
+  // useEffect(() => {
+  //   fetch(`/orders/${userId}`)
+  //     .then((resp) => resp.json())
+  //     .then((orders) => {
+  //       setReports(orders);
+  //       setReportsDefault(orders);
+  //     });
+  // }, [userId]);
 
-  const handleCancel = (report) => {
-    console.log(report);
-    fetch(`/orders/${report._id}`, { method: 'PATCH' })
-      .then((resp) => resp.json())
-      .then((updatedReport) => {
-        if (updatedReport.message) {
-          alert(updatedReport.message);
-        } else {
-          const updatedOrders = reports.map((reportObj) => {
-            if (reportObj._id === report._id) {
-              return updatedReport;
-            }
-            return reportObj;
-          });
-          setReports(updatedOrders);
-        }
-      });
-  };
+  const { data, setData, error } = useFetch(`/orders/${userId}`);
+  if (error) return <h1>{error}</h1>;
 
-  const getPmixReport = () => {
-    fetch(`/orders/pmix`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        setPmix(data);
-      });
-  };
+  console.log(data);
 
-  const searchTest = () => {
-    const searchedOrders = reportsDefault.filter((report) => report.createdOn.includes(search.toUpperCase()));
-    setReports(searchedOrders);
-  };
+  // const handleCancel = (report) => {
+  //   fetch(`/orders/${report._id}`, { method: 'PATCH' })
+  //     .then((resp) => resp.json())
+  //     .then((updatedReport) => {
+  //       if (updatedReport.message) {
+  //         alert(updatedReport.message);
+  //       } else {
+  //         const updatedOrders = reports.map((reportObj) => {
+  //           if (reportObj._id === report._id) {
+  //             return updatedReport;
+  //           }
+  //           return reportObj;
+  //         });
+  //         setReports(updatedOrders);
+  //       }
+  //     });
+  // };
 
-  const handleSearch = async (e) => {
-    setSearch(e.target.value);
-    await searchTest();
-  };
+  // const getPmixReport = () => {
+  //   fetch(`/orders/pmix`)
+  //     .then((resp) => resp.json())
+  //     .then((data) => {
+  //       setPmix(data);
+  //     });
+  // };
+
+  // const searchTest = () => {
+  //   const searchedOrders = reportsDefault.filter((report) => report.createdOn.includes(search.toUpperCase()));
+  //   setReports(searchedOrders);
+  // };
+
+  // const handleSearch = async (e) => {
+  //   setSearch(e.target.value);
+  //   await searchTest();
+  // };
 
   return (
     <div className="clear-both grid gap-8 grid-cols-2">
-      <div className="mt-8">
+      <PmixReport />
+      <UserOrders ordersData={data} setData={setData} />
+      {/* <div className="mt-8">
         <Button size="small" variant="contained" color="primary" onClick={getPmixReport}>
           PMIX Report
         </Button>
@@ -114,9 +105,9 @@ const ReportsContainer = () => {
           </Table>
         </TableContainer>
         <br />
-      </div>
+      </div> */}
 
-      <div>
+      {/* <div>
         <Typography color="textPrimary" style={{ marginTop: 20, marginBottom: 10 }}>
           Your Orders
         </Typography>
@@ -175,7 +166,7 @@ const ReportsContainer = () => {
               })
             : null}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

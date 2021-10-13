@@ -99,13 +99,6 @@ const MenuItems = ({ order, setOrder }) => {
       });
   };
 
-  // const handleUpdate = (menuItem) => {
-  //   console.log('i am update');
-  // };
-
-  console.log(result, 'result');
-  console.log(location, 'location');
-
   return (
     <div className="grid gap-1 grid-cols-3">
       {result?.data?.map((menuItem) => {
@@ -130,7 +123,6 @@ const MenuItems = ({ order, setOrder }) => {
                   <Button onClick={() => handleOutOfStock(menuItem)}>
                     {menuItem.tempOutOfStock ? 'Out of Stock' : 'Instock'}
                   </Button>
-                  {/* <Button onClick={() => handleUpdate(menuItem)}>Update</Button> */}
                   <Button onClick={() => handleDelete(menuItem)}>Delete</Button>
                 </ButtonGroup>
               </div>
