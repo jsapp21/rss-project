@@ -14,7 +14,7 @@ const SelectedUser = ({ users }) => {
     <div>
       <FormControl className={classes.formControl}>
         <InputLabel id="User">User</InputLabel>
-        <Select labelId="User" id="select" value={users} onChange={(e) => navigate(`${e.target.value._id}/menus`)}>
+        <Select labelId="User" id="select" value="" onChange={(e) => navigate(`${e.target.value._id}/menus`)}>
           {users?.map((user) => {
             return (
               <MenuItem key={user._id} value={user} aria-label={user.name} aria-required="true">
@@ -30,7 +30,11 @@ const SelectedUser = ({ users }) => {
 };
 
 SelectedUser.propTypes = {
-  users: PropTypes.arrayOf(userPropTypes).isRequired,
+  users: PropTypes.arrayOf(userPropTypes),
+};
+
+SelectedUser.defaultProps = {
+  users: [],
 };
 
 export default SelectedUser;

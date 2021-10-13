@@ -7,22 +7,11 @@ import { useFetch } from '../hooks/useFetch';
 const PmixReport = () => {
   const classes = useOrderStyles();
 
-  //   const getPmixReport = () => {
-  //     fetch(`/orders/pmix`)
-  //       .then((resp) => resp.json())
-  //       .then((data) => {
-  //         setPmix(data);
-  //       });
-  //   };
-
   const { data, error } = useFetch(`/orders/pmix`);
   if (error) return <h1>{error}</h1>;
 
   return (
     <div className="mt-8">
-      {/* <Button size="small" variant="contained" color="primary" onClick={useFetch}>
-        PMIX Report
-      </Button> */}
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>

@@ -14,7 +14,7 @@ const ItemForm = () => {
   const [form, setForm] = useState({ name: '', price: '' });
   const result = useContext(MenuItemsContext);
   const classes = useDashboardStyles();
-  const { userId, menuId } = useParams();
+  const { menuId } = useParams();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -55,9 +55,6 @@ const ItemForm = () => {
       [e.target.name]: e.target.value,
     }));
   };
-
-  console.log(menuId, 'menuId');
-  console.log(userId, 'userId');
 
   return (
     <div className="clear-both grid gap-10 grid-cols-2">

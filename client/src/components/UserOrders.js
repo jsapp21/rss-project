@@ -1,8 +1,12 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-debugger */
+/* eslint-disable no-console */
 /* eslint-disable no-alert */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Button, TextField } from '@material-ui/core';
 import useOrderStyles from '../styles/reports.css';
+import { ordersPropTypes } from '../propTypes/schema';
 
 const UserOrders = ({ ordersData, setData }) => {
   const [reportsDefault, setReportsDefault] = useState(ordersData);
@@ -27,26 +31,24 @@ const UserOrders = ({ ordersData, setData }) => {
       });
   };
 
-  // TODO: Fix search bar
-  // TODO: Fix error messages on renders
+  // TODO: I need to fix this.
 
   const searchTest = () => {
-    const searchedOrders = reportsDefault.filter((report) => report.createdOn.includes(search.toUpperCase()));
-    setData(searchedOrders);
+    const searchedOrders = ordersData.filter((report) => report.createdOn.includes(search.toUpperCase()));
+    setReportsDefault(searchedOrders);
   };
 
   const handleSearch = async (e) => {
-    setSearch(e.target.value);
-    await searchTest();
+    const { value } = e.target;
+    setSearch(value);
+    await searchTest(search, reportsDefault);
   };
+
   return (
     <div>
-      <Typography color="textPrimary" style={{ marginTop: 20, marginBottom: 10 }}>
-        Your Orders
-      </Typography>
       <TextField
         id="outlined-basic"
-        label="Serach for orders"
+        label="Serach your orders"
         variant="outlined"
         value={search || ''}
         onChange={handleSearch}
@@ -55,7 +57,7 @@ const UserOrders = ({ ordersData, setData }) => {
         {ordersData
           ? ordersData?.map((report) => {
               return (
-                <div className="bg-white p-4 pl-12 border-b">
+                <div className="bg-white p-4 pl-12 border-b" key={report._id}>
                   <Typography color="textPrimary" variant="h6" style={{ marginTop: 20, marginBottom: 10 }}>
                     Order #{report.createdOn.slice(-4)}
                   </Typography>
@@ -104,8 +106,13 @@ const UserOrders = ({ ordersData, setData }) => {
 };
 
 UserOrders.propTypes = {
-  ordersData: PropTypes.arrayOf().isRequired,
-  setData: PropTypes.func.isRequired,
+  ordersData: PropTypes.arrayOf(ordersPropTypes),
+  setData: PropTypes.func,
+};
+
+UserOrders.defaultProps = {
+  ordersData: [],
+  setData: null,
 };
 
 export default UserOrders;

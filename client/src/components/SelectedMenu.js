@@ -14,7 +14,7 @@ const SelectedMenu = ({ menus }) => {
     <div>
       <FormControl className={classes.formControl}>
         <InputLabel id="User">Menu</InputLabel>
-        <Select labelId="User" id="select" value={menus} onChange={(e) => navigate(`${e.target.value._id}`)}>
+        <Select labelId="User" id="select" value="" onChange={(e) => navigate(`${e.target.value._id}`)}>
           {menus?.map((menu) => {
             return (
               <MenuItem key={menu._id} value={menu} aria-label={menu.name} aria-required="true">
@@ -30,7 +30,11 @@ const SelectedMenu = ({ menus }) => {
 };
 
 SelectedMenu.propTypes = {
-  menus: PropTypes.arrayOf(menuPropTypes).isRequired,
+  menus: PropTypes.arrayOf(menuPropTypes),
+};
+
+SelectedMenu.defaultProps = {
+  menus: [],
 };
 
 export default SelectedMenu;
