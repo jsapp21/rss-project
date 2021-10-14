@@ -12,7 +12,7 @@ const Filter = ({ ordersData, callback }) => {
   return (
     <TextField
       id="outlined-basic"
-      label="Serach your orders"
+      label="Serach by order number"
       variant="outlined"
       value={search}
       onChange={(e) => {

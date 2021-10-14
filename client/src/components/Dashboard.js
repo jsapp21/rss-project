@@ -9,6 +9,7 @@ import { Button, Menu, MenuItem } from '@material-ui/core';
 import { useFetch } from '../hooks/useFetch';
 
 export const MenuItemsContext = createContext();
+MenuItemsContext.displayName = 'MenuItemsContext';
 
 const Dashboard = () => {
   const [anchorEl, setAnchorEl] = useState(null);

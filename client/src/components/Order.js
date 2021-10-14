@@ -71,43 +71,41 @@ const Order = ({ order, setOrder }) => {
   };
 
   return (
-    <>
-      <Container maxWidth="xs" style={{ backgroundColor: '#ffff', float: 'left', marginBottom: 20 }}>
-        <Typography variant="h5" style={{ color: 'black', textAlign: 'center', marginTop: 20, marginBottom: 20 }}>
-          🍳 Simple POS
+    <Container maxWidth="xs" style={{ backgroundColor: '#ffff', float: 'left', marginBottom: 20 }}>
+      <Typography variant="h5" style={{ color: 'black', textAlign: 'center', marginTop: 20, marginBottom: 20 }}>
+        🍳 Simple POS
+      </Typography>
+
+      {order?.map((i) => {
+        addTotal(i);
+        return (
+          <Card classes={{ root: classes.root }} key={i._id}>
+            <CardContent>
+              <Typography variant="body1" style={{ float: 'left' }}>
+                {i.quantity} - {i.name}
+              </Typography>
+              <Typography color="textSecondary" style={{ float: 'right' }}>
+                ${i.price}
+              </Typography>
+            </CardContent>
+            <div className="clear-both">
+              <Button className={classes.button} size="small" color="secondary" onClick={() => removeItem(i)}>
+                Remove
+              </Button>
+            </div>
+          </Card>
+        );
+      })}
+
+      <div className="clear-both grid gap-10 grid-cols-2">
+        <Typography variant="h5" component="h2" style={{ color: 'black', textAlign: 'left', marginTop: 5 }}>
+          Total: ${totalCost}
         </Typography>
-
-        {order?.map((i) => {
-          addTotal(i);
-          return (
-            <Card classes={{ root: classes.root }} key={i._id}>
-              <CardContent>
-                <Typography variant="body1" style={{ float: 'left' }}>
-                  {i.quantity} - {i.name}
-                </Typography>
-                <Typography color="textSecondary" style={{ float: 'right' }}>
-                  ${i.price}
-                </Typography>
-              </CardContent>
-              <div className="clear-both">
-                <Button className={classes.button} size="small" color="secondary" onClick={() => removeItem(i)}>
-                  Remove
-                </Button>
-              </div>
-            </Card>
-          );
-        })}
-
-        <div className="clear-both grid gap-10 grid-cols-2">
-          <Typography variant="h5" component="h2" style={{ color: 'black', textAlign: 'left', marginTop: 5 }}>
-            Total: ${totalCost}
-          </Typography>
-          <Button variant="contained" color="primary" onClick={handleClick} style={{ marginBottom: 20 }}>
-            Order
-          </Button>
-        </div>
-      </Container>
-    </>
+        <Button variant="contained" color="primary" onClick={handleClick} style={{ marginBottom: 20 }}>
+          Order
+        </Button>
+      </div>
+    </Container>
   );
 };
 

@@ -6,7 +6,6 @@
 import React, { useState, useContext } from 'react';
 import { Typography, Input, Button } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
-import MenuItems from './MenuItems';
 import { MenuItemsContext } from './Dashboard';
 import useDashboardStyles from '../styles/dashboard.css';
 
@@ -57,33 +56,30 @@ const ItemForm = () => {
   };
 
   return (
-    <div className="clear-both grid gap-10 grid-cols-2">
-      <MenuItems />
-      <div>
-        <Typography variant="h5" component="h2">
-          Menu Item:
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <Input
-            color="primary"
-            placeholder="Item Name"
-            inputProps={{ 'aria-label': 'menu item' }}
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-          />
-          <Input
-            placeholder="$9.50"
-            inputProps={{ 'aria-label': 'menu item price' }}
-            name="price"
-            value={form.price}
-            onChange={handleChange}
-          />
-          <Button type="submit" variant="contained" color="primary" className={classes.button}>
-            Save
-          </Button>
-        </form>
-      </div>
+    <div>
+      <Typography variant="h5" component="h2">
+        Menu Item:
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <Input
+          color="primary"
+          placeholder="Item Name"
+          inputProps={{ 'aria-label': 'menu item' }}
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+        />
+        <Input
+          placeholder="$9.50"
+          inputProps={{ 'aria-label': 'menu item price' }}
+          name="price"
+          value={form.price}
+          onChange={handleChange}
+        />
+        <Button type="submit" variant="contained" color="primary" className={classes.button}>
+          Save
+        </Button>
+      </form>
     </div>
   );
 };

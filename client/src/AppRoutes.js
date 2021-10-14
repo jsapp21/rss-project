@@ -8,7 +8,7 @@ import Menus from './components/Menus';
 import Dashboard from './components/Dashboard';
 import OrderContainer from './containers/OrderContainer';
 import ReportsContainer from './containers/ReportsContainer';
-import ItemForm from './components/ItemForm';
+import ItemsContainer from './containers/ItemsContainer';
 import NotFound from './components/NotFound';
 
 const AppRoutes = () => {
@@ -20,7 +20,7 @@ const AppRoutes = () => {
     //       <Route path=":userId/menus" element={<Menus />}>
     //         <Route path=":menuId" element={<Dashboard />}>
     //           <Route path="order" element={<OrderContainer />} />
-    //           <Route path="items" element={<ItemForm />} />
+    //           <Route path="items" element={<ItemsContainer />} />
     //           <Route path="reports" element={<ReportsContainer />} />
     //         </Route>
     //       </Route>
@@ -34,7 +34,7 @@ const AppRoutes = () => {
       <Route path="users/:userId/menus" element={<Menus />} />
       <Route path="users/:userId/menus/:menuId" element={<Dashboard />}>
         <Route path="order" element={<OrderContainer />} />
-        <Route path="items" element={<ItemForm />} />
+        <Route path="items" element={<ItemsContainer />} />
         <Route path="reports" element={<ReportsContainer />} />
       </Route>
     <Route path="*" element={<NotFound />} />
