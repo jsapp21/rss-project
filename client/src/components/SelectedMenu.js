@@ -24,7 +24,7 @@ const SelectedMenu = ({ menus }) => {
           })}
         </Select>
       </FormControl>
-      <Outlet />
+      {/* <Outlet /> */}
     </div>
   );
 };

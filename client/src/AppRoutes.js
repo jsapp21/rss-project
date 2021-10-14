@@ -3,14 +3,13 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-// import Home from './Home';
-import Users from './Users';
-import Menus from './Menus';
-import Dashboard from './Dashboard';
-import OrderContainer from '../containers/OrderContainer';
-import ReportsContainer from '../containers/ReportsContainer';
-import ItemForm from './ItemForm';
-import NotFound from './NotFound';
+import Users from './components/Users';
+import Menus from './components/Menus';
+import Dashboard from './components/Dashboard';
+import OrderContainer from './containers/OrderContainer';
+import ReportsContainer from './containers/ReportsContainer';
+import ItemForm from './components/ItemForm';
+import NotFound from './components/NotFound';
 
 const AppRoutes = () => {
   return (

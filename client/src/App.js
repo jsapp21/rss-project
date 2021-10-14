@@ -6,7 +6,7 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Typography, Container } from '@material-ui/core';
 
-import AppRoutes from './components/AppRoutes';
+import AppRoutes from './AppRoutes';
 
 const App = () => {
   return (
