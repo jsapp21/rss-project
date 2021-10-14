@@ -7,12 +7,7 @@ import { ordersPropTypes } from '../propTypes/schema';
 
 const Filter = ({ ordersData, callback }) => {
   const [search, setSearch] = useState('');
-
-  console.log(search, 'searchFilter');
-
   const searchedOrders = ordersData.filter((report) => report.createdOn.includes(search.toUpperCase()));
-
-  console.log(searchedOrders, 'filter');
 
   return (
     <TextField
@@ -22,7 +17,11 @@ const Filter = ({ ordersData, callback }) => {
       value={search}
       onChange={(e) => {
         setSearch(e.target.value);
-        callback(searchedOrders);
+        if (searchedOrders.length === 0) {
+          callback(ordersData);
+        } else {
+          callback(searchedOrders);
+        }
       }}
     />
   );

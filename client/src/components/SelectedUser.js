@@ -29,7 +29,6 @@ const SelectedUser = ({ users }) => {
           })}
         </Select>
       </FormControl>
-      {/* <Outlet /> */}
     </div>
   );
 };

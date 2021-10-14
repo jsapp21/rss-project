@@ -3,7 +3,7 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Button } from '@material-ui/core';
 import Filter from './Filter';
@@ -13,6 +13,10 @@ import { ordersPropTypes } from '../propTypes/schema';
 const UserOrders = ({ ordersData, setData }) => {
   const classes = useOrderStyles();
   const [searchedOrders, setSearchedOrders] = useState(ordersData);
+
+  useEffect(() => {
+    setSearchedOrders(ordersData);
+  }, [ordersData]);
 
   const handleCancel = (report) => {
     fetch(`/orders/${report._id}`, { method: 'PATCH' })

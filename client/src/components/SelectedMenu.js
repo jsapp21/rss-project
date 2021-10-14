@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import useAppStyles from '../styles/app.css';
 import { menuPropTypes } from '../propTypes/schema';
@@ -24,7 +24,6 @@ const SelectedMenu = ({ menus }) => {
           })}
         </Select>
       </FormControl>
-      {/* <Outlet /> */}
     </div>
   );
 };
