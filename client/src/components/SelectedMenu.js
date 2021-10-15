@@ -13,8 +13,8 @@ const SelectedMenu = ({ menus }) => {
   return (
     <div>
       <FormControl className={classes.formControl}>
-        <InputLabel id="User">Menu</InputLabel>
-        <Select labelId="User" id="select" value="" onChange={(e) => navigate(`${e.target.value._id}/order`)}>
+        <InputLabel id="Menu">Menu</InputLabel>
+        <Select labelId="Menu" id="select" value="" onChange={(e) => navigate(`${e.target.value._id}/order`)}>
           {menus?.map((menu) => {
             return (
               <MenuItem key={menu._id} value={menu} aria-label={menu.name} aria-required="true">
