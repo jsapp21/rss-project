@@ -7,9 +7,12 @@ const app = express();
 const router = require('express').Router();
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const { graphqlHTTP } = require('express-graphql');
 const cors = require('cors');
 const mongoService = require('./services/mongo.service');
 const handleErrors = require('./middleware/handleErrors');
+const { schema } = require('./schema/schema');
+const { Item } = require('./schema/Item');
 
 mongoService.connect(process.env.URL, process.env.DB_NAME).then().catch(console.error);
 
@@ -25,6 +28,20 @@ app.use(
       dbName: `${process.env.DB_NAME}`,
       touchAfter: 24 * 3600, // time period in seconds
     }),
+  }),
+);
+
+const root = {
+  getItem: ({ menuId, name, price, outOfStock, tempOutOfStock }) =>
+    new Item(menuId, name, price, outOfStock, tempOutOfStock),
+};
+
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    rootValue: root,
+    graphiql: true,
   }),
 );
 

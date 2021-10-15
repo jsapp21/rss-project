@@ -41,8 +41,7 @@ const ItemForm = () => {
             alert(`${menuItem.message}`);
           } else {
             result.setData([...result.data, menuItem]);
-            form.name = '';
-            form.price = '';
+            setForm({ name: '', price: '' });
           }
         });
     }
