@@ -1,9 +1,3 @@
-// class Item {
-//   constructor(menuId) {
-//     this.menuId = menuId;
-//   }
-// }
-
 class Item {
   constructor(menuId, name, price, outOfStock, tempOutOfStock) {
     this.menuId = menuId;
