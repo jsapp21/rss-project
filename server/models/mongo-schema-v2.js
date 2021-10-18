@@ -20,8 +20,6 @@ const Item = {
   temptOutOfStock: Boolean,
 };
 
-// item on both menus
-
 const Order = {
   _id: ObjectId,
   userId: User._id,
@@ -30,12 +28,3 @@ const Order = {
   orderTotal: Number,
   createdOn: new Date(),
 };
-
-// can order from multiple menus
-// can update an item
-
-// Reports page
-// display orders by each item
-// search by order number - index orderNumber
-// total sales by each Menu - $sum
-// PMIX: for each menu, number of times & sales for each item

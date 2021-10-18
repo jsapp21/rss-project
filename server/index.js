@@ -11,8 +11,7 @@ const { graphqlHTTP } = require('express-graphql');
 const cors = require('cors');
 const mongoService = require('./services/mongo.service');
 const handleErrors = require('./middleware/handleErrors');
-const { schema } = require('./schema/schema');
-const { Item } = require('./schema/Item');
+const { schema } = require('./graphQl/schema-tools');
 
 mongoService.connect(process.env.URL, process.env.DB_NAME).then().catch(console.error);
 
@@ -31,16 +30,10 @@ app.use(
   }),
 );
 
-const root = {
-  getItem: ({ menuId, name, price, outOfStock, tempOutOfStock }) =>
-    new Item(menuId, name, price, outOfStock, tempOutOfStock),
-};
-
 app.use(
   '/graphql',
   graphqlHTTP({
     schema,
-    rootValue: root,
     graphiql: true,
   }),
 );

@@ -1,5 +1,6 @@
 class Item {
-  constructor(menuId, name, price, outOfStock, tempOutOfStock) {
+  constructor(id, menuId, name, price, outOfStock, tempOutOfStock) {
+    this.id = id;
     this.menuId = menuId;
     this.name = name;
     this.price = price;

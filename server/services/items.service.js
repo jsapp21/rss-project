@@ -5,10 +5,10 @@ const mongoService = require('./mongo.service');
 const { BadRequest, ServerError } = require('../utils/errors');
 
 const items = {
-  getMenuItems: (id) =>
+  getMenuItems: (menuId) =>
     mongoService.db
       .collection('items')
-      .find({ menuId: new ObjectId(id) })
+      .find({ menuId: new ObjectId(menuId) })
       .toArray(),
   postItem: async (newItem) => {
     const itemExists = await mongoService.db.collection('items').findOne({ name: newItem.name });
