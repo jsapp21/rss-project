@@ -19,10 +19,32 @@ const typeDefs = `
 
   type Query {
     getMenu(id: ID!): [Menu]
+    getMenuItems(menuId: ID!): [Item]
   }
 
-  type Query {
-    getMenuItems(menuId: ID!): [Item]
+  input AddItemInput {
+    _id: ID
+    menuId: String!
+    name: String!
+    price: Int!
+    outOfStock: Boolean = false
+    tempOutOfStock: Boolean = false
+  }
+
+  input UpdateItemInput {
+    _id: ID!
+    tempOutOfStock: Boolean!
+  }
+
+  input DeleteItemInput {
+    _id: ID!
+    name: String!
+  }
+
+  type Mutation {
+    createNewItem(input: AddItemInput): Item
+    updatedItemStockTemporarily(input: UpdateItemInput): Item
+    deleteItemUpdateOrders(input: DeleteItemInput): String
   }
 `;
 

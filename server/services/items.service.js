@@ -27,10 +27,6 @@ const items = {
       return item;
     }
   },
-  updateItem: (id) => {
-    const result = mongoService.db.collection('items').deleteOne({ _id: new ObjectId(id) });
-    return result;
-  },
   deleteItemTransaction: async (item) => {
     const session = mongoService.client.startSession();
     let itemsResults;
