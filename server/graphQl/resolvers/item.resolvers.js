@@ -10,9 +10,9 @@ const itemResolvers = {
     getMenuItems: async (obj, args) => items.getMenuItems(args.menuId),
     getMenu: async (obj, args) => menus.getMenu(args.id),
   },
-  Mutation: {
-    // WORKING ON MUTATIONS NEXT
-  },
+  // Mutation: {
+  //   // WORKING ON MUTATIONS NEXT
+  // },
 };
 
 module.exports = itemResolvers;
