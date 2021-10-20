@@ -4,7 +4,7 @@ const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
 
 const users = {
-  getUsers: () => mongoService.db.collection('users').find({}).toArray(),
+  getUsers: () => mongoService.db.collection('users').find().toArray(),
   getUser: (id) =>
     mongoService.db
       .collection('users')

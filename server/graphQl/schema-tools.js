@@ -3,6 +3,12 @@ const { makeExecutableSchema } = require('graphql-tools');
 const itemResolvers = require('./resolvers/item.resolvers');
 
 const typeDefs = `
+  type User {
+    _id: ID
+    name: String
+    role: String
+  }
+
   type Item {
     _id: ID
     menuId: ID
@@ -18,8 +24,9 @@ const typeDefs = `
   }
 
   type Query {
-    getMenu(id: ID!): [Menu]
+    getMenus: [Menu]
     getMenuItems(menuId: ID!): [Item]
+    getUsers: [User]
   }
 
   input AddItemInput {

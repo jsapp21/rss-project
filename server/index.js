@@ -4,7 +4,7 @@ require('dotenv').config();
 const express = require('express');
 
 const app = express();
-const router = require('express').Router();
+// const router = require('express').Router();
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const { graphqlHTTP } = require('express-graphql');
@@ -30,6 +30,28 @@ app.use(
   }),
 );
 
+// app.use(
+//   graphqlHTTP({
+//     schema,
+//     graphiql: true,
+//   }),
+// );
+// base routes
+// router.use('/users', require('./routes/users.routes'));
+
+// router.use('/menus', require('./routes/menus.routes'));
+
+// router.use('/items', require('./routes/items.routes'));
+
+// router.use('/orders', require('./routes/orders.routes'));
+// router.use('/users');
+
+// router.use('/menus');
+
+// router.use('/items');
+
+// router.use('/orders');
+
 app.use(
   '/graphql',
   graphqlHTTP({
@@ -37,17 +59,6 @@ app.use(
     graphiql: true,
   }),
 );
-
-// base routes
-router.use('/users', require('./routes/users.routes'));
-
-router.use('/menus', require('./routes/menus.routes'));
-
-router.use('/items', require('./routes/items.routes'));
-
-router.use('/orders', require('./routes/orders.routes'));
-
-app.use(router);
 app.use(handleErrors);
 
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}`));

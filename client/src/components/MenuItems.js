@@ -99,9 +99,11 @@ const MenuItems = ({ order, setOrder }) => {
       });
   };
 
+  console.log(result, 'result');
+
   return (
     <div className="grid gap-1 grid-cols-3">
-      {result?.data?.map((menuItem) => {
+      {result?.data?.getMenuItems?.map((menuItem) => {
         return (
           <Card classes={{ root: classes.root }} key={menuItem._id}>
             <CardContent>

@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useState, useEffect } from 'react';
 
 export const useFetch = (url) => {
@@ -8,7 +9,9 @@ export const useFetch = (url) => {
     if (!url) return;
     fetch(url)
       .then((resp) => resp.json())
-      .then((returnedData) => setData(returnedData))
+      .then((returnedData) => {
+        setData(returnedData);
+      })
       .catch((err) => setError(err));
   }, [url]);
   return { data, setData, error };

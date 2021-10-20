@@ -2,13 +2,18 @@
 /* eslint-disable array-callback-return */
 const items = require('../../services/items.service');
 const menus = require('../../services/menus.service');
+const users = require('../../services/users.service');
 
 // obj, args, context, info
 // resolver map
 const itemResolvers = {
   Query: {
-    getMenuItems: async (obj, args) => items.getMenuItems(args.menuId),
-    getMenu: async (obj, args) => menus.getMenu(args.id),
+    getMenuItems: async (obj, args) => {
+      const result = await items.getMenuItems(args.menuId);
+      return result;
+    },
+    getMenus: async () => menus.getAllMenus(),
+    getUsers: async () => users.getUsers(),
   },
   Mutation: {
     createNewItem: async (obj, arg) => {
@@ -24,7 +29,6 @@ const itemResolvers = {
     },
     deleteItemUpdateOrders: async (obj, arg) => {
       const item = arg.input;
-      debugger;
       await items.deleteItemTransaction(item);
       return 'Item has been deleted and previous orders updated.';
     },

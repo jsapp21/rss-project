@@ -6,17 +6,35 @@
 import React, { useState, createContext } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { Button, Menu, MenuItem } from '@material-ui/core';
-import { useFetch } from '../hooks/useFetch';
+import { useQuery, gql } from '@apollo/client';
 
 export const MenuItemsContext = createContext();
 MenuItemsContext.displayName = 'MenuItemsContext';
+
+const ITEMS = gql`
+  query GetMenuItems($menuId: ID!) {
+    getMenuItems(menuId: $menuId) {
+      _id
+      name
+      price
+      tempOutOfStock
+      outOfStock
+    }
+  }
+`;
 
 const Dashboard = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { menuId } = useParams();
 
-  const { data, setData, error } = useFetch(`/items/${menuId}`);
-  if (error) return <h1>{error}</h1>;
+  const { data, error } = useQuery(ITEMS, {
+    variables: { menuId },
+  });
+  // const { data, setData, error } = useFetch(`/items/${menuId}`);
+  if (error) return <h1>{error.message}</h1>;
+
+  console.log(data, 'menuItems');
+  console.log(menuId, 'params');
 
   return (
     <>
@@ -42,7 +60,7 @@ const Dashboard = () => {
         </MenuItem>
       </Menu>
 
-      <MenuItemsContext.Provider value={{ data, setData }}>
+      <MenuItemsContext.Provider value={{ data }}>
         <Outlet />
       </MenuItemsContext.Provider>
     </>
