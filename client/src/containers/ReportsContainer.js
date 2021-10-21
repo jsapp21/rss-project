@@ -4,20 +4,25 @@
 /* eslint-disable no-console */
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import PmixReport from '../components/PmixReport';
 import UserOrders from '../components/UserOrders';
-import { useFetch } from '../hooks/useFetch';
+import { GET_ORDERS } from '../utils/graphQl';
 
 const ReportsContainer = () => {
   const { userId } = useParams();
+  const { data, error } = useQuery(GET_ORDERS, {
+    variables: { userId },
+  });
 
-  const { data, setData, error } = useFetch(`/orders/${userId}`);
-  if (error) return <h1>{error}</h1>;
+  if (error) return <h1>{error.message}</h1>;
+
+  console.log(data, 'userOrders');
 
   return (
     <div className="clear-both grid gap-8 grid-cols-2">
       <PmixReport />
-      <UserOrders ordersData={data} setData={setData} />
+      <UserOrders ordersData={data} />
     </div>
   );
 };

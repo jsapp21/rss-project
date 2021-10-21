@@ -6,35 +6,21 @@
 import React, { useState, createContext } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { Button, Menu, MenuItem } from '@material-ui/core';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { GET_ITEMS } from '../utils/graphQl';
 
 export const MenuItemsContext = createContext();
 MenuItemsContext.displayName = 'MenuItemsContext';
-
-const ITEMS = gql`
-  query GetMenuItems($menuId: ID!) {
-    getMenuItems(menuId: $menuId) {
-      _id
-      name
-      price
-      tempOutOfStock
-      outOfStock
-    }
-  }
-`;
 
 const Dashboard = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { menuId } = useParams();
 
-  const { data, error } = useQuery(ITEMS, {
+  const { data, error } = useQuery(GET_ITEMS, {
     variables: { menuId },
   });
-  // const { data, setData, error } = useFetch(`/items/${menuId}`);
-  if (error) return <h1>{error.message}</h1>;
 
-  console.log(data, 'menuItems');
-  console.log(menuId, 'params');
+  if (error) return <h1>{error.message}</h1>;
 
   return (
     <>

@@ -6,11 +6,11 @@ const { Order } = require('../models/validation.schema');
 const { ServerError, NotFound } = require('../utils/errors');
 
 const orders = {
-  getAllOrders: () => mongoService.db.collection('orders').find({}).toArray(),
-  getAllOrdersByUser: (id) => {
+  getAllOrders: () => mongoService.db.collection('orders').find().toArray(),
+  getAllOrdersByUser: (userId) => {
     const request = mongoService.db
       .collection('orders')
-      .find({ userId: new ObjectId(id) })
+      .find({ userId: new ObjectId(userId) })
       .toArray();
     if (request.length === 0) {
       throw new NotFound('You do not have any orders yet.');

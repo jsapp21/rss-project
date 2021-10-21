@@ -2,21 +2,13 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { GET_MENUS } from '../utils/graphQl';
 import SelectedOption from './SelectedOption';
-
-const MENUS = gql`
-  query GetMenu {
-    getMenus {
-      _id
-      name
-    }
-  }
-`;
 
 const Menus = () => {
   const navigate = useNavigate();
-  const { data, error } = useQuery(MENUS);
+  const { data, error } = useQuery(GET_MENUS);
   if (error) return <h1>{error.message}</h1>;
 
   const handleChange = (e) => {

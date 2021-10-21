@@ -10,15 +10,16 @@ import Filter from './Filter';
 import useOrderStyles from '../styles/reports.css';
 import { ordersPropTypes } from '../propTypes/schema';
 
-const UserOrders = ({ ordersData, setData }) => {
+const UserOrders = ({ ordersData }) => {
   const classes = useOrderStyles();
-  const [searchedOrders, setSearchedOrders] = useState(ordersData);
+  const [searchedOrders, setSearchedOrders] = useState();
 
   useEffect(() => {
     setSearchedOrders(ordersData);
   }, [ordersData]);
 
   const handleCancel = (report) => {
+    // TODO: wire this up to graph
     fetch(`/orders/${report._id}`, { method: 'PATCH' })
       .then((resp) => resp.json())
       .then((updatedReport) => {
@@ -31,7 +32,8 @@ const UserOrders = ({ ordersData, setData }) => {
             }
             return reportObj;
           });
-          setData(updatedOrders);
+          // TODO: refectch data
+          // setData(updatedOrders);
         }
       });
   };
@@ -40,11 +42,14 @@ const UserOrders = ({ ordersData, setData }) => {
     setSearchedOrders(ordersData);
   }, []);
 
+  console.log(searchedOrders, 'searchedOrders');
+
+  // TODO: fix filter data
   return (
     <div>
       <Filter ordersData={ordersData} callback={callback} />
       <div className="w-4/6 h-96 overflow-auto">
-        {searchedOrders?.map((report) => {
+        {searchedOrders?.getOrders?.map((report) => {
           return (
             <div className="bg-white p-4 pl-12 border-b" key={report._id}>
               <Typography color="textPrimary" variant="h6" style={{ marginTop: 20, marginBottom: 10 }}>
@@ -65,6 +70,7 @@ const UserOrders = ({ ordersData, setData }) => {
               <Typography color="textPrimary" style={{ marginBottom: 5 }}>
                 Total: ${report.orderTotal}
               </Typography>
+              {/* TODO: display canceled */}
               {report.canceled ? (
                 <Button
                   disabled
@@ -72,6 +78,7 @@ const UserOrders = ({ ordersData, setData }) => {
                   size="small"
                   color="primary"
                   variant="outlined"
+                  /* TODO: make this button work */
                   onClick={() => handleCancel(report)}>
                   Your order has been canceled.
                 </Button>
@@ -95,12 +102,10 @@ const UserOrders = ({ ordersData, setData }) => {
 
 UserOrders.propTypes = {
   ordersData: PropTypes.arrayOf(ordersPropTypes),
-  setData: PropTypes.func,
 };
 
 UserOrders.defaultProps = {
   ordersData: [],
-  setData: null,
 };
 
 export default UserOrders;

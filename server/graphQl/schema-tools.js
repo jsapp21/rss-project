@@ -17,41 +17,68 @@ const typeDefs = `
     outOfStock: Boolean
     tempOutOfStock: Boolean
   }
+
+  type OrderedItems {
+    name: String
+    price: Float
+    quantity: Int
+    outOfStock: Boolean
+    tempOutOfStock: Boolean
+  }
   
   type Menu {
     _id: ID
     name: String
   }
 
+  type Order {
+    _id: ID
+    menuId: ID
+    orderItems: [OrderedItems]
+    orderTotal: Float
+    userId: ID
+    createdOn: String
+  }
+
+  type Product {
+    _id: String
+    menu: String
+    avgPrice: Float
+    itemCount: Int
+  }
+
   type Query {
     getMenus: [Menu]
     getMenuItems(menuId: ID!): [Item]
     getUsers: [User]
+    getOrders(userId: ID!): [Order]
+    getPmix: [Product]
   }
 
-  input AddItemInput {
+  input ItemInput {
     _id: ID
-    menuId: String!
-    name: String!
-    price: Int!
+    menuId: String
+    name: String
+    price: Int
+    quantity: Int
     outOfStock: Boolean = false
     tempOutOfStock: Boolean = false
   }
 
-  input UpdateItemInput {
-    _id: ID!
-    tempOutOfStock: Boolean!
-  }
-
-  input DeleteItemInput {
-    _id: ID!
-    name: String!
+  input OrderInput {
+    _id: ID
+    menuId: ID
+    orderItems: [ItemInput]
+    orderTotal: Float
+    userId: ID
+    createdOn: String
   }
 
   type Mutation {
-    createNewItem(input: AddItemInput): Item
-    updatedItemStockTemporarily(input: UpdateItemInput): Item
-    deleteItemUpdateOrders(input: DeleteItemInput): String
+    addItem(input: ItemInput): Item
+    updatedItemStock(input: ItemInput): Item
+    deleteItem(input: ItemInput): Item
+    addOrder(input: OrderInput): Order
   }
 `;
 

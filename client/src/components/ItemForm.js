@@ -3,47 +3,37 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
 /* eslint-disable no-alert */
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { Typography, Input, Button } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
-import { MenuItemsContext } from './Dashboard';
+import { GET_ITEMS, ADD_ITEM } from '../utils/graphQl';
 import useDashboardStyles from '../styles/dashboard.css';
 
 const ItemForm = () => {
   const [form, setForm] = useState({ name: '', price: '' });
-  const result = useContext(MenuItemsContext);
   const classes = useDashboardStyles();
   const { menuId } = useParams();
+  const [addItem, { loading, error }] = useMutation(ADD_ITEM, {
+    refetchQueries: [GET_ITEMS, 'getMenuItems'],
+  });
+
+  if (loading) return 'Submitting...';
+  if (error) return `Submission error! ${error.message}`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (form.name === 0 || form.price === 0) {
+    if (form.name.length === 0 || form.price.length === 0) {
       alert('Please fill out menu item and price');
     } else {
       const newItem = {
         menuId,
         name: form.name,
         price: parseFloat(form.price),
-        outOfStock: false,
-        tempOutOfStock: false,
       };
 
-      const reqObj = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newItem),
-      };
-
-      fetch('/items', reqObj)
-        .then((resp) => resp.json())
-        .then((menuItem) => {
-          if (menuItem.message) {
-            alert(`${menuItem.message}`);
-          } else {
-            result.setData([...result.data, menuItem]);
-            setForm({ name: '', price: '' });
-          }
-        });
+      addItem({ variables: { input: newItem } });
+      setForm({ name: '', price: '' });
     }
   };
 

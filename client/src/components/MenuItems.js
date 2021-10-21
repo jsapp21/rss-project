@@ -6,22 +6,30 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 import React, { useContext } from 'react';
+import { useMutation } from '@apollo/client';
 import { useLocation, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import useDashboardStyles from '../styles/dashboard.css';
+import { Typography, Card, Button, ButtonGroup } from '@material-ui/core';
 import { itemPropTypes } from '../propTypes/schema';
+import useDashboardStyles from '../styles/dashboard.css';
 import { MenuItemsContext } from './Dashboard';
+import { DELETE_ITEM, GET_ITEMS, UPDATE_ITEM_STOCK } from '../utils/graphQl';
 
 const MenuItems = ({ order, setOrder }) => {
   const classes = useDashboardStyles();
   const result = useContext(MenuItemsContext);
   const location = useLocation();
   const { userId, menuId } = useParams();
+  const [updatedItemStock, { loading, error }] = useMutation(UPDATE_ITEM_STOCK, {
+    refetchQueries: [GET_ITEMS, 'getMenuItems'],
+  });
+  const [deleteItem, { loading2, error2 }] = useMutation(DELETE_ITEM, {
+    refetchQueries: [GET_ITEMS, 'getMenuItems'],
+  });
+
+  if (loading || loading2) return 'Submitting...';
+  if (error || error2) return `Submission error! ${error.message || error2.message}`;
 
   const handleOrder = (i) => {
     const itemToUpdate = order.find((orderedItem) => orderedItem._id === i._id);
@@ -46,60 +54,22 @@ const MenuItems = ({ order, setOrder }) => {
   };
 
   const handleDelete = (menuItem) => {
-    const updatedItem = {
+    const itemToDelete = {
       _id: menuItem._id,
       name: menuItem.name,
     };
 
-    const reqObj = {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedItem),
-    };
-
-    fetch(`/items/delete/${menuItem._id}`, reqObj)
-      .then((resp) => resp.json())
-      .then((data) => {
-        if (data.status !== 200) {
-          alert(data.message);
-        } else {
-          alert(data.message);
-          const updatedMenuItems = result.data.filter((item) => item._id !== menuItem._id);
-          result.setData(updatedMenuItems);
-        }
-      });
+    deleteItem({ variables: { input: itemToDelete } });
   };
 
   const handleOutOfStock = (menuItem) => {
-    const updatedItem = {
+    const itemToUpdate = {
+      _id: menuItem._id,
       tempOutOfStock: !menuItem.tempOutOfStock,
     };
 
-    const reqObj = {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedItem),
-    };
-
-    fetch(`/items/tempOut/${menuItem._id}`, reqObj)
-      .then((resp) => resp.json())
-      .then((data) => {
-        if (data.message) {
-          alert(data.message);
-        } else {
-          const updatedMenuItems = result.data.map((item) => {
-            if (item._id === data._id) {
-              return data;
-            } else {
-              return item;
-            }
-          });
-          result.setData(updatedMenuItems);
-        }
-      });
+    updatedItemStock({ variables: { input: itemToUpdate } });
   };
-
-  console.log(result, 'result');
 
   return (
     <div className="grid gap-1 grid-cols-3">

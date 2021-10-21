@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 import React from 'react';
+import { useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
@@ -10,10 +11,12 @@ import { Typography, Container } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import useOrderStyles from '../styles/order.css';
 import { itemPropTypes } from '../propTypes/schema';
+import { ADD_ORDER } from '../utils/graphQl';
 
 const Order = ({ order, setOrder }) => {
   const classes = useOrderStyles();
   const { menuId, userId } = useParams();
+  const [addOrder, { loading, error, data }] = useMutation(ADD_ORDER);
   let totalCost = 0;
 
   const subtractTotal = (i) => {
@@ -34,40 +37,42 @@ const Order = ({ order, setOrder }) => {
     setOrder(updatedOrder);
   };
 
-  const handleClick = () => {
-    const updatedOrderItemIds = order.map((item) => {
-      return {
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        outOfStock: item.outOfStock,
-        tempOutOfStock: item.tempOutOfStock,
-      };
-    });
+  const submitOrder = () => {
+    // const updatedOrderItemIds = order.map((item) => {
+    //   return {
+    //     name: item.name,
+    //     price: item.price,
+    //     quantity: item.quantity,
+    //     outOfStock: item.outOfStock,
+    //     tempOutOfStock: item.tempOutOfStock,
+    //   };
+    // });
 
     const newOrder = {
       menuId,
-      orderItems: updatedOrderItemIds,
+      orderItems: order,
       orderTotal: totalCost,
       userId,
     };
 
-    const reqObj = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newOrder),
-    };
+    addOrder({ variables: { input: newOrder } });
 
-    fetch('/orders', reqObj)
-      .then((resp) => resp.json())
-      .then((orderResponse) => {
-        if (orderResponse.status !== 200) {
-          alert(`Error: ${orderResponse.message}`);
-        } else {
-          alert(`${orderResponse.message}`);
-          setOrder([]);
-        }
-      });
+    // const reqObj = {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(newOrder),
+    // };
+
+    // fetch('/orders', reqObj)
+    //   .then((resp) => resp.json())
+    //   .then((orderResponse) => {
+    //     if (orderResponse.status !== 200) {
+    //       alert(`Error: ${orderResponse.message}`);
+    //     } else {
+    //       alert(`${orderResponse.message}`);
+    //       setOrder([]);
+    //     }
+    //   });
   };
 
   return (
@@ -101,7 +106,7 @@ const Order = ({ order, setOrder }) => {
         <Typography variant="h5" component="h2" style={{ color: 'black', textAlign: 'left', marginTop: 5 }}>
           Total: ${totalCost}
         </Typography>
-        <Button variant="contained" color="primary" onClick={handleClick} style={{ marginBottom: 20 }}>
+        <Button variant="contained" color="primary" onClick={submitOrder} style={{ marginBottom: 20 }}>
           Order
         </Button>
       </div>
