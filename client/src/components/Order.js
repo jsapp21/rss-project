@@ -16,7 +16,7 @@ import { ADD_ORDER } from '../utils/graphQl';
 const Order = ({ order, setOrder }) => {
   const classes = useOrderStyles();
   const { menuId, userId } = useParams();
-  const [addOrder, { loading, error, data }] = useMutation(ADD_ORDER);
+  const [addOrder] = useMutation(ADD_ORDER);
   let totalCost = 0;
 
   const subtractTotal = (i) => {
@@ -38,41 +38,31 @@ const Order = ({ order, setOrder }) => {
   };
 
   const submitOrder = () => {
-    // const updatedOrderItemIds = order.map((item) => {
-    //   return {
-    //     name: item.name,
-    //     price: item.price,
-    //     quantity: item.quantity,
-    //     outOfStock: item.outOfStock,
-    //     tempOutOfStock: item.tempOutOfStock,
-    //   };
-    // });
+    const updatedOrderItemIds = order.map((item) => {
+      return {
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        outOfStock: item.outOfStock,
+        tempOutOfStock: item.tempOutOfStock,
+      };
+    });
 
-    const newOrder = {
-      menuId,
-      orderItems: order,
-      orderTotal: totalCost,
-      userId,
-    };
-
-    addOrder({ variables: { input: newOrder } });
-
-    // const reqObj = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(newOrder),
-    // };
-
-    // fetch('/orders', reqObj)
-    //   .then((resp) => resp.json())
-    //   .then((orderResponse) => {
-    //     if (orderResponse.status !== 200) {
-    //       alert(`Error: ${orderResponse.message}`);
-    //     } else {
-    //       alert(`${orderResponse.message}`);
-    //       setOrder([]);
-    //     }
-    //   });
+    addOrder({
+      variables: {
+        input: {
+          menuId,
+          orderItems: updatedOrderItemIds,
+          orderTotal: totalCost,
+          userId,
+        },
+      },
+    }).then((response) => {
+      if (response) {
+        console.log(response);
+        setOrder([]);
+      }
+    });
   };
 
   return (
@@ -115,8 +105,13 @@ const Order = ({ order, setOrder }) => {
 };
 
 Order.propTypes = {
-  order: PropTypes.arrayOf(itemPropTypes).isRequired,
-  setOrder: PropTypes.func.isRequired,
+  order: PropTypes.arrayOf(itemPropTypes),
+  setOrder: PropTypes.elementType,
+};
+
+Order.defaultProps = {
+  order: [],
+  setOrder: null,
 };
 
 export default Order;

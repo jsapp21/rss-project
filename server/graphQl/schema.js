@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 const { makeExecutableSchema } = require('graphql-tools');
-const itemResolvers = require('./resolvers/item.resolvers');
+const resolvers = require('./resolvers');
 
 const typeDefs = `
   type User {
@@ -11,19 +11,13 @@ const typeDefs = `
 
   type Item {
     _id: ID
-    menuId: ID
-    name: String
-    price: Float
-    outOfStock: Boolean
-    tempOutOfStock: Boolean
-  }
-
-  type OrderedItems {
+    menuId: String
     name: String
     price: Float
     quantity: Int
     outOfStock: Boolean
     tempOutOfStock: Boolean
+    orders: [Order]
   }
   
   type Menu {
@@ -33,28 +27,21 @@ const typeDefs = `
 
   type Order {
     _id: ID
-    menuId: ID
-    orderItems: [OrderedItems]
+    menuId: String
+    orderItems: [Item]
     orderTotal: Float
-    userId: ID
+    userId: String
     createdOn: String
+    canceled: Boolean
   }
 
   type Product {
-    _id: String
+    name: String
     menu: String
     avgPrice: Float
     itemCount: Int
   }
-
-  type Query {
-    getMenus: [Menu]
-    getMenuItems(menuId: ID!): [Item]
-    getUsers: [User]
-    getOrders(userId: ID!): [Order]
-    getPmix: [Product]
-  }
-
+  
   input ItemInput {
     _id: ID
     menuId: String
@@ -65,15 +52,41 @@ const typeDefs = `
     tempOutOfStock: Boolean = false
   }
 
+  input OrderedItemInput {
+    name: String
+    price: Float
+    quantity: Int
+    outOfStock: Boolean
+    tempOutOfStock: Boolean
+  }
+  
   input OrderInput {
-    _id: ID
-    menuId: ID
-    orderItems: [ItemInput]
+    menuId: String
     orderTotal: Float
-    userId: ID
+    orderItems: [OrderedItemInput]
+    userId: String
     createdOn: String
+    canceled: Boolean
   }
 
+  input OrdersInputFilter {
+    _id: ID
+    menuId: String
+    orderItems: [Item]
+    orderTotal: Float
+    userId: String
+    createdOn: String
+    canceled: Boolean
+  }
+  
+  type Query {
+    getMenus: [Menu]
+    getMenuItems(menuId: String!): [Item]
+    getUsers: [User]
+    getOrders(userId: String!, input: OrdersInputFilter): [Order]
+    getPmix: [Product]
+  }
+  
   type Mutation {
     addItem(input: ItemInput): Item
     updatedItemStock(input: ItemInput): Item
@@ -82,7 +95,7 @@ const typeDefs = `
   }
 `;
 
-const schema = makeExecutableSchema({ typeDefs, resolvers: itemResolvers });
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 module.exports = {
   schema,

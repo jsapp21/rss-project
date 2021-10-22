@@ -7,7 +7,7 @@ export const menuPropTypes = PropTypes.shape({
 
 export const itemPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
-  menuId: PropTypes.string.isRequired,
+  menuId: PropTypes.string,
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   outOfStock: PropTypes.bool.isRequired,

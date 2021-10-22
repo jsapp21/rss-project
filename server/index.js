@@ -11,7 +11,7 @@ const { graphqlHTTP } = require('express-graphql');
 const cors = require('cors');
 const mongoService = require('./services/mongo.service');
 const handleErrors = require('./middleware/handleErrors');
-const { schema } = require('./graphQl/schema-tools');
+const { schema } = require('./graphQl/schema');
 
 mongoService.connect(process.env.URL, process.env.DB_NAME).then().catch(console.error);
 

@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 // ################## QUERIES ##################
 
 export const GET_ITEMS = gql`
-  query GetMenuItems($menuId: ID!) {
+  query GetMenuItems($menuId: String!) {
     getMenuItems(menuId: $menuId) {
       _id
       name
@@ -33,8 +33,8 @@ export const GET_MENUS = gql`
 `;
 
 export const GET_ORDERS = gql`
-  query GetOrders($userId: ID!) {
-    getOrders(userId: $userId) {
+  query GetOrders($userId: String!, $input: OrdersInputFilter) {
+    getOrders(userId: $userId, input: $input) {
       _id
       orderTotal
       orderItems {
@@ -45,6 +45,7 @@ export const GET_ORDERS = gql`
         tempOutOfStock
       }
       createdOn
+      canceled
     }
   }
 `;
@@ -52,7 +53,7 @@ export const GET_ORDERS = gql`
 export const GET_PMIX = gql`
   query GetPmix {
     getPmix {
-      _id
+      name
       menu
       avgPrice
       itemCount
@@ -93,10 +94,10 @@ export const UPDATE_ITEM_STOCK = gql`
 export const ADD_ORDER = gql`
   mutation AddOrder($input: OrderInput) {
     addOrder(input: $input) {
-      menuId
-      orderItems
-      orderTotal
-      userId
+      _id
+      orderItems {
+        name
+      }
     }
   }
 `;

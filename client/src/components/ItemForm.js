@@ -15,7 +15,7 @@ const ItemForm = () => {
   const classes = useDashboardStyles();
   const { menuId } = useParams();
   const [addItem, { loading, error }] = useMutation(ADD_ITEM, {
-    refetchQueries: [GET_ITEMS, 'getMenuItems'],
+    refetchQueries: [GET_ITEMS, { variables: { menuId } }],
   });
 
   if (loading) return 'Submitting...';

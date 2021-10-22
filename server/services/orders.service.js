@@ -18,19 +18,23 @@ const orders = {
       return request;
     }
   },
-  postOrder: async (req) => {
-    await Order.validate(req.body);
+  postOrder: async (order) => {
+    await Order.validate(order);
     const request = {
-      ...req.body,
-      menuId: new ObjectId(req.body.menuId),
-      userId: new ObjectId(req.body.userId),
+      ...order,
+      menuId: new ObjectId(order.menuId),
+      userId: new ObjectId(order.userId),
       createdOn: new Date(),
     };
     const result = await mongoService.db.collection('orders').insertOne(request);
     if (!result.acknowledged) {
       throw new ServerError('Your order can not be placed due to an server error.');
     }
-    return result;
+    const newOrder = {
+      ...order,
+      _id: result.insertedId,
+    };
+    return newOrder;
   },
   cancelOrder: (id) => {
     const request = mongoService.db

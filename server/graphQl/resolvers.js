@@ -1,13 +1,13 @@
 /* eslint-disable no-debugger */
 /* eslint-disable array-callback-return */
-const items = require('../../services/items.service');
-const menus = require('../../services/menus.service');
-const users = require('../../services/users.service');
-const orders = require('../../services/orders.service');
+const items = require('../services/items.service');
+const menus = require('../services/menus.service');
+const users = require('../services/users.service');
+const orders = require('../services/orders.service');
 
 // obj, args, context, info
 // resolver map
-const itemResolvers = {
+const resolvers = {
   Query: {
     getMenuItems: async (obj, args) => {
       const result = await items.getMenuItems(args.menuId);
@@ -37,14 +37,11 @@ const itemResolvers = {
       await items.deleteItemTransaction(item);
     },
     addOrder: async (obj, arg) => {
-      // TODO: make this work
       const order = arg.input;
-      debugger;
       const result = await orders.postOrder(order);
-      debugger;
       return result;
     },
   },
 };
 
-module.exports = itemResolvers;
+module.exports = resolvers;

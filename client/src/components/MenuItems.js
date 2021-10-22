@@ -22,10 +22,10 @@ const MenuItems = ({ order, setOrder }) => {
   const location = useLocation();
   const { userId, menuId } = useParams();
   const [updatedItemStock, { loading, error }] = useMutation(UPDATE_ITEM_STOCK, {
-    refetchQueries: [GET_ITEMS, 'getMenuItems'],
+    refetchQueries: [GET_ITEMS, { variables: { menuId } }],
   });
   const [deleteItem, { loading2, error2 }] = useMutation(DELETE_ITEM, {
-    refetchQueries: [GET_ITEMS, 'getMenuItems'],
+    refetchQueries: [GET_ITEMS, { variables: { menuId } }],
   });
 
   if (loading || loading2) return 'Submitting...';

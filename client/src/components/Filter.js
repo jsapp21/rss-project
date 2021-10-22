@@ -9,6 +9,8 @@ const Filter = ({ ordersData, callback }) => {
   const [search, setSearch] = useState('');
   const searchedOrders = ordersData?.getOrders?.filter((report) => report.createdOn.includes(search.toUpperCase()));
 
+  console.log(ordersData, 'filter');
+
   return (
     <TextField
       id="outlined-basic"
