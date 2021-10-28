@@ -33,8 +33,8 @@ export const GET_MENUS = gql`
 `;
 
 export const GET_ORDERS = gql`
-  query GetOrders($userId: String!, $input: OrdersInputFilter) {
-    getOrders(userId: $userId, input: $input) {
+  query GetOrders($userId: String!) {
+    getOrders(userId: $userId) {
       _id
       orderTotal
       orderItems {

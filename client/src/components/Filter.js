@@ -1,43 +1,30 @@
 /* eslint-disable no-console */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { TextField } from '@material-ui/core';
-import { ordersPropTypes } from '../propTypes/schema';
 
-const Filter = ({ ordersData, callback }) => {
-  const [search, setSearch] = useState('');
-  const searchedOrders = ordersData?.getOrders?.filter((report) => report.createdOn.includes(search.toUpperCase()));
-
-  console.log(ordersData, 'filter');
-
+const Filter = ({ search, setSearch }) => {
   return (
     <TextField
       id="outlined-basic"
       label="Serach by order number"
       variant="outlined"
       value={search}
-      onChange={(e) => {
-        setSearch(e.target.value);
-        if (searchedOrders.length === 0) {
-          callback(ordersData?.getOrders);
-        } else {
-          callback(searchedOrders);
-        }
-      }}
+      onChange={(e) => setSearch(e.target.value)}
+      style={{ width: '100%', marginBottom: 10 }}
     />
   );
 };
 
 Filter.propTypes = {
-  ordersData: PropTypes.arrayOf(ordersPropTypes),
-
-  callback: PropTypes.func,
+  search: PropTypes.string,
+  setSearch: PropTypes.element,
 };
 
 Filter.defaultProps = {
-  ordersData: [],
-  callback: null,
+  search: '',
+  setSearch: null,
 };
 
 export default Filter;

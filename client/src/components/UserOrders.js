@@ -3,48 +3,26 @@
 /* eslint-disable no-debugger */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
-import React, { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { Typography, Button, TextField } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import Filter from './Filter';
 import useOrderStyles from '../styles/reports.css';
-import { ordersPropTypes } from '../propTypes/schema';
 import { GET_ORDERS } from '../utils/graphQl';
-
-function useAlbumFilters() {
-  const [filters, _updateFilter] = useState({
-    id: undefined,
-    name: '',
-  });
-
-  const updateFilter = (filterType, value) => {
-    debugger;
-    _updateFilter({
-      [filterType]: value,
-    });
-  };
-
-  return {
-    models: { filters },
-    operations: { updateFilter },
-  };
-}
 
 const UserOrders = () => {
   const classes = useOrderStyles();
-  const { operations, models } = useAlbumFilters();
   const [searchedOrders, setSearchedOrders] = useState();
   const { userId } = useParams();
   const [search, setSearch] = useState('');
-  const { data, error, refetch } = useQuery(GET_ORDERS, {
-    variables: { userId, input: models.filters.name },
+  const { data, error } = useQuery(GET_ORDERS, {
+    variables: { userId },
   });
 
-  // useEffect(() => {
-  //   setSearchedOrders(data);
-  // }, [data]);
+  useEffect(() => {
+    setSearchedOrders(data?.getOrders);
+  }, [data]);
 
   const handleCancel = (report) => {
     // TODO: wire this up to graph
@@ -66,40 +44,12 @@ const UserOrders = () => {
       });
   };
 
-  const callback = useCallback((data) => {
-    setSearchedOrders(data);
-  }, []);
-
-  console.log(data, 'apollo data');
-  console.log(operations, 'operations');
-  console.log(models, 'models');
-  console.log(search, 'search');
-
-  // TODO: fix filter data
+  const orders = searchedOrders?.filter((report) => report.createdOn.includes(search.toUpperCase()));
   return (
     <div>
-      {/* <Filter ordersData={data} callback={callback} /> */}
-      <TextField
-        id="outlined-basic"
-        label="Serach by order number"
-        variant="outlined"
-        value={models.filters.name}
-        type="string"
-        onChange={(e) => operations.updateFilter('name', e.target.value)}
-      />
-      <Button
-        size="small"
-        color="primary"
-        variant="outlined"
-        onClick={() =>
-          refetch({
-            input: { name: models.filters.name },
-          })
-        }>
-        Search
-      </Button>
-      <div className="w-4/6 h-96 overflow-auto">
-        {data?.getOrders?.map((report) => {
+      <Filter ordersData={data?.getOrders} search={search} setSearch={setSearch} />
+      <div className="h-96 overflow-auto">
+        {orders?.map((report) => {
           return (
             <div className="bg-white p-4 pl-12 border-b" key={report._id}>
               <Typography color="textPrimary" variant="h6" style={{ marginTop: 20, marginBottom: 10 }}>
@@ -148,13 +98,5 @@ const UserOrders = () => {
     </div>
   );
 };
-
-// UserOrders.propTypes = {
-//   ordersData: PropTypes.arrayOf(ordersPropTypes),
-// };
-
-// UserOrders.defaultProps = {
-//   ordersData: [],
-// };
 
 export default UserOrders;

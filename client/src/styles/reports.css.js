@@ -11,7 +11,7 @@ export default makeStyles({
     bottom: 0,
   },
   table: {
-    minWidth: 650,
+    minWidth: 0,
   },
   cancelOrderBtn: {
     margin: '10px 0 10px 5px',

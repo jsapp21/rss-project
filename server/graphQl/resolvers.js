@@ -16,8 +16,8 @@ const resolvers = {
     getMenus: async () => menus.getAllMenus(),
     getUsers: async () => users.getUsers(),
     getOrders: async (obj, args) => {
-      const result = await orders.getAllOrdersByUser(args.userId);
-      return result;
+      const results = await orders.getAllOrdersByUser(args.userId);
+      return results;
     },
     getPmix: async () => orders.pmixReport(),
   },

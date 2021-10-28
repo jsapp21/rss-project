@@ -66,24 +66,28 @@ const typeDefs = `
     orderItems: [OrderedItemInput]
     userId: String
     createdOn: String
-    canceled: Boolean
+    canceled: Boolean = false
   }
 
   input OrdersInputFilter {
     _id: ID
     menuId: String
-    orderItems: [Item]
+    orderItems: [OrderedItemInput]
     orderTotal: Float
     userId: String
     createdOn: String
-    canceled: Boolean
+    canceled: Boolean = false
+  }
+
+  input OrdersFilter {
+    name: String
   }
   
   type Query {
     getMenus: [Menu]
     getMenuItems(menuId: String!): [Item]
     getUsers: [User]
-    getOrders(userId: String!, input: OrdersInputFilter): [Order]
+    getOrders(userId: String!): [Order]
     getPmix: [Product]
   }
   
