@@ -21,14 +21,13 @@ const MenuItems = ({ order, setOrder }) => {
   const result = useContext(MenuItemsContext);
   const location = useLocation();
   const { userId, menuId } = useParams();
-  const [updatedItemStock, { loading, error }] = useMutation(UPDATE_ITEM_STOCK, {
+  const [updatedItemStock, { error }] = useMutation(UPDATE_ITEM_STOCK, {
     refetchQueries: [GET_ITEMS, { variables: { menuId } }],
   });
-  const [deleteItem, { loading2, error2 }] = useMutation(DELETE_ITEM, {
+  const [deleteItem, { error2 }] = useMutation(DELETE_ITEM, {
     refetchQueries: [GET_ITEMS, { variables: { menuId } }],
   });
 
-  if (loading || loading2) return 'Submitting...';
   if (error || error2) return `Submission error! ${error.message || error2.message}`;
 
   const handleOrder = (i) => {

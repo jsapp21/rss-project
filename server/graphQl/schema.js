@@ -68,20 +68,6 @@ const typeDefs = `
     createdOn: String
     canceled: Boolean = false
   }
-
-  input OrdersInputFilter {
-    _id: ID
-    menuId: String
-    orderItems: [OrderedItemInput]
-    orderTotal: Float
-    userId: String
-    createdOn: String
-    canceled: Boolean = false
-  }
-
-  input OrdersFilter {
-    name: String
-  }
   
   type Query {
     getMenus: [Menu]
@@ -96,6 +82,7 @@ const typeDefs = `
     updatedItemStock(input: ItemInput): Item
     deleteItem(input: ItemInput): Item
     addOrder(input: OrderInput): Order
+    updateOrder(input: OrderInput): Order
   }
 `;
 

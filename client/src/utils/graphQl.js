@@ -101,3 +101,12 @@ export const ADD_ORDER = gql`
     }
   }
 `;
+
+export const UPDATE_ORDER = gql`
+  mutation UpdateOrder($input: OrderInput) {
+    updateOrder(input: $input) {
+      _id
+      canceled
+    }
+  }
+`;

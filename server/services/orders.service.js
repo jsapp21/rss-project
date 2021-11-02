@@ -2,7 +2,7 @@
 /* eslint-disable no-debugger */
 const { ObjectId } = require('bson');
 const mongoService = require('./mongo.service');
-const { Order } = require('../models/validation.schema');
+const { Order } = require('../schema/validation.schema');
 const { ServerError, NotFound } = require('../utils/errors');
 
 const orders = {

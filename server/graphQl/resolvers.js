@@ -6,7 +6,6 @@ const users = require('../services/users.service');
 const orders = require('../services/orders.service');
 
 // obj, args, context, info
-// resolver map
 const resolvers = {
   Query: {
     getMenuItems: async (obj, args) => {
@@ -39,6 +38,12 @@ const resolvers = {
     addOrder: async (obj, arg) => {
       const order = arg.input;
       const result = await orders.postOrder(order);
+      return result;
+    },
+    updateOrder: async (obj, arg) => {
+      debugger;
+      const order = arg.input;
+      const result = await orders.cancelOrder(order);
       return result;
     },
   },

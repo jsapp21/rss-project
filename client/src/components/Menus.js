@@ -15,8 +15,6 @@ const Menus = () => {
     navigate(`${e.target.value._id}/order`);
   };
 
-  console.log(data, 'getMenu');
-
   return <SelectedOption data={data?.getMenus} handleChange={handleChange} />;
 };
 

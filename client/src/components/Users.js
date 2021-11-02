@@ -17,8 +17,6 @@ const Users = () => {
     navigate(`users/${e.target.value._id}/menus`);
   };
 
-  console.log(data, 'getUsers data');
-
   return <SelectedOption data={data?.getUsers} handleChange={handleChange} />;
 };
 
