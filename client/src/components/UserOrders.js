@@ -27,26 +27,6 @@ const UserOrders = () => {
     setSearchedOrders(data?.getOrders);
   }, [data]);
 
-  // const handleCancel = (report) => {
-  //   // TODO: wire this up to graph
-  //   fetch(`/orders/${report._id}`, { method: 'PATCH' })
-  //     .then((resp) => resp.json())
-  //     .then((updatedReport) => {
-  //       if (updatedReport.message) {
-  //         alert(updatedReport.message);
-  //       } else {
-  //         const updatedOrders = data?.getOrders?.map((reportObj) => {
-  //           if (reportObj._id === report._id) {
-  //             return updatedReport;
-  //           }
-  //           return reportObj;
-  //         });
-  //         // TODO: refectch data
-  //         // setData(updatedOrders);
-  //       }
-  //     });
-  // };
-
   const handleCancel = (order) => {
     debugger;
     const orderToCancel = {
@@ -84,12 +64,10 @@ const UserOrders = () => {
               {order.canceled ? (
                 <Button
                   disabled
-                  className={classes.cancelOrderBtn}
                   size="small"
                   color="primary"
                   variant="outlined"
-                  // onClick={() => handleCancel(report)}>
-                  onClick={null}>
+                  className={classes.cancelOrderBtn}>
                   Your order has been canceled.
                 </Button>
               ) : (
