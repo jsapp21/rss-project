@@ -14,6 +14,7 @@ const Users = () => {
   if (error) return <h1>{error.message}</h1>;
 
   const handleChange = (e) => {
+    console.log(e.target, 'console');
     navigate(`users/${e.target.value._id}/menus`);
   };
 

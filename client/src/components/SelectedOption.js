@@ -14,7 +14,7 @@ const SelectedOption = ({ data, handleChange }) => {
       <Select labelId="label" id="select" value="" onChange={(e) => handleChange(e)}>
         {data?.map((option) => {
           return (
-            <MenuItem key={option._id} value={option.name} aria-label={option.name} aria-required="true">
+            <MenuItem key={option._id} value={option} aria-label={option.name} aria-required="true">
               {option.name}
             </MenuItem>
           );
