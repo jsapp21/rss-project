@@ -1,24 +1,31 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import App from '../App';
+import SelectedOption from '../components/SelectedOption';
 
-beforeEach(() => render(<App />));
-
-test('renders Simple POS', () => {
-  const linkElement = screen.getByText(/Simple POS/i);
-  expect(linkElement).toBeInTheDocument();
+const client = new ApolloClient({
+  uri: 'http://localhost:5000/graphql',
+  cache: new InMemoryCache(),
 });
 
-test('on click renders a list of menus', () => {
-  userEvent.click(screen.getByLabelText('Menu'));
-  screen.getByRole('presentation');
-  const a = screen.getByRole('listbox', { name: 'Menu' });
-  // console.log(a, 'a');
+beforeEach(() => render(
+<ApolloProvider client={client}>
+  <App />
+</ApolloProvider>));
 
-  // screen.getByRole('listbox', { name: 'Menu' }, [
-  // screen.getByText('Foo Bar Lunch')
-  //   // screen.getByText('Lorem Ipsum Cocktails'),
-  // ]);
+test('App renders Simple POS', () => {
+  const logoText = screen.getByRole('heading', { name: /Simple POS/i });
+  expect(logoText).toBeInTheDocument();
+});
+
+test('The select dropdown onClick displays a list of roles', () => {
+  render(<SelectedOption />);
+  
+  const button = screen.getByRole('button', { name: 'Select ' });
+  expect(button).toBeInTheDocument();
+
+  fireEvent.click(button);
+  // TODO: Finish test
 });

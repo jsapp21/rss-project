@@ -10,11 +10,11 @@ const SelectedOption = ({ data, handleChange }) => {
 
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel id="Selected Option">Select</InputLabel>
-      <Select labelId="Selected Option" id="select" value="" onChange={(e) => handleChange(e)}>
+      <InputLabel id="label">Select</InputLabel>
+      <Select labelId="label" id="select" value="" onChange={(e) => handleChange(e)}>
         {data?.map((option) => {
           return (
-            <MenuItem key={option._id} value={option} aria-label={option.name} aria-required="true">
+            <MenuItem key={option._id} value={option.name} aria-label={option.name} aria-required="true">
               {option.name}
             </MenuItem>
           );

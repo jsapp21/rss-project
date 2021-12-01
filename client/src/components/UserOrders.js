@@ -67,7 +67,8 @@ const UserOrders = () => {
                   size="small"
                   color="primary"
                   variant="outlined"
-                  className={classes.cancelOrderBtn}>
+                  className={classes.cancelOrderBtn}
+                  onClick={null}>
                   Your order has been canceled.
                 </Button>
               ) : (
