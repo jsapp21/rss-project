@@ -59,7 +59,6 @@ const Order = ({ order, setOrder }) => {
       },
     }).then((response) => {
       if (response) {
-        console.log(response);
         setOrder([]);
       }
     });
@@ -71,20 +70,20 @@ const Order = ({ order, setOrder }) => {
         🍳 Simple POS
       </Typography>
 
-      {order?.map((i) => {
-        addTotal(i);
+      {order?.map((item) => {
+        addTotal(item);
         return (
-          <Card classes={{ root: classes.root }} key={i._id}>
+          <Card classes={{ root: classes.root }} key={item._id}>
             <CardContent>
               <Typography variant="body1" style={{ float: 'left' }}>
-                {i.quantity} - {i.name}
+                {item.quantity} - {item.name}
               </Typography>
               <Typography color="textSecondary" style={{ float: 'right' }}>
-                ${i.price}
+                ${item.price}
               </Typography>
             </CardContent>
             <div className="clear-both">
-              <Button className={classes.button} size="small" color="secondary" onClick={() => removeItem(i)}>
+              <Button className={classes.button} size="small" color="secondary" onClick={() => removeItem(item)}>
                 Remove
               </Button>
             </div>

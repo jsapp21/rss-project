@@ -19,7 +19,7 @@ const Filter = ({ search, setSearch }) => {
 
 Filter.propTypes = {
   search: PropTypes.string,
-  setSearch: PropTypes.element,
+  setSearch: PropTypes.func,
 };
 
 Filter.defaultProps = {

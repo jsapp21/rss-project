@@ -13,10 +13,10 @@ import { GET_ORDERS, UPDATE_ORDER } from '../utils/graphQl';
 
 const UserOrders = () => {
   const classes = useOrderStyles();
-  const [searchedOrders, setSearchedOrders] = useState();
+  const [searchedOrders, setSearchedOrders] = useState([]);
   const { userId } = useParams();
   const [search, setSearch] = useState('');
-  const { data, error } = useQuery(GET_ORDERS, {
+  const { data } = useQuery(GET_ORDERS, {
     variables: { userId },
   });
   const [updateOrder] = useMutation(UPDATE_ORDER, {
@@ -28,7 +28,6 @@ const UserOrders = () => {
   }, [data]);
 
   const handleCancel = (order) => {
-    debugger;
     const orderToCancel = {
       _id: order._id,
     };
@@ -36,6 +35,7 @@ const UserOrders = () => {
   };
 
   const orders = searchedOrders?.filter((report) => report.createdOn.includes(search.toUpperCase()));
+
   return (
     <div>
       <Filter ordersData={data?.getOrders} search={search} setSearch={setSearch} />
@@ -61,26 +61,15 @@ const UserOrders = () => {
               <Typography color="textPrimary" style={{ marginBottom: 5 }}>
                 Total: ${order.orderTotal}
               </Typography>
-              {order.canceled ? (
-                <Button
-                  disabled
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                  className={classes.cancelOrderBtn}
-                  onClick={null}>
-                  Your order has been canceled.
-                </Button>
-              ) : (
-                <Button
-                  className={classes.cancelOrderBtn}
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                  onClick={() => handleCancel(order)}>
-                  Cancel Order
-                </Button>
-              )}
+              <Button
+                disabled={order.canceled}
+                className={classes.cancelOrderBtn}
+                size="small"
+                color="primary"
+                variant="outlined"
+                onClick={() => handleCancel(order)}>
+                {order.canceled ? 'Order has been canceled.' : 'Cancel Order'}
+              </Button>
             </div>
           );
         })}

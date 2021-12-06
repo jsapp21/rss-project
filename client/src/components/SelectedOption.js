@@ -25,7 +25,7 @@ const SelectedOption = ({ data, handleChange }) => {
 };
 
 SelectedOption.propTypes = {
-  data: PropTypes.node,
+  data: PropTypes.arrayOf(PropTypes.any),
   handleChange: PropTypes.func,
 };
 
